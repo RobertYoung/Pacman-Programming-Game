@@ -10,7 +10,7 @@
 		public function PacmanStage(level:Level) {
 			level = level;
 			
-			level.ConstructLevel();
+			//level.CreateArrayOfGrids();
 			
 			for (var i = 0; i < level.grids.length; i++)
 			{

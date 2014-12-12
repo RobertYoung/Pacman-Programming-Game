@@ -1,9 +1,15 @@
 ﻿package com.game {
 	
 	import com.game.Grid;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import com.adobe.serialization.json.JSONDecoder;
+	import flash.events.Event;
+	import flash.display.MovieClip;
 	
 	public class Level {
 
+		// List of required grids for the level
 		public var grids:Array = new Array();
 		
 		// Row Variables
@@ -16,7 +22,14 @@
 		public var row7_col1, row7_col2, row7_col3, row7_col4, row7_col5, row7_col6, row7_col7, row7_col8:Grid;
 		public var row8_col1, row8_col2, row8_col3, row8_col4, row8_col5, row8_col6, row8_col7, row8_col8:Grid;
 		
-		public function Level() {
+		// URL Loader and Request to fetch JSON
+		var loader:URLLoader = new URLLoader();
+		var request:URLRequest = new URLRequest();	
+		
+		// Instance of the main stage
+		var main:MovieClip;
+		
+		public function Level(mc:MovieClip, urlOfJSON:String = "") {
 			// Assign all grid variables with the row and column properties added
 			for (var row = 1; row <= 8; row++)
 			{
@@ -25,9 +38,16 @@
 					this["row" + row + "_col" + col] = new Grid(row, col, Grid.BOX);
 				}
 			}
+
+			main = mc;
+			
+			request.url = urlOfJSON;
+			loader.load(request);
+
+			loader.addEventListener(Event.COMPLETE, JSONLoadComplete);
 		}
 		
-		public function ConstructLevel() {
+		public function CreateArrayOfGrids() {
 			
 			for (var row = 1; row <= 8; row++)
 			{
@@ -36,6 +56,44 @@
 					grids.push(this["row" + row + "_col" + col]);
 				}
 			}
+		}
+		
+		function JSONLoadComplete(e:Event):void
+		{
+			trace(loader.data);
+			
+			var jsonData = new JSONDecoder(loader.data, false).getValue();
+
+			// Go through each object from the JSON data and create a Grid
+			// object to store in the levels list
+			for (var rows in jsonData)
+			{
+				for (var rowNumber in jsonData[rows])
+				{
+					for (var columns in jsonData[rows][rowNumber])
+					{
+						for (var columnNumber in jsonData[rows][rowNumber][columns])
+						{
+							// Get the grid block for each grid in the JSON
+							var gridBlock = jsonData[rows][rowNumber][columns][columnNumber].gridBlock
+							
+							this["row" + rowNumber + "_col" + columnNumber].SetGridBlockAndElements(gridBlock); 
+						}
+					}
+						
+				}
+			}
+			
+			// Store all the grids in an array
+			CreateArrayOfGrids();
+			
+			// Create the stage and add to the view
+			var pacmanStage:PacmanStage = new PacmanStage(this);
+
+			pacmanStage.x = 300;
+			pacmanStage.y = 400;
+
+			main.stage.addChild(pacmanStage);
 		}
 	}
 	
