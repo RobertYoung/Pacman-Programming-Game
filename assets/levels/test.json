@@ -1,0 +1,20 @@
+{
+  "row1": {
+    "col1": {
+      "grid": {
+        "gridBlock": "HORIZONTAL",
+        "key": {
+          "amountOfKeys": 0,
+          "containsKey": false
+        },
+        "hole": {
+          "containsHole": true,
+          "containsMonster": false
+        },
+        "containsDoor": false,
+        "containsMonster": 0,
+        "pacmanStart": false
+      }
+    }
+  }
+}

@@ -5,6 +5,9 @@
 		//**************************************//
 		//	CONSTANT VALUES FOR EACH GRID BLOCK //
 		//**************************************//
+		public static const BLANK:String = "BLANK";
+		public static const BOX:String = "BOX";
+		
 		public static const HORIZONTAL:String = "HORIZONTAL";
 		public static const VERTICAL:String = "VERTICAL";
 		
@@ -44,6 +47,10 @@
 			col = setCol;
 		}
 
+		public function SetGridBlockAndElements(setGridBlock:String, setGridElements:Array = null){
+			gridBlock = setGridBlock;
+			gridElements = setGridElements;
+		}
 	}
 	
 }
