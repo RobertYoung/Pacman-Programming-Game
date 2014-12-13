@@ -36,6 +36,14 @@
 		public static const REWARD_CHERRY:String = "REWARD_CHERRY";
 		public static const REWARD_STRAWBERRY:String = "REWARD_STRAWBERRY";
 		
+		//******************************//
+		// CONSTANT VALUES FOR MONSTERS //
+		//******************************//
+		public static const MONSTER_BLINKY:String = "MONSTER_BLINKY";
+		public static const MONSTER_CLYDE:String = "MONSTER_CLYDE";
+		public static const MONSTER_INKY:String = "MONSTER_INKY";
+		public static const MONSTER_PINKY:String = "MONSTER_PINKY";
+		
 		//************************************//
 		// VARIABLES ASSOCIATED FOR EACH GRID //
 		//************************************//
@@ -46,6 +54,13 @@
 		public var apple:Boolean = false;
 		public var cherry:Boolean = false;
 		public var strawberry:Boolean = false;
+		public var blinky:Boolean = false;
+		public var clyde:Boolean = false;
+		public var inky:Boolean = false;
+		public var pinky:Boolean = false;
+		public var door:Boolean = false;
+		public var hole:Boolean = false;
+		public var key:Key = new Key();
 		
 		//************************************************//
 		// INITILIZING CONSTRUCTOR TO SETUP A GRID EASILY //
@@ -80,6 +95,44 @@
 				break;
 			}
 		}
+		
+		public function SetMonster(newMonster:String) {
+			switch (newMonster) {
+				case MONSTER_BLINKY:
+					blinky = true;
+				break;
+				case MONSTER_CLYDE:
+					clyde = true;
+				break;
+				case MONSTER_INKY:
+					inky = true;
+				break;
+				case MONSTER_PINKY:
+					pinky = true;
+				break;
+			}
+		}
+		
+		public function SetDoor(newDoor:Boolean) {
+			door = newDoor;
+		}
+		
+		public function SetHole(newHole:Boolean) {
+			hole = newHole;
+		}
+		
+		public function SetKey(isKey:Boolean, numberOfKeys:int) {
+			key.isKey = isKey;
+			key.numberOfKeys = numberOfKeys;
+		}
 	}
+}
+
+class Key {
+	public var isKey:Boolean = false;
+	public var numberOfKeys:int = 0;
 	
+	public function Key() {
+		
+	}
 }

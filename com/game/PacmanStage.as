@@ -2,6 +2,7 @@
 	
 	import flash.display.MovieClip;
 	import com.game.Level;
+	import flash.ui.Keyboard;
 	
 	public class PacmanStage extends MovieClip {
 		
@@ -169,23 +170,7 @@
 					pacman.y = gbPlaceholder.y;
 					
 					this.addChild(pacman);
-				}
-				
-				// Add a pac dot if it meets the requirements
-				if (level.grids[i].pacmanStart == false && level.grids[i].gridBlock != Grid.BLANK 
-					&& level.grids[i].gridBlock != Grid.BOX && level.grids[i].cherry == false 
-					&& level.grids[i].apple == false && level.grids[i].strawberry == false)
-				{
-					var pacDot:PacDot = new PacDot();
-					
-					pacDot.x = gbPlaceholder.x;
-					pacDot.y = gbPlaceholder.y;
-					
-					this.addChild(pacDot);
-				}
-				
-				// Add reward
-				if (level.grids[i].apple == true)
+				}else if (level.grids[i].apple == true)
 				{
 					var apple:Apple = new Apple();
 					
@@ -207,6 +192,62 @@
 					strawberry.y = gbPlaceholder.y;
 					
 					this.addChild(strawberry);
+				}else if (level.grids[i].blinky == true) {
+					var blinky:Blinky = new Blinky();
+				
+					blinky.x = gbPlaceholder.x;
+					blinky.y = gbPlaceholder.y;
+					
+					this.addChild(blinky);
+				}else if (level.grids[i].clyde == true) {
+					var clyde:Clyde = new Clyde();
+				
+					clyde.x = gbPlaceholder.x;
+					clyde.y = gbPlaceholder.y;
+					
+					this.addChild(clyde);
+				}else if (level.grids[i].pinky == true) {
+					var pinky:Pinky = new Pinky();
+				
+					pinky.x = gbPlaceholder.x;
+					pinky.y = gbPlaceholder.y;
+					
+					this.addChild(pinky);
+				}else if (level.grids[i].inky == true) {
+					var inky:Inky = new Inky();
+				
+					inky.x = gbPlaceholder.x;
+					inky.y = gbPlaceholder.y;
+					
+					this.addChild(inky);
+				}else if (level.grids[i].door == true) {
+					var door:Door = new Door();
+				
+					door.x = gbPlaceholder.x;
+					door.y = gbPlaceholder.y;
+					
+					this.addChild(door);
+				}else if (level.grids[i].hole == true) {
+					var hole:Hole = new Hole();
+				
+					hole.x = gbPlaceholder.x;
+					hole.y = gbPlaceholder.y;
+					
+					this.addChild(hole);
+				}else if (level.grids[i].key.isKey == true) {
+					var key:Key = new Key();
+					
+					key.x = gbPlaceholder.x;
+					key.y = gbPlaceholder.y;
+					
+					this.addChild(key);
+				}else if (level.grids[i].gridBlock != Grid.BLANK && level.grids[i].gridBlock != Grid.BOX) {
+					var pacDot:PacDot = new PacDot();
+					
+					pacDot.x = gbPlaceholder.x;
+					pacDot.y = gbPlaceholder.y;
+					
+					this.addChild(pacDot);
 				}
 			}
 		}

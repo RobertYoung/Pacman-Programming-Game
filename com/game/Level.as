@@ -109,6 +109,22 @@
 							// Get reward
 							if (jsonGridData.reward)
 								grid.SetReward(jsonGridData.reward);
+							
+							// Get monster
+							if (jsonGridData.monster)
+								grid.SetMonster(jsonGridData.monster);
+							
+							// Get door
+							if (jsonGridData.door)
+								grid.SetDoor(jsonGridData.door);
+							
+							// Get hole
+							if (jsonGridData.hole)
+								grid.SetHole(jsonGridData.hole);
+							
+							// Get keys
+							if (jsonGridData.key)
+								grid.SetKey(jsonGridData.key.isKey, jsonGridData.key.numberOfKeys);
 						}
 					}
 						
