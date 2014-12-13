@@ -29,27 +29,56 @@
 		
 		public static const CROSSROADS:String = "CROSSROADS";
 		
+		//*************************************//
+		// CONSTANT VALUES FOR REWARD ELEMENTS //
+		//*************************************//
+		public static const REWARD_APPLE:String = "REWARD_APPLE";
+		public static const REWARD_CHERRY:String = "REWARD_CHERRY";
+		public static const REWARD_STRAWBERRY:String = "REWARD_STRAWBERRY";
+		
 		//************************************//
 		// VARIABLES ASSOCIATED FOR EACH GRID //
 		//************************************//
 		public var row:int;
 		public var col:int;
 		public var gridBlock:String;
-		public var gridElements:Array;
+		public var pacmanStart:Boolean = false;
+		public var apple:Boolean = false;
+		public var cherry:Boolean = false;
+		public var strawberry:Boolean = false;
 		
 		//************************************************//
 		// INITILIZING CONSTRUCTOR TO SETUP A GRID EASILY //
 		//************************************************//
-		public function Grid(setRow:int = 0, setCol:int = 0, setGridBlock:String = "", setGridElements:Array = null) {
-			gridBlock = setGridBlock;
-			gridElements = setGridElements;
-			row = setRow;
-			col = setCol;
+		public function Grid(newRow:int = 0, newCol:int = 0, newGridBlock:String = "") {
+			gridBlock = newGridBlock;
+			row = newRow;
+			col = newCol;
 		}
 
-		public function SetGridBlockAndElements(setGridBlock:String, setGridElements:Array = null){
-			gridBlock = setGridBlock;
-			gridElements = setGridElements;
+		//******************************************//
+		// FUNCTIONS TO SET VARIABLES IN THIS CLASS //
+		//******************************************//
+		public function SetGridBlock(newGridBlock:String){
+			gridBlock = newGridBlock;
+		}
+		
+		public function SetPacmanStart(newPacmanStart:Boolean) {
+			pacmanStart = newPacmanStart;
+		}
+		
+		public function SetReward(newReward:String) {
+			switch (newReward) {
+				case REWARD_APPLE:
+					apple = true;
+				break;
+				case REWARD_CHERRY:
+					cherry = true;
+				break;
+				case REWARD_STRAWBERRY:
+					strawberry = true;
+				break;
+			}
 		}
 	}
 	

@@ -22,12 +22,17 @@
 
 // public static const CROSSROADS:String = "CROSSROADS";
 
+// public static const REWARD_APPLE:String = "REWARD_APPLE";
+// public static const REWARD_CHERRY:String = "REWARD_CHERRY";
+// public static const REWARD_STRAWBERRY:String = "REWARD_STRAWBERRY";
+
 {
-  "col": {
+  "row": {
     "4": {
-      "row": {
+      "column": {
         "3": {
-          "gridBlock": "END_LEFT"
+          "gridBlock": "END_LEFT",
+          "pacmanStart": true
         },
         "4": {
           "gridBlock": "HORIZONTAL"
@@ -36,7 +41,8 @@
           "gridBlock": "HORIZONTAL"
         },
         "6": {
-          "gridBlock": "END_RIGHT"
+          "gridBlock": "END_RIGHT",
+          "reward": "REWARD_APPLE"
         },
       }
     }

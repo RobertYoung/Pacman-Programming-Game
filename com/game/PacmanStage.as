@@ -7,16 +7,19 @@
 		
 		var level:Level;
 		
+		//*****************************************************************//
+		// WHEN INSTANTIATED: LOOPS THROUGH ALL THE GRIDS IN THE LEVEL AND //
+		// DISPLAYS THEM ON THE STAGE									   //
+		//*****************************************************************//
 		public function PacmanStage(level:Level) {
 			level = level;
-			
-			//level.CreateArrayOfGrids();
 			
 			for (var i = 0; i < level.grids.length; i++)
 			{
 				// Get the placeholder of the grid on the stage
 				var gbPlaceholder:MovieClip = this["grid_row" + (level.grids[i].row) + "_col" + (level.grids[i].col)];
 				
+				// Add the correct grid block to the pacman stage
 				switch(level.grids[i].gridBlock)
 				{
 					case Grid.BLANK:
@@ -155,6 +158,55 @@
 						
 						this.addChild(gbCrossroads);
 					break;
+				}
+				
+				// Add pacman if pacman start is true
+				if (level.grids[i].pacmanStart == true)
+				{
+					var pacman:Pacman = new Pacman();
+					
+					pacman.x = gbPlaceholder.x;
+					pacman.y = gbPlaceholder.y;
+					
+					this.addChild(pacman);
+				}
+				
+				// Add a pac dot if it meets the requirements
+				if (level.grids[i].pacmanStart == false && level.grids[i].gridBlock != Grid.BLANK 
+					&& level.grids[i].gridBlock != Grid.BOX && level.grids[i].cherry == false 
+					&& level.grids[i].apple == false && level.grids[i].strawberry == false)
+				{
+					var pacDot:PacDot = new PacDot();
+					
+					pacDot.x = gbPlaceholder.x;
+					pacDot.y = gbPlaceholder.y;
+					
+					this.addChild(pacDot);
+				}
+				
+				// Add reward
+				if (level.grids[i].apple == true)
+				{
+					var apple:Apple = new Apple();
+					
+					apple.x = gbPlaceholder.x;
+					apple.y = gbPlaceholder.y;
+					
+					this.addChild(apple);
+				}else if (level.grids[i].cherry == true) {
+					var cherry:Cherry = new Cherry();
+					
+					cherry.x = gbPlaceholder.x;
+					cherry.y = gbPlaceholder.y;
+					
+					this.addChild(cherry);
+				}else if (level.grids[i].strawberry == true){
+					var strawberry:Strawberry = new Strawberry();
+					
+					strawberry.x = gbPlaceholder.x;
+					strawberry.y = gbPlaceholder.y;
+					
+					this.addChild(strawberry);
 				}
 			}
 		}
