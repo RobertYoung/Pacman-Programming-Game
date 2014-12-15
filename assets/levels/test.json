@@ -41,16 +41,16 @@
         },
         "4": {
           "gridBlock": "HORIZONTAL",
-          "monster": "MONSTER_PINKY"
+          //"monster": "MONSTER_PINKY"
         },
         "5": {
           "gridBlock": "HORIZONTAL",
           //"door": true,
           //"hole": true
-          "key": {
-            "isKey": true,
-            "numberOfKeys": 2
-          }
+          //"key": {
+          //  "isKey": true,
+          //  "numberOfKeys": 2
+          //}
         },
         "6": {
           "gridBlock": "END_RIGHT",

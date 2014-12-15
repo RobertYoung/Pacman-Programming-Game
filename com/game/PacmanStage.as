@@ -235,7 +235,7 @@
 					
 					this.addChild(hole);
 				}else if (level.grids[i].key.isKey == true) {
-					var key:Key = new Key();
+					var key:Key = new Key(level.grids[i].key);
 					
 					key.x = gbPlaceholder.x;
 					key.y = gbPlaceholder.y;

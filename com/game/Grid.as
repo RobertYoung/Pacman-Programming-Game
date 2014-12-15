@@ -1,7 +1,9 @@
 ﻿package com.game {
 	
-	public class Grid {
-
+	import com.game.objects.KeyObject;
+	
+	public class Grid {		
+		
 		//**************************************//
 		//	CONSTANT VALUES FOR EACH GRID BLOCK //
 		//**************************************//
@@ -60,7 +62,7 @@
 		public var pinky:Boolean = false;
 		public var door:Boolean = false;
 		public var hole:Boolean = false;
-		public var key:Key = new Key();
+		public var key:KeyObject = new KeyObject();
 		
 		//************************************************//
 		// INITILIZING CONSTRUCTOR TO SETUP A GRID EASILY //
@@ -125,14 +127,5 @@
 			key.isKey = isKey;
 			key.numberOfKeys = numberOfKeys;
 		}
-	}
-}
-
-class Key {
-	public var isKey:Boolean = false;
-	public var numberOfKeys:int = 0;
-	
-	public function Key() {
-		
 	}
 }
