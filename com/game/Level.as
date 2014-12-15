@@ -137,10 +137,10 @@
 			// Create the stage and add to the view
 			var pacmanStage:PacmanStage = new PacmanStage(this);
 
-			pacmanStage.x = 300;
+			pacmanStage.x = 280;
 			pacmanStage.y = 400;
 
-			main.stage.addChild(pacmanStage);
+			main.addChild(pacmanStage);
 		}
 	}
 	
