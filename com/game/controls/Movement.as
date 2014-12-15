@@ -22,8 +22,6 @@
 			
 			this.addEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromControlArea);
 			this.addEventListener(MouseEvent.MOUSE_UP, OnMouseUpFromControlArea);
-			
-			GetClass();
 		}
 		
 		//**********************//
@@ -38,6 +36,8 @@
 		{
 			this.stopDrag();
 			
+			trace(e.target.dropTarget.parent.name);
+			
 			// Send movement back to control area if control
 			// is dropped on nothing
 			if (e.target.dropTarget == null)
@@ -45,10 +45,17 @@
 			else{
 				// Check if the control is dropped on the coding area
 				// If it is, create new control
-				if (e.target.dropTarget.parent.name == "pacmanCodingArea_mc")
+				if (e.target.dropTarget.parent.name == "scrollArea_mc")
 				{
 					e.target.removeEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromControlArea);
 					e.target.removeEventListener(MouseEvent.MOUSE_UP, OnMouseUpFromControlArea);
+					
+					var scrollView:MovieClip = e.target.dropTarget.root["pacmanCodingArea_mc"]["scrollArea_mc"];
+					
+					this.x = scrollView.width / 2;
+					this.y - 50;
+					
+					scrollView.addChild(this);
 					
 					CreateMovement();
 				}else{
