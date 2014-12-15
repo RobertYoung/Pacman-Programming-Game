@@ -2,6 +2,7 @@
 	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
+	import flash.utils.*;
 	
 	public class Movement extends MovieClip {
 
@@ -21,6 +22,8 @@
 			
 			this.addEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromControlArea);
 			this.addEventListener(MouseEvent.MOUSE_UP, OnMouseUpFromControlArea);
+			
+			GetClass();
 		}
 		
 		//**********************//
@@ -35,24 +38,61 @@
 		{
 			this.stopDrag();
 			
-			if (e.target.dropTarget.parent.name == "pacmanCodingArea_mc")
-			{
-				e.target.removeEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromControlArea);
-				e.target.removeEventListener(MouseEvent.MOUSE_UP, OnMouseUpFromControlArea);
-				
-				var newMovement:MovementForward = new MovementForward();
-				
-				newMovement.nX = nX;
-				newMovement.nY = nY;
-		
-				newMovement.x = nX;
-				newMovement.y = nY;
-				
-				this.stage.addChild(newMovement);
-			}else{
-				this.x = nX;
-				this.y = nY;
+			// Send movement back to control area if control
+			// is dropped on nothing
+			if (e.target.dropTarget == null)
+				MoveMovementToControlArea();
+			else{
+				// Check if the control is dropped on the coding area
+				// If it is, create new control
+				if (e.target.dropTarget.parent.name == "pacmanCodingArea_mc")
+				{
+					e.target.removeEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromControlArea);
+					e.target.removeEventListener(MouseEvent.MOUSE_UP, OnMouseUpFromControlArea);
+					
+					CreateMovement();
+				}else{
+					MoveMovementToControlArea();
+				}	
 			}
+		}
+		
+		//*******************//
+		// CREATE AND DELETE //
+		//*******************//
+		function CreateMovement()
+		{
+			var MovementClass:Class = GetClass();
+			var newMovement = new MovementClass();
+				
+			newMovement.nX = nX;
+			newMovement.nY = nY;
+	
+			newMovement.x = nX;
+			newMovement.y = nY;
+			
+			this.stage.addChild(newMovement);
+		}
+		
+		function DeleteMovement()
+		{
+			
+		}
+		
+		//**********//
+		// MOVEMENT //
+		//**********//
+		function MoveMovementToControlArea()
+		{
+			this.x = nX;
+			this.y = nY;
+		}
+		
+		//*******************//
+		// CLASS INFORMATION //
+		//*******************//
+		function GetClass():Class {
+			return Class(getDefinitionByName(getQualifiedClassName(this)));
 		}
 	}
 }
