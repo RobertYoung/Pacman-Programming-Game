@@ -53,7 +53,7 @@
 					var scrollView:MovieClip = e.target.dropTarget.root["pacmanCodingArea_mc"]["scrollArea_mc"];
 					
 					this.x = scrollView.width / 2;
-					this.y - 50;
+					this.y = 50;
 					
 					scrollView.addChild(this);
 					
