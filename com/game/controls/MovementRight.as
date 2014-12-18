@@ -8,6 +8,7 @@
 		public function MovementRight() {
 			this.x = super.nX;
 			this.y = super.nY;
+			//this.name = Movement.MOVEMENT_LEFT;
 		}
 	}
 	

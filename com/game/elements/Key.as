@@ -1,8 +1,8 @@
-﻿package com.game {
+﻿package com.game.elements {
 	
 	import flash.display.MovieClip;
-	import com.game.objects.KeyObject
-	
+	import com.game.*;
+	import com.game.objects.KeyObject;
 	
 	public class Key extends MovieClip {
 		

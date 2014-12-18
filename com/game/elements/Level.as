@@ -1,6 +1,7 @@
-﻿package com.game {
+﻿package com.game.elements {
 	
-	import com.game.Grid;
+	import com.game.elements.Grid;
+	import com.game.scenes.PacmanStage;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import com.adobe.serialization.json.JSONDecoder;

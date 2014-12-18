@@ -1,7 +1,6 @@
 ﻿package com.game.controls  {
 	
 	import flash.display.MovieClip;
-	import flash.events.MouseEvent;
 	
 	public class MovementForward extends Movement {
 		
@@ -9,6 +8,7 @@
 		{
 			this.x = super.nX;
 			this.y = super.nY;
+			//this.name = Movement.MOVEMENT_FORWARD;
 		}
 		
 	}

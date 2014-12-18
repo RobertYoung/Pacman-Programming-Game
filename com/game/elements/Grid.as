@@ -1,4 +1,4 @@
-﻿package com.game {
+﻿package com.game.elements {
 	
 	import com.game.objects.KeyObject;
 	

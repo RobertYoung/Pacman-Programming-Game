@@ -1,7 +1,7 @@
-﻿package com.game {
+﻿package com.game.scenes {
 	
 	import flash.display.MovieClip;
-	import com.game.Level;
+	import com.game.elements.*;
 	import flash.ui.Keyboard;
 	
 	public class PacmanStage extends MovieClip {
