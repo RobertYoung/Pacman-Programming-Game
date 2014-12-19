@@ -23,6 +23,7 @@
 		private var pacmanStage:MovieClip;
 		private var pacmanMC:DisplayObject;
 		private var pacmanPoint:Point;
+		private var pacmanRotationZ:int;
 		
 		public function Game(mc:Main) {
 			main = mc;
@@ -53,6 +54,14 @@
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: newPacmanGrid.x, y: newPacmanGrid.y }));
 						
 						pacmanPoint = newPacmanPoint;
+					break;
+					case Movement.MOVEMENT_LEFT:
+						pacmanRotationZ -= 90;
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
+					break;
+					case Movement.MOVEMENT_RIGHT:
+						pacmanRotationZ += 90;
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
 					break;
 				}
 			}
