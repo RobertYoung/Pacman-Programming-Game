@@ -168,10 +168,10 @@
 					
 					pacman.x = gbPlaceholder.x;
 					pacman.y = gbPlaceholder.y;
+					pacman.name = Grid.PACMAN;
 					
 					this.addChild(pacman);
-				}else if (level.grids[i].apple == true)
-				{
+				}else if (level.grids[i].apple == true){
 					var apple:Apple = new Apple();
 					
 					apple.x = gbPlaceholder.x;

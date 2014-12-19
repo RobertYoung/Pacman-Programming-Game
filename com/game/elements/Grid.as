@@ -46,6 +46,11 @@
 		public static const MONSTER_INKY:String = "MONSTER_INKY";
 		public static const MONSTER_PINKY:String = "MONSTER_PINKY";
 		
+		//***********************************//
+		// CONSTANT VALUES FOR GAME ELEMENTS //
+		//***********************************//
+		public static const PACMAN:String = "PACMAN";
+		
 		//************************************//
 		// VARIABLES ASSOCIATED FOR EACH GRID //
 		//************************************//

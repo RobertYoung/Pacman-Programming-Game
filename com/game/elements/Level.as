@@ -7,6 +7,7 @@
 	import com.adobe.serialization.json.JSONDecoder;
 	import flash.events.Event;
 	import flash.display.MovieClip;
+	import com.game.factory.Game;
 	
 	public class Level {
 
@@ -140,6 +141,7 @@
 
 			pacmanStage.x = 280;
 			pacmanStage.y = 400;
+			pacmanStage.name = Game.SWF_PACMAN_STAGE;
 
 			main.addChild(pacmanStage);
 		}

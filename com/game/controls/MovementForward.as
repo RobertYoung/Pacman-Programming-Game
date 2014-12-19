@@ -1,4 +1,4 @@
-﻿package com.game.controls  {
+﻿package com.game.controls {
 	
 	import flash.display.MovieClip;
 	
@@ -8,7 +8,6 @@
 		{
 			this.x = super.nX;
 			this.y = super.nY;
-			//this.name = Movement.MOVEMENT_FORWARD;
 		}
 		
 	}
