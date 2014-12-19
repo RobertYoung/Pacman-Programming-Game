@@ -1,11 +1,13 @@
 ﻿package com.game.factory {
+	
 	import com.game.scenes.Main;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
 	import com.game.controls.Movement
+	import com.game.elements.Grid;
+	import flash.geom.Point;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenLite;
-	import com.game.elements.Grid;
 	
 	public class Game {
 
@@ -18,30 +20,44 @@
 		private var main:Main;
 		private var pacmanSequence:Array = new Array();
 		private var pacmanTimeline:TimelineMax = new TimelineMax();
-		//private var pacmanMC:DisplayObject;
+		private var pacmanStage:MovieClip;
+		private var pacmanMC:DisplayObject;
+		private var pacmanPoint:Point;
 		
 		public function Game(mc:Main) {
 			main = mc;
 		}
 
 		public function Play() {
+			// Adds the stack elements to an array
 			AddControlsToArray();
 			
-			var pacmanMC = main.getChildByName(Game.SWF_PACMAN_STAGE)["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE)
-								.getChildByName(Grid.PACMAN);
+			// Create variables for the movie clips
+			pacmanStage = main.getChildByName(Game.SWF_PACMAN_STAGE)["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
+			pacmanMC = pacmanStage.getChildByName(Grid.PACMAN);
 			
-			trace(pacmanMC);
+			// Bring pacman to the front
+			pacmanStage.setChildIndex(pacmanMC, pacmanStage.numChildren - 1);
+			
+			// Find which grid position Pacman is currently at
+			FindPacmanGridPoint()
 			
 			for (var stack in pacmanSequence)
 			{
 				switch(pacmanSequence[stack])
 				{
 					case Movement.MOVEMENT_FORWARD:
-						//pacmanTimeline.append(new TweenLite(
+						var newPacmanPoint:Point = new Point(pacmanPoint.x, pacmanPoint.y + 1);
+						var newPacmanGrid:MovieClip = pacmanStage["grid_row" + newPacmanPoint.x + "_col" + newPacmanPoint.y];
 						
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: newPacmanGrid.x, y: newPacmanGrid.y }));
+						
+						pacmanPoint = newPacmanPoint;
 					break;
 				}
 			}
+			
+			pacmanTimeline.play();
 		}
 		
 		private function AddControlsToArray()
@@ -54,7 +70,18 @@
 			{
 				pacmanSequence.push(stackContainer["stack" + stackLength].controlInStack);
 				stackLength++;
-				trace(pacmanSequence);
+			}
+		}
+		
+		private function FindPacmanGridPoint()
+		{
+			for (var row = 1; row <= 8; row++)
+			{
+				for (var col = 1; col <= 8; col++)
+				{
+					if (pacmanMC.hitTestObject(pacmanStage["grid_row" + row + "_col" + col]))
+						pacmanPoint = new Point(row, col);
+				}
 			}
 		}
 	}
