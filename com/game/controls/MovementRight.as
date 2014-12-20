@@ -2,8 +2,7 @@
 	
 	import flash.display.MovieClip;
 	
-	public class MovementRight extends Movement {
-		
+	public class MovementRight extends Control {
 		
 		public function MovementRight() {
 			this.x = super.nX;

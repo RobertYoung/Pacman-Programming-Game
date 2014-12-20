@@ -3,7 +3,7 @@
 	import flash.display.MovieClip;
 	
 	
-	public class MovementLeft extends Movement {
+	public class MovementLeft extends Control {
 		
 		
 		public function MovementLeft() {

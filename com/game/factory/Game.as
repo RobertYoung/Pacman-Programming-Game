@@ -3,7 +3,7 @@
 	import com.game.scenes.Main;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
-	import com.game.controls.Movement
+	import com.game.controls.Control;
 	import com.game.elements.Grid;
 	import flash.geom.Point;
 	import com.greensock.TimelineMax;
@@ -47,7 +47,7 @@
 			{
 				switch(pacmanSequence[stack])
 				{
-					case Movement.MOVEMENT_FORWARD:
+					case Control.MOVEMENT_FORWARD:
 						var newPacmanPoint:Point = new Point(pacmanPoint.x, pacmanPoint.y + 1);
 						var newPacmanGrid:MovieClip = pacmanStage["grid_row" + newPacmanPoint.x + "_col" + newPacmanPoint.y];
 						
@@ -55,11 +55,11 @@
 						
 						pacmanPoint = newPacmanPoint;
 					break;
-					case Movement.MOVEMENT_LEFT:
+					case Control.MOVEMENT_LEFT:
 						pacmanRotationZ -= 90;
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
 					break;
-					case Movement.MOVEMENT_RIGHT:
+					case Control.MOVEMENT_RIGHT:
 						pacmanRotationZ += 90;
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
 					break;
