@@ -4,7 +4,7 @@
 	import com.game.elements.*;
 	import flash.ui.Keyboard;
 	import com.game.elements.Stack;
-	import com.game.elements.GridBlocks.*;
+	import com.game.elements.gridblocks.*;
 	
 	public class PacmanStage extends MovieClip {
 		
@@ -31,6 +31,9 @@
 				
 						gbBlank.x = gbPlaceholder.x;
 						gbBlank.y = gbPlaceholder.y;
+					
+						gbPlaceholder.SetGridBlock(Grid.BLANK);
+						gbPlaceholder.SetGridAllowedPaths(gbBlank.allowedPaths);
 						
 						this.addChild(gbBlank);
 					break;
@@ -39,7 +42,10 @@
 				
 						gbBox.x = gbPlaceholder.x;
 						gbBox.y = gbPlaceholder.y;
-						
+					
+						gbPlaceholder.SetGridBlock(Grid.BOX);
+						gbPlaceholder.SetGridAllowedPaths(gbBox.allowedPaths);	
+					
 						this.addChild(gbBox);
 					break;
 					case Grid.HORIZONTAL:
@@ -59,6 +65,9 @@
 						gbVertical.x = gbPlaceholder.x;
 						gbVertical.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.VERTICAL);
+						gbPlaceholder.SetGridAllowedPaths(gbVertical.allowedPaths);
+					
 						this.addChild(gbVertical);
 					break;
 					case Grid.END_UP:
@@ -67,6 +76,9 @@
 						gbEndUp.x = gbPlaceholder.x;
 						gbEndUp.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.END_UP);
+						gbPlaceholder.SetGridAllowedPaths(gbEndUp.allowedPaths);
+					
 						this.addChild(gbEndUp);
 					break;
 					case Grid.END_DOWN:
@@ -75,6 +87,9 @@
 						gbEndDown.x = gbPlaceholder.x;
 						gbEndDown.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.END_DOWN);
+						gbPlaceholder.SetGridAllowedPaths(gbEndDown.allowedPaths);
+					
 						this.addChild(gbEndDown);
 					break;
 					case Grid.END_RIGHT:
@@ -83,6 +98,9 @@
 						gbEndRight.x = gbPlaceholder.x;
 						gbEndRight.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.END_RIGHT);
+						gbPlaceholder.SetGridAllowedPaths(gbEndRight.allowedPaths);
+					
 						this.addChild(gbEndRight);
 					break;
 					case Grid.END_LEFT:
@@ -91,6 +109,7 @@
 						gbEndLeft.x = gbPlaceholder.x;
 						gbEndLeft.y = gbPlaceholder.y;
 					
+						gbPlaceholder.SetGridBlock(Grid.END_LEFT);
 						gbPlaceholder.SetGridAllowedPaths(gbEndLeft.allowedPaths);
 						
 						this.addChild(gbEndLeft);
@@ -101,6 +120,9 @@
 						gbLeftDown.x = gbPlaceholder.x;
 						gbLeftDown.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.LEFT_DOWN);
+						gbPlaceholder.SetGridAllowedPaths(gbLeftDown.allowedPaths);
+					
 						this.addChild(gbLeftDown);
 					break;
 					case Grid.LEFT_UP:
@@ -109,6 +131,9 @@
 						gbLeftUp.x = gbPlaceholder.x;
 						gbLeftUp.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.LEFT_UP);
+						gbPlaceholder.SetGridAllowedPaths(gbLeftUp.allowedPaths);
+					
 						this.addChild(gbLeftUp);
 					break;
 					case Grid.RIGHT_DOWN:
@@ -117,6 +142,9 @@
 						gbRightDown.x = gbPlaceholder.x;
 						gbRightDown.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.RIGHT_DOWN);
+						gbPlaceholder.SetGridAllowedPaths(gbRightDown.allowedPaths);
+					
 						this.addChild(gbRightDown);
 					break;
 					case Grid.RIGHT_UP:
@@ -125,6 +153,9 @@
 						gbRightUp.x = gbPlaceholder.x;
 						gbRightUp.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.RIGHT_UP);
+						gbPlaceholder.SetGridAllowedPaths(gbRightUp.allowedPaths);
+					
 						this.addChild(gbRightUp);
 					break;
 					case Grid.T_HORIZONTAL_DOWN:
@@ -133,6 +164,9 @@
 						gbTHorizontalDown.x = gbPlaceholder.x;
 						gbTHorizontalDown.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.T_HORIZONTAL_DOWN);
+						gbPlaceholder.SetGridAllowedPaths(gbTHorizontalDown.allowedPaths);
+					
 						this.addChild(gbTHorizontalDown);
 					break;
 					case Grid.T_HORIZONTAL_UP:
@@ -141,6 +175,9 @@
 						gbTHorizontalUp.x = gbPlaceholder.x;
 						gbTHorizontalUp.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.T_HORIZONTAL_UP);
+						gbPlaceholder.SetGridAllowedPaths(gbTHorizontalUp.allowedPaths);
+					
 						this.addChild(gbTHorizontalUp);
 					break;
 					case Grid.T_VERTCIAL_LEFT:
@@ -149,6 +186,9 @@
 						gbTVerticalLeft.x = gbPlaceholder.x;
 						gbTVerticalLeft.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.T_VERTCIAL_LEFT);
+						gbPlaceholder.SetGridAllowedPaths(gbTVerticalLeft.allowedPaths);
+					
 						this.addChild(gbTVerticalLeft);
 					break;
 					case Grid.T_VERTICAL_RIGHT:
@@ -157,6 +197,9 @@
 						gbTVerticalRight.x = gbPlaceholder.x;
 						gbTVerticalRight.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.T_VERTICAL_RIGHT);
+						gbPlaceholder.SetGridAllowedPaths(gbTVerticalRight.allowedPaths);
+					
 						this.addChild(gbTVerticalRight);
 					break;
 					case Grid.CROSSROADS:
@@ -165,6 +208,9 @@
 						gbCrossroads.x = gbPlaceholder.x;
 						gbCrossroads.y = gbPlaceholder.y;
 						
+						gbPlaceholder.SetGridBlock(Grid.CROSSROADS);
+						gbPlaceholder.SetGridAllowedPaths(gbCrossroads.allowedPaths);
+					
 						this.addChild(gbCrossroads);
 					break;
 				}

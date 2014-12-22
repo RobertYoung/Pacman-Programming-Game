@@ -3,11 +3,10 @@
 	import flash.display.MovieClip;
 	import com.game.factory.Game;
 	
-	public class GBEndLeft extends GridBlock {
+	public class GBEndDown extends GridBlock {
 		
-		
-		public function GBEndLeft() {
-			this.SetAllowedPaths(Game.PACMAN_EAST);
+		public function GBEndDown() {
+			this.SetAllowedPaths(Game.PACMAN_NORTH);
 		}
 	}
 	

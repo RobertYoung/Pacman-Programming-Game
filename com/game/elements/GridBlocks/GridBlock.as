@@ -1,4 +1,4 @@
-﻿package com.game.elements.GridBlocks  {
+﻿package com.game.elements.gridblocks{
 	
 	import flash.display.MovieClip;
 	
