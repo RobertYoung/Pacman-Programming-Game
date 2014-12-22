@@ -68,6 +68,7 @@
 		public var door:Boolean = false;
 		public var hole:Boolean = false;
 		public var key:KeyObject = new KeyObject();
+		public var allowedPaths:Array = new Array();
 		
 		//************************************************//
 		// INITILIZING CONSTRUCTOR TO SETUP A GRID EASILY //

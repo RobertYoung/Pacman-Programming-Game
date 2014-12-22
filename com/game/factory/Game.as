@@ -8,6 +8,8 @@
 	import flash.geom.Point;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenLite;
+	import flash.geom.Point;
+	import com.game.elements.GridPlaceholder;
 	
 	public class Game {
 
@@ -53,8 +55,14 @@
 				switch(pacmanSequence[stack])
 				{
 					case Control.MOVEMENT_FORWARD:
+						// Gets the current grid placeholder of pacman
+						var currentGridPlaceholder:GridPlaceholder = GetGridPlaceholderFromPoint(pacmanPoint.x, pacmanPoint.y);
+						// The position pacman is facing
+						var pacmanCardinalDirection = CalculatePacmanCardinalDirection();
+						// Point instance for the next grid position
 						var newPacmanPoint:Point = new Point(pacmanPoint.x, pacmanPoint.y);
 					
+						// Find out which way pacman is facing then move forward in that direct
 						switch (CalculatePacmanCardinalDirection())
 						{
 							case Game.PACMAN_NORTH:
@@ -70,13 +78,46 @@
 								newPacmanPoint.y -= 1;
 							break;
 						}
-				
-						var newPacmanGrid:GridPlaceholder = pacmanStage["grid_row" + newPacmanPoint.x + "_col" + newPacmanPoint.y];
-						var point:Point = new Point(newPacmanGrid.x, newPacmanGrid.y);
-					
-						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: newPacmanGrid.x, y: newPacmanGrid.y }));
 						
-						pacmanPoint = newPacmanPoint;
+						// The next grid which Pacman will move too
+						var nextGridPlaceholder:GridPlaceholder = pacmanStage["grid_row" + newPacmanPoint.x + "_col" + newPacmanPoint.y];
+						
+ 						if (currentGridPlaceholder.gridAllowedPaths.getPos(pacmanCardinalDirection) != null)
+						{
+							var oppositePacmanCardinalDirection;
+							
+							switch (pacmanCardinalDirection)
+							{
+								case Game.PACMAN_EAST:
+									oppositePacmanCardinalDirection = Game.PACMAN_WEST;
+								break;
+								case Game.PACMAN_NORTH:
+									oppositePacmanCardinalDirection = Game.PACMAN_SOUTH;
+								break;
+								case Game.PACMAN_SOUTH:
+									oppositePacmanCardinalDirection = Game.PACMAN_NORTH;
+								break;
+								case Game.PACMAN_WEST:
+									oppositePacmanCardinalDirection = Game.PACMAN_EAST;
+								break;
+							}
+							
+							// Check that pacman is allowed to move into next block
+							if (nextGridPlaceholder.gridAllowedPaths.getPos(oppositePacmanCardinalDirection) != null)
+							{
+								// Store new grid position
+								var point:Point = new Point(nextGridPlaceholder.x, nextGridPlaceholder.y);
+							
+								// Create animation
+								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: nextGridPlaceholder.x, y: nextGridPlaceholder.y }));
+								
+								pacmanPoint = newPacmanPoint;
+							}else{
+								throw new Error("Cannot move to that path due to next path");
+							}
+						}else{
+							throw new Error("Cannot move to that path due to current path");
+						};
 					break;
 					case Control.MOVEMENT_LEFT:
 						pacmanRotationZ -= 90;
@@ -87,11 +128,7 @@
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
 					break;
 				}
-				
-				trace(CalculatePacmanCardinalDirection());
 			}
-			
-			
 			
 			pacmanTimeline.play();
 		}
@@ -121,6 +158,8 @@
 			}
 		}
 		
+		// Finds which way Pacman is facing
+		// NORTH - SOUTH - EAST - WEST
 		private function CalculatePacmanCardinalDirection():String
 		{
 			var moduloRotation = pacmanRotationZ % 360;
@@ -142,6 +181,28 @@
 					throw new Error("Error: Cannot calculate pacman cardinal direction");
 			}
 		}
+		
+		// Returns the grid placeholder from the given X and Y co-ordinates
+		private function GetGridPlaceholderFromPoint(x:int, y:int):GridPlaceholder
+		{
+			return pacmanStage["grid_row" + x + "_col" + y];
+		}
+		
+		//************//
+		// EXTENSIONS //
+		//************//
+		// Get the position of an item in an array
+		Array.prototype.getPos = function (item)
+		{
+			for (var i = 0; i < this.length; ++i)
+			{
+				if (this[i] == item)
+				{
+					return i;
+				}
+			}
+			return null;
+		};
 	}
 	
 }

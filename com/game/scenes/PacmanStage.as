@@ -4,6 +4,7 @@
 	import com.game.elements.*;
 	import flash.ui.Keyboard;
 	import com.game.elements.Stack;
+	import com.game.elements.GridBlocks.*;
 	
 	public class PacmanStage extends MovieClip {
 		
@@ -46,7 +47,9 @@
 				
 						gbHorizontal.x = gbPlaceholder.x;
 						gbHorizontal.y = gbPlaceholder.y;
-						//gbPlaceholder.SetGridBlock(Grid.HORIZONTAL);
+					
+						gbPlaceholder.SetGridBlock(Grid.HORIZONTAL);
+						gbPlaceholder.SetGridAllowedPaths(gbHorizontal.allowedPaths);
 						
 						this.addChild(gbHorizontal);
 					break;
@@ -87,6 +90,8 @@
 				
 						gbEndLeft.x = gbPlaceholder.x;
 						gbEndLeft.y = gbPlaceholder.y;
+					
+						gbPlaceholder.SetGridAllowedPaths(gbEndLeft.allowedPaths);
 						
 						this.addChild(gbEndLeft);
 					break;
