@@ -4,7 +4,7 @@
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
 	import com.game.controls.Control;
-	import com.game.elements.Grid;
+	import com.game.elements.*;
 	import flash.geom.Point;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenLite;
@@ -16,6 +16,11 @@
 		public static const SWF_PACMAN_STAGE:String = "pacman_stage";
 		public static const SWF_PACMAN_CODING_AREA:String = "pacman_code";
 		public static const SWF_CONTROLS:String = "controls";
+		
+		public static const PACMAN_NORTH:String = "pacman_north";
+		public static const PACMAN_EAST:String = "pacman_east";
+		public static const PACMAN_SOUTH:String = "pacman_south";
+		public static const PACMAN_WEST:String = "pacman_west";
 		
 		private var main:Main;
 		private var pacmanSequence:Array = new Array();
@@ -48,9 +53,27 @@
 				switch(pacmanSequence[stack])
 				{
 					case Control.MOVEMENT_FORWARD:
-						var newPacmanPoint:Point = new Point(pacmanPoint.x, pacmanPoint.y + 1);
-						var newPacmanGrid:MovieClip = pacmanStage["grid_row" + newPacmanPoint.x + "_col" + newPacmanPoint.y];
-						
+						var newPacmanPoint:Point = new Point(pacmanPoint.x, pacmanPoint.y);
+					
+						switch (CalculatePacmanCardinalDirection())
+						{
+							case Game.PACMAN_NORTH:
+								newPacmanPoint.x -= 1;
+							break;
+							case Game.PACMAN_EAST:
+								newPacmanPoint.y += 1;
+							break;
+							case Game.PACMAN_SOUTH:
+								newPacmanPoint.x += 1;
+							break;
+							case Game.PACMAN_WEST:
+								newPacmanPoint.y -= 1;
+							break;
+						}
+				
+						var newPacmanGrid:GridPlaceholder = pacmanStage["grid_row" + newPacmanPoint.x + "_col" + newPacmanPoint.y];
+						var point:Point = new Point(newPacmanGrid.x, newPacmanGrid.y);
+					
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: newPacmanGrid.x, y: newPacmanGrid.y }));
 						
 						pacmanPoint = newPacmanPoint;
@@ -64,7 +87,11 @@
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
 					break;
 				}
+				
+				trace(CalculatePacmanCardinalDirection());
 			}
+			
+			
 			
 			pacmanTimeline.play();
 		}
@@ -91,6 +118,28 @@
 					if (pacmanMC.hitTestObject(pacmanStage["grid_row" + row + "_col" + col]))
 						pacmanPoint = new Point(row, col);
 				}
+			}
+		}
+		
+		private function CalculatePacmanCardinalDirection():String
+		{
+			var moduloRotation = pacmanRotationZ % 360;
+
+			switch (moduloRotation)
+			{
+				case -270:
+				case 90:
+					return Game.PACMAN_SOUTH;
+				case -180:
+				case 180:
+					return Game.PACMAN_WEST;
+				case -90:
+				case 270:
+					return Game.PACMAN_NORTH;
+				case 0:
+					return Game.PACMAN_EAST;
+				default:
+					throw new Error("Error: Cannot calculate pacman cardinal direction");
 			}
 		}
 	}
