@@ -11,6 +11,7 @@
 	import flash.geom.Point;
 	import com.game.elements.GridPlaceholder;
 	import com.game.elements.gridblocks.GridBlock;
+	import com.greensock.layout.AlignMode;
 	
 	public class Game {
 
@@ -37,6 +38,9 @@
 			main = mc;
 		}
 
+		//**************//
+		// GAME BUTTONS //
+		//**************//
 		public function Play() {
 			// Adds the stack elements to an array
 			AddControlsToArray();
@@ -45,7 +49,7 @@
 			pacmanStage = main.getChildByName(Game.SWF_PACMAN_STAGE)["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
 			pacmanMC = pacmanStage.getChildByName(Grid.PACMAN);
 			
-			if (pacmanMC == null)
+			if (pacmanMC == null) 
 				throw new Error("Pacman MovieClip not found on Pacman Stage");
 			
 			// Bring pacman to the front
@@ -54,10 +58,182 @@
 			// Find which grid position Pacman is currently at
 			FindPacmanGridPoint()
 			
+			// Go throw the controls in the array and identify the action 
+			// pacman should take
+			CompileSequence();
+			
+			// Start the animation
+			pacmanTimeline.play();
+		}
+		
+		public function Reset()
+		{
+			main.ReloadLevel();
+		}
+		
+		//******************//
+		// CONTROLS METHODS //
+		//******************//
+		private function AddControlsToArray()
+		{
+			// Get list of all the sequences on the stack
+			var stackContainer:DisplayObject = main.getChildByName(Game.SWF_PACMAN_CODING_AREA)["rawContent"]["pacmanCodingArea_mc"]["scrollArea_mc"]["stackContainer_mc"];
+			var stackLength = 1;
+			
+			while (stackContainer["stack" + stackLength] != null)
+			{
+				pacmanSequence.push(stackContainer["stack" + stackLength].controlInStack);
+				stackLength++;
+			}
+		}
+		
+		//**********************//
+		// PACMAN STAGE METHODS //
+		//**********************//
+		private function FindPacmanGridPoint()
+		{
+			for (var row = 1; row <= 8; row++)
+			{
+				for (var col = 1; col <= 8; col++)
+				{
+					if (pacmanMC.hitTestObject(pacmanStage["grid_row" + row + "_col" + col]))
+						pacmanPoint = new Point(row, col);
+				}
+			}
+		}
+		
+		// Finds which way Pacman is facing
+		// NORTH - SOUTH - EAST - WEST
+		private function CalculatePacmanCardinalDirection():String
+		{
+			var moduloRotation = pacmanRotationZ % 360;
+
+			switch (moduloRotation)
+			{
+				case -270:
+				case 90:
+					return Game.PACMAN_SOUTH;
+				case -180:
+				case 180:
+					return Game.PACMAN_WEST;
+				case -90:
+				case 270:
+					return Game.PACMAN_NORTH;
+				case 0:
+					return Game.PACMAN_EAST;
+				default:
+					throw new Error("Error: Cannot calculate pacman cardinal direction");
+			}
+		}
+		
+		// Returns the grid placeholder from the given X and Y co-ordinates
+		private function GetGridPlaceholderFromPoint(x:int, y:int):GridPlaceholder
+		{
+			return pacmanStage["grid_row" + x + "_col" + y];
+		}
+		
+		private function UpdatePacmanStage(updatePacmanPoint:Point)
+		{
+			var currentGridPlaceholder:GridPlaceholder = GetGridPlaceholderFromPoint(updatePacmanPoint.x, updatePacmanPoint.y);
+			
+			//***************//
+			// GAME ELEMENTS //
+			//***************//
+			// PACDOT
+			if (currentGridPlaceholder.ElementExists(Grid.PACDOT))
+				currentGridPlaceholder.RemoveChildByName(Grid.PACDOT);
+			
+			if (currentGridPlaceholder.ElementExists(Grid.DOOR))
+				currentGridPlaceholder.RemoveChildByName(Grid.DOOR);
+			
+			if (currentGridPlaceholder.ElementExists(Grid.KEY))
+				currentGridPlaceholder.RemoveChildByName(Grid.KEY);
+			
+			//**********//
+			// MONSTERS //
+			//**********//
+			// BLINKY
+			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_BLINKY))
+				trace("GAME OVER");
+			
+			// CLYDE
+			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_CLYDE))
+				trace("GAME OVER");
+			
+			// INKY
+			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_INKY))
+				trace("GAME OVER");
+			
+			// PINKY
+			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_PINKY))
+				trace("GAME OVER");
+			
+			//*********//
+			// REWARDS //
+			//*********//
+			if (currentGridPlaceholder.ElementExists(Grid.REWARD_APPLE))
+			{
+				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_APPLE);
+				LevelComplete();
+			}
+			
+			if (currentGridPlaceholder.ElementExists(Grid.REWARD_CHERRY))
+			{
+				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_CHERRY);
+				LevelComplete();
+			}
+			
+			if (currentGridPlaceholder.ElementExists(Grid.REWARD_STRAWBERRY))
+			{
+				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_STRAWBERRY);
+				LevelComplete();
+			}
+		}
+		
+		//*******************//
+		// ANIMATION METHODS //
+		//*******************//
+		public function StopAllAnimations()
+		{
+			pacmanTimeline.kill();
+		}
+		
+		//*************//
+		// ALERT VIEWS //
+		//*************//
+		private function NoControlAdded()
+		{
+			this.StopAllAnimations();
+			
+			var alertView:AlertView = new AlertView("Alert", "The sequence you entered is not correct, please try again", "Are there any missing controls?");
+			
+			main.addChild(alertView);
+		}
+		
+		private function InvalidSequenceDueToPaths()
+		{
+			this.StopAllAnimations();
+			
+			var incorrectSequenceAlertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "Take it a step at a time");
+								
+			main.addChild(incorrectSequenceAlertView);
+		}
+		
+		private function LevelComplete()
+		{
+			trace("COMPLETE: Next Level...");
+			this.StopAllAnimations();
+		}
+		
+		private function CompileSequence()
+		{
 			for (var stack in pacmanSequence)
 			{
 				switch(pacmanSequence[stack])
 				{
+					case null:
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: NoControlAdded }));
+					break;
 					case Control.MOVEMENT_FORWARD:
 						// Gets the current grid placeholder of pacman
 						var currentGridPlaceholder:GridPlaceholder = GetGridPlaceholderFromPoint(pacmanPoint.x, pacmanPoint.y);
@@ -120,10 +296,12 @@
 								
 								pacmanPoint = newPacmanPoint;
 							}else{
-								throw new Error("Cannot move to that path due to next path");
+								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: InvalidSequenceDueToPaths }));
+								//throw new Error("Cannot move to that path due to next path");
 							}
 						}else{
-							throw new Error("Cannot move to that path due to current path");
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: InvalidSequenceDueToPaths }));
+							//throw new Error("Cannot move to that path due to current path");
 						};
 					break;
 					case Control.MOVEMENT_LEFT:
@@ -135,128 +313,6 @@
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
 					break;
 				}
-			}
-			
-			pacmanTimeline.play();
-		}
-		
-		public function Reset()
-		{
-			main.ReloadLevel();
-		}
-		
-		private function AddControlsToArray()
-		{
-			// Get list of all the sequences on the stack
-			var stackContainer:DisplayObject = main.getChildByName(Game.SWF_PACMAN_CODING_AREA)["rawContent"]["pacmanCodingArea_mc"]["scrollArea_mc"]["stackContainer_mc"];
-			var stackLength = 1;
-			
-			while (stackContainer["stack" + stackLength] != null)
-			{
-				pacmanSequence.push(stackContainer["stack" + stackLength].controlInStack);
-				stackLength++;
-			}
-		}
-		
-		private function FindPacmanGridPoint()
-		{
-			for (var row = 1; row <= 8; row++)
-			{
-				for (var col = 1; col <= 8; col++)
-				{
-					if (pacmanMC.hitTestObject(pacmanStage["grid_row" + row + "_col" + col]))
-						pacmanPoint = new Point(row, col);
-				}
-			}
-		}
-		
-		// Finds which way Pacman is facing
-		// NORTH - SOUTH - EAST - WEST
-		private function CalculatePacmanCardinalDirection():String
-		{
-			var moduloRotation = pacmanRotationZ % 360;
-
-			switch (moduloRotation)
-			{
-				case -270:
-				case 90:
-					return Game.PACMAN_SOUTH;
-				case -180:
-				case 180:
-					return Game.PACMAN_WEST;
-				case -90:
-				case 270:
-					return Game.PACMAN_NORTH;
-				case 0:
-					return Game.PACMAN_EAST;
-				default:
-					throw new Error("Error: Cannot calculate pacman cardinal direction");
-			}
-		}
-		
-		// Returns the grid placeholder from the given X and Y co-ordinates
-		private function GetGridPlaceholderFromPoint(x:int, y:int):GridPlaceholder
-		{
-			return pacmanStage["grid_row" + x + "_col" + y];
-		}
-		
-		private function UpdatePacmanStage(updatePacmanPoint:Point)
-		{
-			var currentGridPlaceholder:GridPlaceholder = GetGridPlaceholderFromPoint(updatePacmanPoint.x, updatePacmanPoint.y);
-			
-			trace(currentGridPlaceholder.TraceChildren());
-			
-			//***************//
-			// GAME ELEMENTS //
-			//***************//
-			// PACDOT
-			if (currentGridPlaceholder.ElementExists(Grid.PACDOT))
-				currentGridPlaceholder.RemoveChildByName(Grid.PACDOT);
-			
-			if (currentGridPlaceholder.ElementExists(Grid.DOOR))
-				currentGridPlaceholder.RemoveChildByName(Grid.DOOR);
-			
-			if (currentGridPlaceholder.ElementExists(Grid.KEY))
-				currentGridPlaceholder.RemoveChildByName(Grid.KEY);
-			
-			//**********//
-			// MONSTERS //
-			//**********//
-			// BLINKY
-			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_BLINKY))
-				trace("GAME OVER");
-			
-			// CLYDE
-			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_CLYDE))
-				trace("GAME OVER");
-			
-			// INKY
-			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_INKY))
-				trace("GAME OVER");
-			
-			// PINKY
-			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_PINKY))
-				trace("GAME OVER");
-			
-			//*********//
-			// REWARDS //
-			//*********//
-			if (currentGridPlaceholder.ElementExists(Grid.REWARD_APPLE))
-			{
-				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_APPLE);
-				trace("COMPLETE: Next Level...");
-			}
-			
-			if (currentGridPlaceholder.ElementExists(Grid.REWARD_CHERRY))
-			{
-				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_CHERRY);
-				trace("COMPLETE: Next Level...");
-			}
-			
-			if (currentGridPlaceholder.ElementExists(Grid.REWARD_STRAWBERRY))
-			{
-				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_STRAWBERRY);
-				trace("COMPLETE: Next Level...");
 			}
 		}
 		
@@ -274,7 +330,7 @@
 				}
 			}
 			return null;
-		};
+		}
 	}
 	
 }

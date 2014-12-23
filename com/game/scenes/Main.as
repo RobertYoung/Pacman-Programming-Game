@@ -13,13 +13,13 @@
 		public var game:Game;
 		
 		public function Main() {
-			game = new Game(this);
-
 			BuildLevel();
 		}
 		
 		public function BuildLevel()
 		{
+			game = new Game(this);
+
 			var queue:LoaderMax = new LoaderMax({ name:"mainQueue" });
 			
 			queue.append(new SWFLoader("header.swf", {name: Game.SWF_HEADER, container:this}));
@@ -32,6 +32,8 @@
 		
 		public function ReloadLevel()
 		{
+			game.StopAllAnimations();
+			
 			this.removeChild(this.getChildByName(Game.SWF_HEADER));
 			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE));
 			this.removeChild(this.getChildByName(Game.SWF_PACMAN_CODING_AREA));
