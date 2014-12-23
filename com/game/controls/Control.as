@@ -1,6 +1,9 @@
 ﻿package com.game.controls {		import flash.display.MovieClip;	import flash.events.MouseEvent;	import flash.utils.*;
 	import flash.events.TimerEvent;
 	import com.game.elements.Stack;
+	import com.game.factory.Game;
+	import com.game.scenes.Main;
+	import com.game.scenes.Controls;
 		public class Control extends MovieClip {		//***********//		// CONSTANTS //		//***********//		public static const MOVEMENT_FORWARD:String = "movement_forward";		public static const MOVEMENT_LEFT:String = "movement_left";		public static const MOVEMENT_RIGHT:String = "movement_right";				//***********//		// VARIABLES //		//***********//		// Store point of where control dragged from		public var nX:int;		public var nY:int;
 		
 		var movementForward:MovementForward;
@@ -31,15 +34,21 @@
 		// TIMER EVENT HANDLERS //
 		//**********************//
 		function TimerCompleteDisplayPopup (e:TimerEvent) {
-			var popup:PopUp = new PopUp();
+			var popup:PopUp = new PopUp(this);
 			
 			popup.x = mouseX;
 			popup.y = mouseY;
 			
 			this.addChild(popup);
 		};
-					//*******************//		// CREATE AND DELETE //		//*******************//		function CreateMovement()		{			var MovementClass:Class = GetClass();			var newMovement = new MovementClass();
-					newMovement.nX = nX;			newMovement.nY = nY;				newMovement.x = nX;			newMovement.y = nY;						newMovement.name = this.name;						this.stage.addChild(newMovement);		}				function DeleteMovement()		{					}				//**********//		// MOVEMENT //		//**********//		function MoveControlToControlArea()		{			this.x = nX;			this.y = nY;		}
+					//*******************//		// CREATE AND DELETE //		//*******************//		function CreateControl()		{			var MovementClass:Class = GetClass();			var newMovement = new MovementClass();
+					newMovement.nX = nX;			newMovement.nY = nY;				newMovement.x = nX;			newMovement.y = nY;						newMovement.name = this.name;
+		
+			var main:Main = this.stage.getChildByName(Game.SWF_MAIN) as Main;
+			var controls = main.getChildByName(Game.SWF_CONTROLS);
+			
+			controls.addChild(newMovement);		}				public function DeleteControl()		{
+			this.parent.removeChild(this);		}				//**********//		// MOVEMENT //		//**********//		function MoveControlToControlArea()		{			this.x = nX;			this.y = nY;		}
 		
 		private function AddControlToStack(e:MouseEvent, stackPosition:Stack)
 		{
@@ -54,6 +63,6 @@
 			stackPosition.addChildAt(this, stackPosition.numChildren - 1);
 			stackPosition.controlInStack = this.name;
 		
-			CreateMovement();
+			CreateControl();
 		}				//*******************//		// CLASS INFORMATION //		//*******************//		function GetClass():Class {
 			return getDefinitionByName(getQualifiedClassName(this)) as Class;		}	}}

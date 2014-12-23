@@ -6,15 +6,37 @@
 	
 	public class PopUp extends MovieClip {
 		
+		public var delete_mc:MovieClip;
 		
-		public function PopUp() {
-			//delete_mc.addEventListener(MouseEvent.MOUSE_UP, DeleteControl)
-			//trace("hit");
+		private var controlMC:Control;
+		
+		public function PopUp(control:Control) {
+			delete_mc.addEventListener(MouseEvent.MOUSE_UP, DeleteControl);
+			
+			controlMC = control;
+			
+			controlMC.stage.addEventListener(MouseEvent.MOUSE_UP, HidePopUp);
 		}
 		
 		function DeleteControl(e:MouseEvent)
 		{
-			trace("remove");
+			controlMC.stage.removeEventListener(MouseEvent.MOUSE_UP, HidePopUp);
+			controlMC.DeleteControl();
+		}
+		
+		function HidePopUp(e:MouseEvent)
+		{
+			// Do nothing if the user clicks on the delete movie clip
+			if (e.target.name == "delete_mc")
+				return;
+			
+			// If the user clicks outside the popup, remove the pop up
+			// and event listeners
+			if (e.target.name != controlMC.name){
+				controlMC.stage.removeEventListener(MouseEvent.MOUSE_UP, HidePopUp);
+				delete_mc.removeEventListener(MouseEvent.MOUSE_UP, DeleteControl);
+				controlMC.removeChild(this);
+			}
 		}
 	}
 	

@@ -14,7 +14,7 @@
 	
 	public class Game {
 
-		public static const SWF_MAIN:String = "main";
+		public static const SWF_MAIN:String = "root1";
 		public static const SWF_HEADER:String = "header";
 		public static const SWF_PACMAN_STAGE:String = "pacman_stage";
 		public static const SWF_PACMAN_CODING_AREA:String = "pacman_code";
@@ -138,6 +138,11 @@
 			}
 			
 			pacmanTimeline.play();
+		}
+		
+		public function Reset()
+		{
+			main.ReloadLevel();
 		}
 		
 		private function AddControlsToArray()

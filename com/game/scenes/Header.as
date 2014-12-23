@@ -13,11 +13,20 @@
 			this.addEventListener(Event.ADDED_TO_STAGE, AddedToStageEvent);
 			
 			play_mc.addEventListener(MouseEvent.MOUSE_UP, PlayMouseUp);			
+			reset_mc.addEventListener(MouseEvent.MOUSE_UP, ResetMouseUp);
 		}
 		
+		//*****************//
+		// EVENT LISTENERS //
+		//*****************//
 		function PlayMouseUp(e:MouseEvent)
 		{
 			game.Play();
+		}
+
+		function ResetMouseUp(e:MouseEvent)
+		{
+			game.Reset();
 		}
 		
 		function AddedToStageEvent(e:Event)

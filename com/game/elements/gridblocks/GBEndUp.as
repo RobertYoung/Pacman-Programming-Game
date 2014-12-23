@@ -6,7 +6,7 @@
 	public class GBEndUp extends GridBlock {
 		
 		public function GBEndUp() {
-			this.SetAllowedPaths(Game.PACMAN_NORTH);
+			this.SetAllowedPaths(Game.PACMAN_SOUTH);
 		}
 	}
 	

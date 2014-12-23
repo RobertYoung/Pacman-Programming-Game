@@ -76,7 +76,8 @@
           "gridBlock": "HORIZONTAL"      
         },
         "8": {
-          "gridBlock": "END_RIGHT"      
+          "gridBlock": "END_RIGHT" ,
+          "pacmanStart": true     
         }
       }
     },

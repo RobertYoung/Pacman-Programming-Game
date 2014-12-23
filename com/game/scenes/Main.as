@@ -14,7 +14,12 @@
 		
 		public function Main() {
 			game = new Game(this);
-			
+
+			BuildLevel();
+		}
+		
+		public function BuildLevel()
+		{
 			var queue:LoaderMax = new LoaderMax({ name:"mainQueue" });
 			
 			queue.append(new SWFLoader("header.swf", {name: Game.SWF_HEADER, container:this}));
@@ -23,6 +28,16 @@
 			queue.append(new SWFLoader("controls.swf", {name: Game.SWF_CONTROLS, container:this}));
 			
 			queue.load();
+		}
+		
+		public function ReloadLevel()
+		{
+			this.removeChild(this.getChildByName(Game.SWF_HEADER));
+			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE));
+			this.removeChild(this.getChildByName(Game.SWF_PACMAN_CODING_AREA));
+			this.removeChild(this.getChildByName(Game.SWF_CONTROLS));
+			
+			BuildLevel();
 		}
 	}
 }
