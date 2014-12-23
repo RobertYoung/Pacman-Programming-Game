@@ -1,11 +1,11 @@
 ﻿package com.game.elements {
 	
 	import flash.display.MovieClip;
+	import com.game.elements.gridblocks.GridBlock;
 	
 	public class GridPlaceholder extends MovieClip {
 		
 		public var gridBlock:String;
-		public var gridAllowedPaths:Array;
 		
 		public function GridPlaceholder() {
 
@@ -16,9 +16,42 @@
 			gridBlock = newGridBlock;
 		}
 		
-		public function SetGridAllowedPaths(newGridAllowedPaths:Array)
+		// Returns the Grid block on the placeholder
+		public function GetGridBlockMovieClip():GridBlock
 		{
-			gridAllowedPaths = newGridAllowedPaths;
+			return this.getChildByName(this.gridBlock) as GridBlock;
+		}
+		
+		public function ElementExists(elementName:String):Boolean
+		{
+			if (this.getChildByName(elementName) == null)
+				return false;
+			
+			return true;
+		}
+		
+		public function RemoveChildByName(childName:String)
+		{
+			var findChild = this.getChildByName(childName);
+			
+			if (findChild != null)
+			{
+				this.removeChild(findChild);
+				return;
+			}
+			
+			throw new Error("Error: Cannot find child to remove");
+		}
+		
+		//******************//
+		// HELPER FUNCTIONS //
+		//******************//
+		public function TraceChildren()
+		{
+			for (var i = 0; i < this.numChildren; i++)
+			{
+				trace("Object: " + this.getChildAt(i) + " Name: " + this.getChildAt(i).name);
+			}
 		}
 	}
 	

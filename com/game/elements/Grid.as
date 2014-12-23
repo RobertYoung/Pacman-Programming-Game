@@ -50,6 +50,10 @@
 		// CONSTANT VALUES FOR GAME ELEMENTS //
 		//***********************************//
 		public static const PACMAN:String = "PACMAN";
+		public static const PACDOT:String = "PACDOT";
+		public static const DOOR:String = "DOOR";
+		public static const HOLE:String = "HOLE";
+		public static const KEY:String = "KEY";
 		
 		//************************************//
 		// VARIABLES ASSOCIATED FOR EACH GRID //

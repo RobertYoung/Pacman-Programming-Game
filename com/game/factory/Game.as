@@ -10,6 +10,7 @@
 	import com.greensock.TweenLite;
 	import flash.geom.Point;
 	import com.game.elements.GridPlaceholder;
+	import com.game.elements.gridblocks.GridBlock;
 	
 	public class Game {
 
@@ -44,6 +45,9 @@
 			pacmanStage = main.getChildByName(Game.SWF_PACMAN_STAGE)["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
 			pacmanMC = pacmanStage.getChildByName(Grid.PACMAN);
 			
+			if (pacmanMC == null)
+				throw new Error("Pacman MovieClip not found on Pacman Stage");
+			
 			// Bring pacman to the front
 			pacmanStage.setChildIndex(pacmanMC, pacmanStage.numChildren - 1);
 			
@@ -57,6 +61,8 @@
 					case Control.MOVEMENT_FORWARD:
 						// Gets the current grid placeholder of pacman
 						var currentGridPlaceholder:GridPlaceholder = GetGridPlaceholderFromPoint(pacmanPoint.x, pacmanPoint.y);
+						// Gets the current grid block inside the place holder of pacman
+						var currentGridBlock:GridBlock = currentGridPlaceholder.GetGridBlockMovieClip();
 						// The position pacman is facing
 						var pacmanCardinalDirection = CalculatePacmanCardinalDirection();
 						// Point instance for the next grid position
@@ -81,8 +87,9 @@
 						
 						// The next grid which Pacman will move too
 						var nextGridPlaceholder:GridPlaceholder = pacmanStage["grid_row" + newPacmanPoint.x + "_col" + newPacmanPoint.y];
+						var nextGridBlock:GridBlock = nextGridPlaceholder.GetGridBlockMovieClip();
 						
- 						if (currentGridPlaceholder.gridAllowedPaths.getPos(pacmanCardinalDirection) != null)
+ 						if (currentGridBlock.allowedPaths.getPos(pacmanCardinalDirection) != null)
 						{
 							var oppositePacmanCardinalDirection;
 							
@@ -103,13 +110,13 @@
 							}
 							
 							// Check that pacman is allowed to move into next block
-							if (nextGridPlaceholder.gridAllowedPaths.getPos(oppositePacmanCardinalDirection) != null)
+							if (nextGridBlock.allowedPaths.getPos(oppositePacmanCardinalDirection) != null)
 							{
 								// Store new grid position
 								var point:Point = new Point(nextGridPlaceholder.x, nextGridPlaceholder.y);
 							
 								// Create animation
-								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: nextGridPlaceholder.x, y: nextGridPlaceholder.y }));
+								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: nextGridPlaceholder.x, y: nextGridPlaceholder.y, onComplete: UpdatePacmanStage, onCompleteParams: [ newPacmanPoint ] }));
 								
 								pacmanPoint = newPacmanPoint;
 							}else{
@@ -136,7 +143,7 @@
 		private function AddControlsToArray()
 		{
 			// Get list of all the sequences on the stack
-			var stackContainer:DisplayObject = main.getChildByName(Game.SWF_PACMAN_CODING_AREA)["rawContent"]["pacmanCodingArea_mc"]["scrollArea_mc"]["scrollArea_mc"];
+			var stackContainer:DisplayObject = main.getChildByName(Game.SWF_PACMAN_CODING_AREA)["rawContent"]["pacmanCodingArea_mc"]["scrollArea_mc"]["stackContainer_mc"];
 			var stackLength = 1;
 			
 			while (stackContainer["stack" + stackLength] != null)
@@ -186,6 +193,66 @@
 		private function GetGridPlaceholderFromPoint(x:int, y:int):GridPlaceholder
 		{
 			return pacmanStage["grid_row" + x + "_col" + y];
+		}
+		
+		private function UpdatePacmanStage(updatePacmanPoint:Point)
+		{
+			var currentGridPlaceholder:GridPlaceholder = GetGridPlaceholderFromPoint(updatePacmanPoint.x, updatePacmanPoint.y);
+			
+			trace(currentGridPlaceholder.TraceChildren());
+			
+			//***************//
+			// GAME ELEMENTS //
+			//***************//
+			// PACDOT
+			if (currentGridPlaceholder.ElementExists(Grid.PACDOT))
+				currentGridPlaceholder.RemoveChildByName(Grid.PACDOT);
+			
+			if (currentGridPlaceholder.ElementExists(Grid.DOOR))
+				currentGridPlaceholder.RemoveChildByName(Grid.DOOR);
+			
+			if (currentGridPlaceholder.ElementExists(Grid.KEY))
+				currentGridPlaceholder.RemoveChildByName(Grid.KEY);
+			
+			//**********//
+			// MONSTERS //
+			//**********//
+			// BLINKY
+			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_BLINKY))
+				trace("GAME OVER");
+			
+			// CLYDE
+			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_CLYDE))
+				trace("GAME OVER");
+			
+			// INKY
+			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_INKY))
+				trace("GAME OVER");
+			
+			// PINKY
+			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_PINKY))
+				trace("GAME OVER");
+			
+			//*********//
+			// REWARDS //
+			//*********//
+			if (currentGridPlaceholder.ElementExists(Grid.REWARD_APPLE))
+			{
+				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_APPLE);
+				trace("COMPLETE: Next Level...");
+			}
+			
+			if (currentGridPlaceholder.ElementExists(Grid.REWARD_CHERRY))
+			{
+				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_CHERRY);
+				trace("COMPLETE: Next Level...");
+			}
+			
+			if (currentGridPlaceholder.ElementExists(Grid.REWARD_STRAWBERRY))
+			{
+				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_STRAWBERRY);
+				trace("COMPLETE: Next Level...");
+			}
 		}
 		
 		//************//

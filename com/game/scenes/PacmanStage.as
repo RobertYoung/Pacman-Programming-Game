@@ -28,190 +28,122 @@
 				{
 					case Grid.BLANK:
 						var gbBlank:GBBlank = new GBBlank();
-				
-						gbBlank.x = gbPlaceholder.x;
-						gbBlank.y = gbPlaceholder.y;
 					
+						gbBlank.name = Grid.BLANK;
 						gbPlaceholder.SetGridBlock(Grid.BLANK);
-						gbPlaceholder.SetGridAllowedPaths(gbBlank.allowedPaths);
-						
-						this.addChild(gbBlank);
+						gbPlaceholder.addChild(gbBlank);
 					break;
 					case Grid.BOX:
 						var gbBox:GBBox = new GBBox();
-				
-						gbBox.x = gbPlaceholder.x;
-						gbBox.y = gbPlaceholder.y;
 					
+						gbBox.name = Grid.BOX;
 						gbPlaceholder.SetGridBlock(Grid.BOX);
-						gbPlaceholder.SetGridAllowedPaths(gbBox.allowedPaths);	
-					
-						this.addChild(gbBox);
+						gbPlaceholder.addChild(gbBox);
 					break;
 					case Grid.HORIZONTAL:
 						var gbHorizontal:GBHorizontal = new GBHorizontal();
 				
-						gbHorizontal.x = gbPlaceholder.x;
-						gbHorizontal.y = gbPlaceholder.y;
-					
+						gbHorizontal.name = Grid.HORIZONTAL;
 						gbPlaceholder.SetGridBlock(Grid.HORIZONTAL);
-						gbPlaceholder.SetGridAllowedPaths(gbHorizontal.allowedPaths);
-						
-						this.addChild(gbHorizontal);
+						gbPlaceholder.addChild(gbHorizontal);
 					break;
 					case Grid.VERTICAL:
 						var gbVertical:GBVertical = new GBVertical();
-				
-						gbVertical.x = gbPlaceholder.x;
-						gbVertical.y = gbPlaceholder.y;
 						
-						gbPlaceholder.SetGridBlock(Grid.VERTICAL);
-						gbPlaceholder.SetGridAllowedPaths(gbVertical.allowedPaths);
-					
-						this.addChild(gbVertical);
+						gbVertical.name = Grid.VERTICAL;
+						gbPlaceholder.SetGridBlock(Grid.VERTICAL);					
+						gbPlaceholder.addChild(gbVertical);
 					break;
 					case Grid.END_UP:
 						var gbEndUp:GBEndUp = new GBEndUp();
-				
-						gbEndUp.x = gbPlaceholder.x;
-						gbEndUp.y = gbPlaceholder.y;
-						
+
+						gbEndUp.name = Grid.END_UP;
 						gbPlaceholder.SetGridBlock(Grid.END_UP);
-						gbPlaceholder.SetGridAllowedPaths(gbEndUp.allowedPaths);
-					
-						this.addChild(gbEndUp);
+						gbPlaceholder.addChild(gbEndUp);
 					break;
 					case Grid.END_DOWN:
 						var gbEndDown:GBEndDown = new GBEndDown();
 				
-						gbEndDown.x = gbPlaceholder.x;
-						gbEndDown.y = gbPlaceholder.y;
-						
+						gbEndDown.name = Grid.END_DOWN;
 						gbPlaceholder.SetGridBlock(Grid.END_DOWN);
-						gbPlaceholder.SetGridAllowedPaths(gbEndDown.allowedPaths);
-					
-						this.addChild(gbEndDown);
+						gbPlaceholder.addChild(gbEndDown);
 					break;
 					case Grid.END_RIGHT:
 						var gbEndRight:GBEndRight = new GBEndRight();
 				
-						gbEndRight.x = gbPlaceholder.x;
-						gbEndRight.y = gbPlaceholder.y;
-						
+						gbEndRight.name = Grid.END_RIGHT;
 						gbPlaceholder.SetGridBlock(Grid.END_RIGHT);
-						gbPlaceholder.SetGridAllowedPaths(gbEndRight.allowedPaths);
-					
-						this.addChild(gbEndRight);
+						gbPlaceholder.addChild(gbEndRight);
 					break;
 					case Grid.END_LEFT:
 						var gbEndLeft:GBEndLeft = new GBEndLeft();
-				
-						gbEndLeft.x = gbPlaceholder.x;
-						gbEndLeft.y = gbPlaceholder.y;
-					
+
+						gbEndLeft.name = Grid.END_LEFT;
 						gbPlaceholder.SetGridBlock(Grid.END_LEFT);
-						gbPlaceholder.SetGridAllowedPaths(gbEndLeft.allowedPaths);
-						
-						this.addChild(gbEndLeft);
+						gbPlaceholder.addChild(gbEndLeft);
 					break;
 					case Grid.LEFT_DOWN:
 						var gbLeftDown:GBLeftDown = new GBLeftDown();
-				
-						gbLeftDown.x = gbPlaceholder.x;
-						gbLeftDown.y = gbPlaceholder.y;
-						
+
+						gbLeftDown.name = Grid.LEFT_DOWN;
 						gbPlaceholder.SetGridBlock(Grid.LEFT_DOWN);
-						gbPlaceholder.SetGridAllowedPaths(gbLeftDown.allowedPaths);
-					
-						this.addChild(gbLeftDown);
+						gbPlaceholder.addChild(gbLeftDown);
 					break;
 					case Grid.LEFT_UP:
 						var gbLeftUp:GBLeftUp = new GBLeftUp();
 				
-						gbLeftUp.x = gbPlaceholder.x;
-						gbLeftUp.y = gbPlaceholder.y;
-						
+						gbLeftUp.name = Grid.LEFT_UP;
 						gbPlaceholder.SetGridBlock(Grid.LEFT_UP);
-						gbPlaceholder.SetGridAllowedPaths(gbLeftUp.allowedPaths);
-					
-						this.addChild(gbLeftUp);
+						gbPlaceholder.addChild(gbLeftUp);
 					break;
 					case Grid.RIGHT_DOWN:
 						var gbRightDown:GBRightDown = new GBRightDown();
-				
-						gbRightDown.x = gbPlaceholder.x;
-						gbRightDown.y = gbPlaceholder.y;
-						
+
+						gbRightDown.name = Grid.RIGHT_DOWN;
 						gbPlaceholder.SetGridBlock(Grid.RIGHT_DOWN);
-						gbPlaceholder.SetGridAllowedPaths(gbRightDown.allowedPaths);
-					
-						this.addChild(gbRightDown);
+						gbPlaceholder.addChild(gbRightDown);
 					break;
 					case Grid.RIGHT_UP:
 						var gbRightUp:GBRightUp = new GBRightUp();
-				
-						gbRightUp.x = gbPlaceholder.x;
-						gbRightUp.y = gbPlaceholder.y;
-						
+
+						gbRightUp.name = Grid.RIGHT_UP;
 						gbPlaceholder.SetGridBlock(Grid.RIGHT_UP);
-						gbPlaceholder.SetGridAllowedPaths(gbRightUp.allowedPaths);
-					
-						this.addChild(gbRightUp);
+						gbPlaceholder.addChild(gbRightUp);
 					break;
 					case Grid.T_HORIZONTAL_DOWN:
 						var gbTHorizontalDown:GBTHorizontalDown = new GBTHorizontalDown();
 				
-						gbTHorizontalDown.x = gbPlaceholder.x;
-						gbTHorizontalDown.y = gbPlaceholder.y;
-						
+						gbTHorizontalDown.name = Grid.T_HORIZONTAL_DOWN;
 						gbPlaceholder.SetGridBlock(Grid.T_HORIZONTAL_DOWN);
-						gbPlaceholder.SetGridAllowedPaths(gbTHorizontalDown.allowedPaths);
-					
-						this.addChild(gbTHorizontalDown);
+						gbPlaceholder.addChild(gbTHorizontalDown);
 					break;
 					case Grid.T_HORIZONTAL_UP:
 						var gbTHorizontalUp:GBTHorizontalUp = new GBTHorizontalUp();
 				
-						gbTHorizontalUp.x = gbPlaceholder.x;
-						gbTHorizontalUp.y = gbPlaceholder.y;
-						
-						gbPlaceholder.SetGridBlock(Grid.T_HORIZONTAL_UP);
-						gbPlaceholder.SetGridAllowedPaths(gbTHorizontalUp.allowedPaths);
-					
-						this.addChild(gbTHorizontalUp);
+						gbTHorizontalUp.name = Grid.T_HORIZONTAL_UP;
+						gbPlaceholder.SetGridBlock(Grid.T_HORIZONTAL_UP);					
+						gbPlaceholder.addChild(gbTHorizontalUp);
 					break;
 					case Grid.T_VERTCIAL_LEFT:
 						var gbTVerticalLeft:GBTVerticalLeft = new GBTVerticalLeft();
-				
-						gbTVerticalLeft.x = gbPlaceholder.x;
-						gbTVerticalLeft.y = gbPlaceholder.y;
-						
+
+						gbTVerticalLeft.name = Grid.T_VERTCIAL_LEFT;
 						gbPlaceholder.SetGridBlock(Grid.T_VERTCIAL_LEFT);
-						gbPlaceholder.SetGridAllowedPaths(gbTVerticalLeft.allowedPaths);
-					
-						this.addChild(gbTVerticalLeft);
+						gbPlaceholder.addChild(gbTVerticalLeft);
 					break;
 					case Grid.T_VERTICAL_RIGHT:
 						var gbTVerticalRight:GBTVerticalRight = new GBTVerticalRight();
-				
-						gbTVerticalRight.x = gbPlaceholder.x;
-						gbTVerticalRight.y = gbPlaceholder.y;
-						
+			
+						gbTVerticalRight.name = Grid.T_VERTICAL_RIGHT;
 						gbPlaceholder.SetGridBlock(Grid.T_VERTICAL_RIGHT);
-						gbPlaceholder.SetGridAllowedPaths(gbTVerticalRight.allowedPaths);
-					
-						this.addChild(gbTVerticalRight);
+						gbPlaceholder.addChild(gbTVerticalRight);
 					break;
 					case Grid.CROSSROADS:
 						var gbCrossroads:GBCrossroads = new GBCrossroads();
 				
-						gbCrossroads.x = gbPlaceholder.x;
-						gbCrossroads.y = gbPlaceholder.y;
-						
+						gbCrossroads.name = Grid.CROSSROADS;
 						gbPlaceholder.SetGridBlock(Grid.CROSSROADS);
-						gbPlaceholder.SetGridAllowedPaths(gbCrossroads.allowedPaths);
-					
-						this.addChild(gbCrossroads);
+						gbPlaceholder.addChild(gbCrossroads);
 					break;
 				}
 				
@@ -228,80 +160,57 @@
 				}else if (level.grids[i].apple == true){
 					var apple:Apple = new Apple();
 					
-					apple.x = gbPlaceholder.x;
-					apple.y = gbPlaceholder.y;
-					
-					this.addChild(apple);
+					apple.name = Grid.REWARD_APPLE;
+					gbPlaceholder.addChild(apple);
 				}else if (level.grids[i].cherry == true) {
 					var cherry:Cherry = new Cherry();
 					
-					cherry.x = gbPlaceholder.x;
-					cherry.y = gbPlaceholder.y;
-					
-					this.addChild(cherry);
+					cherry.name = Grid.REWARD_CHERRY;
+					gbPlaceholder.addChild(cherry);
 				}else if (level.grids[i].strawberry == true){
 					var strawberry:Strawberry = new Strawberry();
 					
-					strawberry.x = gbPlaceholder.x;
-					strawberry.y = gbPlaceholder.y;
-					
-					this.addChild(strawberry);
+					strawberry.name =  Grid.REWARD_STRAWBERRY;
+					gbPlaceholder.addChild(strawberry);
 				}else if (level.grids[i].blinky == true) {
 					var blinky:Blinky = new Blinky();
-				
-					blinky.x = gbPlaceholder.x;
-					blinky.y = gbPlaceholder.y;
 					
-					this.addChild(blinky);
+					blinky.name = Grid.MONSTER_BLINKY;
+					gbPlaceholder.addChild(blinky);
 				}else if (level.grids[i].clyde == true) {
 					var clyde:Clyde = new Clyde();
-				
-					clyde.x = gbPlaceholder.x;
-					clyde.y = gbPlaceholder.y;
 					
-					this.addChild(clyde);
+					clyde.name = Grid.MONSTER_CLYDE;
+					gbPlaceholder.addChild(clyde);
 				}else if (level.grids[i].pinky == true) {
 					var pinky:Pinky = new Pinky();
-				
-					pinky.x = gbPlaceholder.x;
-					pinky.y = gbPlaceholder.y;
 					
-					this.addChild(pinky);
+					pinky.name = Grid.MONSTER_PINKY;
+					gbPlaceholder.addChild(pinky);
 				}else if (level.grids[i].inky == true) {
 					var inky:Inky = new Inky();
-				
-					inky.x = gbPlaceholder.x;
-					inky.y = gbPlaceholder.y;
 					
-					this.addChild(inky);
+					gbPlaceholder.addChild(inky);
 				}else if (level.grids[i].door == true) {
 					var door:Door = new Door();
-				
-					door.x = gbPlaceholder.x;
-					door.y = gbPlaceholder.y;
 					
-					this.addChild(door);
+					door.name = Grid.DOOR;
+					gbPlaceholder.addChild(door);
 				}else if (level.grids[i].hole == true) {
 					var hole:Hole = new Hole();
-				
-					hole.x = gbPlaceholder.x;
-					hole.y = gbPlaceholder.y;
 					
-					this.addChild(hole);
+					hole.name = Grid.HOLE;
+					gbPlaceholder.addChild(hole);
 				}else if (level.grids[i].key.isKey == true) {
 					var key:Key = new Key(level.grids[i].key);
 					
-					key.x = gbPlaceholder.x;
-					key.y = gbPlaceholder.y;
-					
-					this.addChild(key);
+					key.name = Grid.KEY;
+					gbPlaceholder.addChild(key);
 				}else if (level.grids[i].gridBlock != Grid.BLANK && level.grids[i].gridBlock != Grid.BOX) {
 					var pacDot:PacDot = new PacDot();
 					
-					pacDot.x = gbPlaceholder.x;
-					pacDot.y = gbPlaceholder.y;
-					
-					this.addChild(pacDot);
+					pacDot.name = Grid.PACDOT;
+					gbPlaceholder.addChild(pacDot);
 				}
 			}
 		}
