@@ -1,3 +1,5 @@
+// pacmanStart
+
 // public static const BLANK:String = "BLANK";
 // public static const BOX:String = "BOX";
 
@@ -26,13 +28,46 @@
 // public static const REWARD_CHERRY:String = "REWARD_CHERRY";
 // public static const REWARD_STRAWBERRY:String = "REWARD_STRAWBERRY";
 
+// public static const MONSTER_BLINKY:String = "MONSTER_BLINKY";
+// public static const MONSTER_CLYDE:String = "MONSTER_CLYDE";
+// public static const MONSTER_INKY:String = "MONSTER_INKY";
+// public static const MONSTER_PINKY:String = "MONSTER_PINKY";
+
 {
   "row": {
+    "3": {
+      "column": {
+        "5": {
+          "gridBlock": "END_UP",
+          "pacmanStart": true  
+          },
+        "6": {
+          "gridBlock": "END_LEFT",
+          "monster": "MONSTER_BLINKY"
+        }, 
+        "7": {
+          "gridBlock": "RIGHT_DOWN"
+        }
+      }
+    },
     "4": {
+      "column": {
+        "5": {
+          "gridBlock": "LEFT_UP"      
+        },
+        "6": {
+          "gridBlock": "T_HORIZONTAL_DOWN"
+        }, 
+        "7": {
+          "gridBlock": "RIGHT_UP"
+        }
+      }
+    },
+    "5": {
       "column": {
         "3": {
           "gridBlock": "END_LEFT",
-          "pacmanStart": true
+          "reward": "REWARD_CHERRY"
         },
         "4": {
           "gridBlock": "HORIZONTAL"
@@ -41,9 +76,11 @@
           "gridBlock": "HORIZONTAL"
         },
         "6": {
-          "gridBlock": "END_RIGHT",
-          "reward": "REWARD_CHERRY"
+          "gridBlock": "T_HORIZONTAL_UP"
         },
+        "7": {
+          "gridBlock": "END_RIGHT"
+        }
       }
     }
   }
