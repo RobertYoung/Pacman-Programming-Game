@@ -12,16 +12,21 @@
 		public function Header() {
 			this.addEventListener(Event.ADDED_TO_STAGE, AddedToStageEvent);
 			
-			play_mc.addEventListener(MouseEvent.MOUSE_UP, PlayMouseUp);			
+			play_mc.addEventListener(MouseEvent.MOUSE_DOWN, PlayMouseDown);		
 			reset_mc.addEventListener(MouseEvent.MOUSE_UP, ResetMouseUp);
 		}
 		
 		//*****************//
 		// EVENT LISTENERS //
 		//*****************//
+		function PlayMouseDown(e:MouseEvent)
+		{
+			play_mc.addEventListener(MouseEvent.MOUSE_UP, PlayMouseUp);	
+		}
 		function PlayMouseUp(e:MouseEvent)
 		{
 			game.Play();
+			play_mc.removeEventListener(MouseEvent.MOUSE_UP, PlayMouseUp);	
 		}
 
 		function ResetMouseUp(e:MouseEvent)
