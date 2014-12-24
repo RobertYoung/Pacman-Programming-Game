@@ -7,7 +7,7 @@
 		
 		
 		public function Controls() {
-			// constructor code
+			flash.system.Security.allowDomain("*");
 		}
 	}
 	

@@ -71,6 +71,11 @@
 			main.ReloadLevel();
 		}
 		
+		public function ResetAfterUserError()
+		{
+			main.ResetAfterUserError();
+		}
+
 		//******************//
 		// CONTROLS METHODS //
 		//******************//
@@ -193,9 +198,9 @@
 		//*******************//
 		// ANIMATION METHODS //
 		//*******************//
-		public function StopAllAnimations()
+		public function ResetAllAnimations()
 		{
-			pacmanTimeline.kill();
+			pacmanTimeline.clear();
 		}
 		
 		//*************//
@@ -203,18 +208,18 @@
 		//*************//
 		private function NoControlAdded()
 		{
-			this.StopAllAnimations();
+			this.ResetAllAnimations();
 			
-			var alertView:AlertView = new AlertView("Alert", "The sequence you entered is not correct, please try again", "Are there any missing controls?");
+			var alertView:AlertView = new AlertView("Alert", "The sequence you entered is not correct, please try again", "Are there any missing controls?", this.ResetAfterUserError);
 			
 			main.addChild(alertView);
 		}
 		
 		private function InvalidSequenceDueToPaths()
 		{
-			this.StopAllAnimations();
+			this.ResetAllAnimations();
 			
-			var incorrectSequenceAlertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "Take it a step at a time");
+			var incorrectSequenceAlertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "Take it a step at a time", this.ResetAfterUserError);
 								
 			main.addChild(incorrectSequenceAlertView);
 		}
@@ -222,11 +227,16 @@
 		private function LevelComplete()
 		{
 			trace("COMPLETE: Next Level...");
-			this.StopAllAnimations();
+			this.ResetAllAnimations();
+			
+			var levelComplete:AlertView = new AlertView("Well Done !", "You have successfully reached the end of the level", "", this.NextLevel);
+			
+			main.addChild(levelComplete);
 		}
 		
 		private function CompileSequence()
 		{
+			trace(pacmanSequence);
 			for (var stack in pacmanSequence)
 			{
 				switch(pacmanSequence[stack])
@@ -314,6 +324,14 @@
 					break;
 				}
 			}
+		}
+		
+		//********************//
+		// NEXT LEVEL METHODS //
+		//********************//
+		private function NextLevel()
+		{
+			trace("Next Level");
 		}
 		
 		//************//

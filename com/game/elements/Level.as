@@ -8,6 +8,7 @@
 	import flash.events.Event;
 	import flash.display.MovieClip;
 	import com.game.factory.Game;
+	import flash.system.Security;
 	
 	public class Level {
 
@@ -44,6 +45,7 @@
 		// LEVEL CONSTRUCTOR //
 		//*******************//
 		public function Level(mc:MovieClip, urlOfJSON:String = "") {
+			flash.system.Security.allowDomain("*");
 			// On initilization, create all the grid variables with the correct 
 			// column and row 
 			// They are given a default grid block of BOX
