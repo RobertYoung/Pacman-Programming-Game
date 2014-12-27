@@ -3,10 +3,10 @@
 	import flash.display.MovieClip;
 	
 	
-	public class ControlLoop extends Control {
+	public class ControlElseHoleClear extends Control {
 		
 		
-		public function ControlLoop() {
+		public function ControlElseHoleClear() {
 			this.x = super.nX
 			this.y = super.nY;
 		}

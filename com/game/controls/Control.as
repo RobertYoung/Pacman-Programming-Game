@@ -5,14 +5,22 @@
 	import com.game.scenes.Main;
 	import com.game.scenes.Controls;
 		public class Control extends MovieClip {		//***********//		// CONSTANTS //		//***********//		public static const MOVEMENT_FORWARD:String = "movement_forward";		public static const MOVEMENT_LEFT:String = "movement_left";		public static const MOVEMENT_RIGHT:String = "movement_right";
-		public static const CONTROL_IF_ELSE:String = "control_ifElse";
-		public static const CONTROL_LOOP:String = "control_loop";				//***********//		// VARIABLES //		//***********//		// Store point of where control dragged from		public var nX:int;		public var nY:int;
+		public static const CONTROL_IF_CLEAR:String = "control_if_clear";
+		public static const CONTROL_IF_CLEAR_END:String = "control_if_clear_end";
+		public static const CONTROL_ELSE_CLEAR:String = "control_else_clear";
+		public static const CONTROL_ELSE_CLEAR_END:String = "control_else_clear_end";
+		public static const CONTROL_LOOP:String = "control_loop";		public static const CONTROL_LOOP_END:String = "control_loop_end";
+				//***********//		// VARIABLES //		//***********//		// Store point of where control dragged from		public var nX:int;		public var nY:int;
 		
 		var movementForward:MovementForward;
 		var movementLeft:MovementLeft;
 		var movementRight:MovementRight;
-		var controlIfElse:ControlIfElse;
+		var controlIfHoleClear:ControlIfHoleClear;
+		var controlIfHoleClearEnd:ControlIfHoleClearEnd;
+		var controlElseHoleClear:ControlElseHoleClear;
+		var controlElseHoleClearEnd:ControlElseHoleClearEnd;
 		var controlLoop:ControlLoop;
+		var controlLoopEnd:ControlLoopEnd;
 		var popupTimer:Timer;				//*************//		// CONSTRUCTOR //		//*************//		public function Control() {			nX = this.x;			nY = this.y;						this.addEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromControlArea);			this.addEventListener(MouseEvent.MOUSE_UP, OnMouseUpFromControlArea);
 			
 			this.gotoAndStop(1);		}				//**********************//		// MOUSE EVENT HANDLERS // 		//**********************//		function OnMouseDownFromControlArea(e:MouseEvent):void		{			this.startDrag();		}				function OnMouseUpFromControlArea(e:MouseEvent):void		{			this.stopDrag();						// Send movement back to control area if control			// is dropped on nothing			if (e.target.dropTarget == null)				MoveControlToControlArea();			else{				// Regular expression for the stack. E.g stack1, stack2				var pattern:RegExp = /stack\d/;				var stackPosition = e.target.dropTarget.parent;								// Check if the control is dropped on the coding area in a stack				// If it is, create new control				if (pattern.test(stackPosition.name))				{					AddControlToStack(e, stackPosition);				}else if (pattern.test(stackPosition.parent.name)){

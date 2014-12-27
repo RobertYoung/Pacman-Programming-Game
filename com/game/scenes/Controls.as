@@ -57,31 +57,75 @@
 			this.addChild(movementRight);
 		}
 		
-		public function SwitchToControls()
+		public function SwitchToIfClear()
 		{
 			this.ClearAllControls();
 			
-			var ifElse:ControlIfElse = new ControlIfElse();
+			var ifClear:ControlIfHoleClear = new ControlIfHoleClear();
 			
-			ifElse.name = Control.CONTROL_IF_ELSE;
-			ifElse.x = 450;
-			ifElse.y = 720;
-			ifElse.nX = 450;
-			ifElse.nY = 720;
+			ifClear.name = Control.CONTROL_IF_CLEAR;
+			ifClear.x = 350;
+			ifClear.y = 720;
+			ifClear.nX = 350;
+			ifClear.nY = 720;
 			
-			this.addChild(ifElse);
+			this.addChild(ifClear);
+			
+			var ifClearEnd:ControlIfHoleClearEnd = new ControlIfHoleClearEnd();
+			
+			ifClearEnd.name = Control.CONTROL_IF_CLEAR_END;
+			ifClearEnd.x = 537;
+			ifClearEnd.y = 720;
+			ifClearEnd.nX = 537;
+			ifClearEnd.nY = 720;
+			
+			this.addChild(ifClearEnd);
+			
+			var elseClear:ControlElseHoleClear = new ControlElseHoleClear();
+			
+			elseClear.name = Control.CONTROL_ELSE_CLEAR;
+			elseClear.x = 726;
+			elseClear.y = 720;
+			elseClear.nX = 726;
+			elseClear.nY = 720;
+			
+			this.addChild(elseClear);
+			
+			var elseClearEnd:ControlElseHoleClearEnd = new ControlElseHoleClearEnd();
+			
+			elseClearEnd.name = Control.CONTROL_ELSE_CLEAR_END;
+			elseClearEnd.x = 912;
+			elseClearEnd.y = 720;
+			elseClearEnd.nX = 912;
+			elseClearEnd.nY = 720;
+			
+			this.addChild(elseClearEnd);
+		}
+		
+		public function SwitchToLoop()
+		{
+			this.ClearAllControls();
 			
 			var loop:ControlLoop = new ControlLoop();
 			
 			loop.name = Control.CONTROL_LOOP;
-			loop.x = 823;
+			loop.x = 478;
 			loop.y = 720;
-			loop.nX = 823;
+			loop.nX = 478;
 			loop.nY = 720;
 			
 			this.addChild(loop);
+			
+			var endLoop:ControlLoopEnd = new ControlLoopEnd();
+			
+			endLoop.name = Control.CONTROL_LOOP_END;
+			endLoop.x = 770;
+			endLoop.y = 720;
+			endLoop.nX = 770;
+			endLoop.nY = 720;
+			
+			this.addChild(endLoop);
 		}
-		
 		public function SwitchToActions()
 		{
 			this.ClearAllControls();

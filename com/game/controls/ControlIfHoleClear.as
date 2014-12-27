@@ -3,7 +3,7 @@
 	import flash.display.MovieClip;
 	
 	
-	public class ControlIfElse extends Control {
+	public class ControlIfHoleClear extends Control {
 		
 		
 		public function IfElse() {
