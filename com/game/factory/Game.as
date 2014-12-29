@@ -12,6 +12,7 @@
 	import com.game.elements.GridPlaceholder;
 	import com.game.elements.gridblocks.GridBlock;
 	import com.greensock.layout.AlignMode;
+	import com.greensock.plugins.*;
 	
 	public class Game {
 
@@ -33,9 +34,17 @@
 		private var pacmanMC:DisplayObject;
 		private var pacmanPoint:Point;
 		private var pacmanRotationZ:int;
-		
+		private var currentGridPlaceholder:GridPlaceholder;
+		private var currentGridBlock:GridBlock;
+		private var pacmanCardinalDirection:String;
+		private var nextPacmanPoint:Point;
+		private var nextGridPlaceholder:GridPlaceholder;
+		private var nextGridBlock:GridBlock;
+
 		public function Game(mc:Main) {
 			main = mc;
+			
+			TweenPlugin.activate([FramePlugin]);
 		}
 
 		//**************//
@@ -109,7 +118,7 @@
 		
 		// Finds which way Pacman is facing
 		// NORTH - SOUTH - EAST - WEST
-		private function CalculatePacmanCardinalDirection():String
+		private function CalculatePacmanCardinalDirection()
 		{
 			var moduloRotation = pacmanRotationZ % 360;
 
@@ -117,15 +126,19 @@
 			{
 				case -270:
 				case 90:
-					return Game.PACMAN_SOUTH;
+					pacmanCardinalDirection = Game.PACMAN_SOUTH;
+				break;
 				case -180:
 				case 180:
-					return Game.PACMAN_WEST;
+					pacmanCardinalDirection = Game.PACMAN_WEST;
+				break;
 				case -90:
 				case 270:
-					return Game.PACMAN_NORTH;
+					pacmanCardinalDirection = Game.PACMAN_NORTH;
+				break;
 				case 0:
-					return Game.PACMAN_EAST;
+					pacmanCardinalDirection = Game.PACMAN_EAST;
+				break;
 				default:
 					throw new Error("Error: Cannot calculate pacman cardinal direction");
 			}
@@ -246,34 +259,17 @@
 					break;
 					case Control.MOVEMENT_FORWARD:
 						// Gets the current grid placeholder of pacman
-						var currentGridPlaceholder:GridPlaceholder = GetGridPlaceholderFromPoint(pacmanPoint.x, pacmanPoint.y);
+						this.GetCurrentGridplaceholder();
 						// Gets the current grid block inside the place holder of pacman
-						var currentGridBlock:GridBlock = currentGridPlaceholder.GetGridBlockMovieClip();
+						this.GetCurrentGridBlock();
 						// The position pacman is facing
-						var pacmanCardinalDirection = CalculatePacmanCardinalDirection();
+						this.CalculatePacmanCardinalDirection();
 						// Point instance for the next grid position
-						var newPacmanPoint:Point = new Point(pacmanPoint.x, pacmanPoint.y);
-					
-						// Find out which way pacman is facing then move forward in that direct
-						switch (CalculatePacmanCardinalDirection())
-						{
-							case Game.PACMAN_NORTH:
-								newPacmanPoint.x -= 1;
-							break;
-							case Game.PACMAN_EAST:
-								newPacmanPoint.y += 1;
-							break;
-							case Game.PACMAN_SOUTH:
-								newPacmanPoint.x += 1;
-							break;
-							case Game.PACMAN_WEST:
-								newPacmanPoint.y -= 1;
-							break;
-						}
-						
+						this.GetNextPacmanPoint();
 						// The next grid which Pacman will move too
-						var nextGridPlaceholder:GridPlaceholder = pacmanStage["grid_row" + newPacmanPoint.x + "_col" + newPacmanPoint.y];
-						var nextGridBlock:GridBlock = nextGridPlaceholder.GetGridBlockMovieClip();
+						this.GetNextGridPlaceholder();
+						// The next grid block within the grid placeholder
+						this.GetNextGridBlock();
 						
  						if (currentGridBlock.allowedPaths.getPos(pacmanCardinalDirection) != null)
 						{
@@ -302,9 +298,9 @@
 								var point:Point = new Point(nextGridPlaceholder.x, nextGridPlaceholder.y);
 							
 								// Create animation
-								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: nextGridPlaceholder.x, y: nextGridPlaceholder.y, onComplete: UpdatePacmanStage, onCompleteParams: [ newPacmanPoint ] }));
+								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: nextGridPlaceholder.x, y: nextGridPlaceholder.y, onComplete: UpdatePacmanStage, onCompleteParams: [ this.nextPacmanPoint ] }));
 								
-								pacmanPoint = newPacmanPoint;
+								pacmanPoint = this.nextPacmanPoint;
 							}else{
 								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: InvalidSequenceDueToPaths }));
 								//throw new Error("Cannot move to that path due to next path");
@@ -322,8 +318,75 @@
 						pacmanRotationZ += 90;
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
 					break;
+					case Control.ACTION_FLASHLIGHT:
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { frame:2 }));
+						
+						// The next grid
+						// Gets the current grid placeholder of pacman
+						this.GetCurrentGridplaceholder();
+						// Gets the current grid block inside the place holder of pacman
+						this.GetCurrentGridBlock();
+						// The position pacman is facing
+						this.CalculatePacmanCardinalDirection();
+						// Point instance for the next grid position
+						this.GetNextPacmanPoint();
+						// The next grid which Pacman will move too
+						this.GetNextGridPlaceholder();
+						
+						// Checks if the placeholder has a hole
+						if (this.nextGridPlaceholder.getChildByName(Grid.HOLE))
+						{
+							trace("HOLE IN NEXT GRID");
+							var hole:Hole = this.nextGridPlaceholder.getChildByName(Grid.HOLE) as Hole;
+							
+							trace(hole.hasMonster);
+						}
+					break;
 				}
 			}
+		}
+
+		private function GetCurrentGridplaceholder()
+		{
+			// Gets the current grid placeholder of pacman
+			this.currentGridPlaceholder = this.GetGridPlaceholderFromPoint(pacmanPoint.x, pacmanPoint.y);
+		}
+		
+		private function GetCurrentGridBlock()
+		{
+			this.currentGridBlock =	this.currentGridPlaceholder.GetGridBlockMovieClip();
+		}
+		
+		private function GetNextPacmanPoint()
+		{
+			this.nextPacmanPoint = new Point(pacmanPoint.x, pacmanPoint.y);
+					
+			// Find out which way pacman is facing then move forward in that direct
+			switch (pacmanCardinalDirection)
+			{
+				case Game.PACMAN_NORTH:
+					this.nextPacmanPoint.x -= 1;
+				break;
+				case Game.PACMAN_EAST:
+					this.nextPacmanPoint.y += 1;
+				break;
+				case Game.PACMAN_SOUTH:
+					this.nextPacmanPoint.x += 1;
+				break;
+				case Game.PACMAN_WEST:
+					this.nextPacmanPoint.y -= 1;
+				break;
+			}
+		}
+		
+		private function GetNextGridPlaceholder()
+		{
+			nextGridPlaceholder = pacmanStage["grid_row" + this.nextPacmanPoint.x + "_col" + this.nextPacmanPoint.y];
+		}
+		
+		private function GetNextGridBlock()
+		{
+			nextGridBlock = nextGridPlaceholder.GetGridBlockMovieClip();
 		}
 		
 		//********************//

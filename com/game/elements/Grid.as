@@ -71,6 +71,7 @@
 		public var pinky:Boolean = false;
 		public var door:Boolean = false;
 		public var hole:Boolean = false;
+		public var holeWithMonster:Boolean = false;
 		public var key:KeyObject = new KeyObject();
 		public var allowedPaths:Array = new Array();
 		

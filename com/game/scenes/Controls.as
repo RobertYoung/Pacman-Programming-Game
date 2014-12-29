@@ -126,9 +126,20 @@
 			
 			this.addChild(endLoop);
 		}
+		
 		public function SwitchToActions()
 		{
 			this.ClearAllControls();
+			
+			var flashlight:ActionFlashlight = new ActionFlashlight();
+			
+			flashlight.name = Control.ACTION_FLASHLIGHT;
+			flashlight.x = 770;
+			flashlight.y = 720;
+			flashlight.nX = 770;
+			flashlight.nY = 720;
+			
+			this.addChild(flashlight);
 		}
 		
 		//********************//

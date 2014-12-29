@@ -138,6 +138,9 @@
 			// Store all the grids in an array
 			CreateArrayOfGrids();
 			
+			// Check if there are holes to add a monster in a random place
+			ImplementHoleWithMonster();
+			
 			// Create the stage and add to the view
 			var pacmanStage:PacmanStage = new PacmanStage(this);
 
@@ -146,6 +149,29 @@
 			pacmanStage.name = Game.SWF_PACMAN_STAGE;
 
 			main.addChild(pacmanStage);
+		}
+		
+		function ImplementHoleWithMonster()
+		{
+			var gridsWithHole:Array = new Array();
+			
+			// Find all the grids with holes
+			for (var i = 0; i < grids.length; i++)
+			{
+				var myGrid:Grid = grids[i] as Grid;
+				
+				// Add int position of grid in grids array
+				if (myGrid.hole)
+					gridsWithHole.push(i);
+			}
+			
+			// Randomly select a grid
+			var randomNumber = (Math.floor(Math.random() * ((gridsWithHole.length - 1) - 0 + 1)) + 0);
+			
+			trace("RandomNumber: " + randomNumber);
+			
+			// Set the randomly selected grid with hole to true for a monster
+			grids[gridsWithHole[randomNumber]].holeWithMonster = true;
 		}
 	}
 	

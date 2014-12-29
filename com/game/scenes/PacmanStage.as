@@ -200,6 +200,13 @@
 					var hole:Hole = new Hole();
 					
 					hole.name = Grid.HOLE;
+
+					if (level.grids[i].holeWithMonster == true)
+					{
+						hole.hasMonster = true;
+						trace(i + " has mosnter");
+					}
+					
 					gbPlaceholder.addChild(hole);
 				}else if (level.grids[i].key.isKey == true) {
 					var key:Key = new Key(level.grids[i].key);

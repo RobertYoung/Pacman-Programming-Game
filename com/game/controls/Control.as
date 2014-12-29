@@ -10,6 +10,7 @@
 		public static const CONTROL_ELSE_CLEAR:String = "control_else_clear";
 		public static const CONTROL_ELSE_CLEAR_END:String = "control_else_clear_end";
 		public static const CONTROL_LOOP:String = "control_loop";		public static const CONTROL_LOOP_END:String = "control_loop_end";
+		public static const ACTION_FLASHLIGHT:String = "action_flashlight";
 				//***********//		// VARIABLES //		//***********//		// Store point of where control dragged from		public var nX:int;		public var nY:int;
 		
 		var movementForward:MovementForward;
@@ -21,6 +22,7 @@
 		var controlElseHoleClearEnd:ControlElseHoleClearEnd;
 		var controlLoop:ControlLoop;
 		var controlLoopEnd:ControlLoopEnd;
+		var actionFlashlight:ActionFlashlight;
 		var popupTimer:Timer;				//*************//		// CONSTRUCTOR //		//*************//		public function Control() {			nX = this.x;			nY = this.y;						this.addEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromControlArea);			this.addEventListener(MouseEvent.MOUSE_UP, OnMouseUpFromControlArea);
 			
 			this.gotoAndStop(1);		}				//**********************//		// MOUSE EVENT HANDLERS // 		//**********************//		function OnMouseDownFromControlArea(e:MouseEvent):void		{			this.startDrag();		}				function OnMouseUpFromControlArea(e:MouseEvent):void		{			this.stopDrag();						// Send movement back to control area if control			// is dropped on nothing			if (e.target.dropTarget == null)				MoveControlToControlArea();			else{				// Regular expression for the stack. E.g stack1, stack2				var pattern:RegExp = /stack\d/;				var stackPosition = e.target.dropTarget.parent;								// Check if the control is dropped on the coding area in a stack				// If it is, create new control				if (pattern.test(stackPosition.name))				{					AddControlToStack(e, stackPosition);				}else if (pattern.test(stackPosition.parent.name)){
