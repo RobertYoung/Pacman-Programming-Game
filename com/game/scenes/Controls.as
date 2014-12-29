@@ -152,7 +152,7 @@
 			{
 				trace(this.getChildAt(i).name);
 				//trace(this.getChildAt(i).name);
-				var pattern:RegExp = /^movement_|control_|actions_/;
+				var pattern:RegExp = /^movement_|control_|action_/;
 				
 				if (pattern.test(this.getChildAt(i).name))
 				{

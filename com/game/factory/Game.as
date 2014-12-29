@@ -13,6 +13,7 @@
 	import com.game.elements.gridblocks.GridBlock;
 	import com.greensock.layout.AlignMode;
 	import com.greensock.plugins.*;
+	import com.greensock.easing.*;
 	
 	public class Game {
 
@@ -40,6 +41,8 @@
 		private var nextPacmanPoint:Point;
 		private var nextGridPlaceholder:GridPlaceholder;
 		private var nextGridBlock:GridBlock;
+		private var monsterTimeline:TimelineMax = new TimelineMax();
+		private var monsterHole;
 
 		public function Game(mc:Main) {
 			main = mc;
@@ -319,7 +322,7 @@
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
 					break;
 					case Control.ACTION_FLASHLIGHT:
-						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { frame:2 }));
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { frame: 20, onStart: this.ShowMonster, useFrames: true, ease:Linear.easeNone}));
 						
 						// The next grid
 						// Gets the current grid placeholder of pacman
@@ -336,10 +339,15 @@
 						// Checks if the placeholder has a hole
 						if (this.nextGridPlaceholder.getChildByName(Grid.HOLE))
 						{
-							trace("HOLE IN NEXT GRID");
 							var hole:Hole = this.nextGridPlaceholder.getChildByName(Grid.HOLE) as Hole;
 							
-							trace(hole.hasMonster);
+							monsterHole = nextGridPlaceholder.getChildByName(Grid.MONSTER);
+							
+							if (monsterHole != null)
+							{
+								this.monsterTimeline.add(new TweenLite(monsterHole, 2, { alpha: 1 }));
+								this.monsterTimeline.stop();
+							}
 						}
 					break;
 				}
@@ -387,6 +395,11 @@
 		private function GetNextGridBlock()
 		{
 			nextGridBlock = nextGridPlaceholder.GetGridBlockMovieClip();
+		}
+		
+		private function ShowMonster()
+		{
+			this.monsterTimeline.play();
 		}
 		
 		//********************//

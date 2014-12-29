@@ -54,6 +54,7 @@
 		public static const DOOR:String = "DOOR";
 		public static const HOLE:String = "HOLE";
 		public static const KEY:String = "KEY";
+		public static const MONSTER:String = "MONSTER";
 		
 		//************************************//
 		// VARIABLES ASSOCIATED FOR EACH GRID //

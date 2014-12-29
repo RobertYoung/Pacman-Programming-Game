@@ -201,13 +201,15 @@
 					
 					hole.name = Grid.HOLE;
 
+					gbPlaceholder.addChild(hole);
+					
 					if (level.grids[i].holeWithMonster == true)
 					{
 						hole.hasMonster = true;
-						trace(i + " has mosnter");
+						trace(i + " has monster");
+						
+						gbPlaceholder.addChild(this.RandomMonster());
 					}
-					
-					gbPlaceholder.addChild(hole);
 				}else if (level.grids[i].key.isKey == true) {
 					var key:Key = new Key(level.grids[i].key);
 					
@@ -220,6 +222,33 @@
 					gbPlaceholder.addChild(pacDot);
 				}
 			}
+		}
+		
+		private function RandomMonster():MovieClip
+		{
+			var randomNum = (Math.floor(Math.random() * (4 - 1 + 1)) + 1);
+			var monster:MovieClip;
+			
+			switch(randomNum)
+			{
+				case 1:
+					monster = new Blinky();
+				break;
+				case 2:
+					monster = new Clyde();
+				break;
+				case 3:
+					monster = new Inky();
+				break;
+				case 4:
+					monster = new Pinky();
+				break;
+			}
+			
+			monster.alpha = 0;
+			monster.name = Grid.MONSTER;
+			
+			return monster;
 		}
 	}
 	
