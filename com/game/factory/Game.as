@@ -14,6 +14,7 @@
 	import com.greensock.layout.AlignMode;
 	import com.greensock.plugins.*;
 	import com.greensock.easing.*;
+	import com.game.controls.ControlElseHoleClear;
 	
 	public class Game {
 
@@ -242,6 +243,15 @@
 			main.addChild(alertView);
 		}
 		
+		private function MissingIfClear()
+		{
+			this.ResetAllAnimations();
+			
+			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "All 'End If' controls must have a matching 'If Clear'", this.ResetAfterUserError);
+								
+			main.addChild(alertView);
+		}
+		
 		private function MissingIfClearEnd()
 		{
 			this.ResetAllAnimations();
@@ -251,11 +261,20 @@
 			main.addChild(alertView);
 		}
 		
+		private function MissingElseClear()
+		{
+			this.ResetAllAnimations();
+			
+			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "All 'End Else' controls must have a matching 'Else'", this.ResetAfterUserError);
+								
+			main.addChild(alertView);
+		}
+		
 		private function MissingElseClearEnd()
 		{
 			this.ResetAllAnimations();
 			
-			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "All 'Else ' controls must end with an 'End Else'", this.ResetAfterUserError);
+			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "All 'Else' controls must end with an 'End Else'", this.ResetAfterUserError);
 								
 			main.addChild(alertView);
 		}
@@ -364,29 +383,18 @@
 							}
 						}
 						
+						var controlIfClearEndExists:ControlExists = this.ControlExistsAfter(Control.CONTROL_IF_CLEAR_END, stackPos);
+
+						// Display error that there is no if clear end
+						if (controlIfClearEndExists.exists == false)
+						{
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingIfClearEnd }));
+							return;
+						}
+						
 						if (flashlightOn == false)
 						{
 							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingFlashLight }));
-							break;
-						}
-					
-						var controlIfClearEndExists:Boolean = false;
-						var ifClearEndPosition:Number = 0;
-						
-						// Does CONTROL_IF_CLEAR_END exist?
-						for (var i = stackPos; i < pacmanSequence.length; i++)
-						{
-							if (pacmanSequence[i] == Control.CONTROL_IF_CLEAR_END)
-							{
-								controlIfClearEndExists = true;
-								ifClearEndPosition = i;
-							}
-						}
-						
-						// Display error that there is no if clear end
-						if (controlIfClearEndExists == false)
-						{
-							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingIfClearEnd }));
 							break;
 						}
 							
@@ -398,18 +406,29 @@
 						}else{
 							// Go to CONTORL_IF_CLEAR_END
 							trace("There is a monster!");
-							stackPos = ifClearEndPosition;
+							stackPos = controlIfClearEndExists.position;
 						}
 					break;
 					case Control.CONTROL_IF_CLEAR_END:
+						// Check there is a matching IF_CLEAR
+						var controlIfClearExists:ControlExists = this.ControlExistsBefore(Control.CONTROL_IF_CLEAR, stackPos);
+
+						if (controlIfClearExists.exists == false)
+						{
+							this.MissingIfClear();
+							return;
+						}
+						
+						// Check if the next control is a CONTROL_ELSE_CLEAR
 						var nextPos:Number = stackPos + 1;
-					
+						
 						if (pacmanSequence[nextPos] == Control.CONTROL_ELSE_CLEAR)
 						{
 							
 							trace("Next control: " + Control.CONTROL_ELSE_CLEAR);
 
-							var controlIfElseClearEndExists:Boolean = false;
+							var controlIfElseClearEndExists:ControlExists = this.ControlExistsAfter(Control.CONTROL_ELSE_CLEAR_END, stackPos);
+							/*
 							var ifElseClearEndPosition:Number = 0;
 							
 							// Does CONTROL_IF_ELSE_CLEAR_END exist?
@@ -421,17 +440,36 @@
 									ifElseClearEndPosition = p;
 								}
 							}
+							*/
 							
 							trace("controlIfElseClearEndExists: " + controlIfElseClearEndExists);
 							
 							// Display error that there is no if clear end
-							if (controlIfElseClearEndExists == false)
+							if (controlIfElseClearEndExists.exists == false)
 							{
 								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingElseClearEnd }));
-								break;
+								return;
 							}
 							
-							stackPos = ifElseClearEndPosition;
+							stackPos = controlIfElseClearEndExists.position;
+						}
+					break;
+					case Control.CONTROL_ELSE_CLEAR:
+						var controlElseClearEndExists:ControlExists = this.ControlExistsAfter(Control.CONTROL_ELSE_CLEAR_END, stackPos);
+					
+						if (controlElseClearEndExists.exists == false)
+						{
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingElseClearEnd }));
+							return;
+						}
+					break;
+					case Control.CONTROL_ELSE_CLEAR_END:
+						var controlElseClearExists:ControlExists = this.ControlExistsBefore(Control.CONTROL_ELSE_CLEAR, stackPos);
+					
+						if (controlElseClearExists.exists == false)
+						{
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingElseClear }));
+							return;
 						}
 					break;
 					case Control.ACTION_FLASHLIGHT:
@@ -523,6 +561,28 @@
 			this.monsterTimeline.reverse();
 		}
 		
+		private function ControlExistsBefore(controlName:String, fromPosition:Number):ControlExists
+		{
+			for (var i = fromPosition; i > 0; i--)
+			{
+				if (pacmanSequence[i] == controlName)
+					return new ControlExists(true, i);
+			}
+			
+			return new ControlExists();
+		}
+		
+		private function ControlExistsAfter(controlName:String, fromPosition:Number):ControlExists
+		{
+			for (var i = fromPosition; i < pacmanSequence.length; i++)
+			{
+				if (pacmanSequence[i] == controlName)
+					return new ControlExists(true, i);
+			}
+			
+			return new ControlExists();
+		}
+		
 		//********************//
 		// NEXT LEVEL METHODS //
 		//********************//
@@ -547,5 +607,16 @@
 			return null;
 		}
 	}
+}
+
+class ControlExists
+{
+	public var exists:Boolean;
+	public var position:Number;
 	
+	public function ControlExists(controlExists:Boolean = false, controlPosition:Number = 0)
+	{
+		this.exists = controlExists;
+		this.position = controlPosition;
+	}
 }

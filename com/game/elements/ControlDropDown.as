@@ -36,7 +36,6 @@
 		// INIT //
 		//******//
 		private function init(e:Event):void {
-			trace("init");
             removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 			this.gotoAndStop(1);
