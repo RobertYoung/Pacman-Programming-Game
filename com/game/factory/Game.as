@@ -28,6 +28,8 @@
 		public static const PACMAN_SOUTH:String = "pacman_south";
 		public static const PACMAN_WEST:String = "pacman_west";
 		
+		private static const LABEL_FLASHLIGHT_ON:String = "flashlight_on";
+		
 		private var main:Main;
 		private var pacmanSequence:Array = new Array();
 		private var pacmanTimeline:TimelineMax = new TimelineMax();
@@ -235,9 +237,36 @@
 		{
 			this.ResetAllAnimations();
 			
-			var incorrectSequenceAlertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "Take it a step at a time", this.ResetAfterUserError);
+			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "Take it a step at a time", this.ResetAfterUserError);
 								
-			main.addChild(incorrectSequenceAlertView);
+			main.addChild(alertView);
+		}
+		
+		private function MissingIfClearEnd()
+		{
+			this.ResetAllAnimations();
+			
+			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "All 'If Clear' controls must end with an 'End If'", this.ResetAfterUserError);
+								
+			main.addChild(alertView);
+		}
+		
+		private function MissingElseClearEnd()
+		{
+			this.ResetAllAnimations();
+			
+			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "All 'Else ' controls must end with an 'End Else'", this.ResetAfterUserError);
+								
+			main.addChild(alertView);
+		}
+		
+		private function MissingFlashLight()
+		{
+			this.ResetAllAnimations();
+			
+			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "Pacman can't see if the hole is clear. Try using the flashlight", this.ResetAfterUserError);
+								
+			main.addChild(alertView);
 		}
 		
 		private function LevelComplete()
@@ -253,9 +282,9 @@
 		private function CompileSequence()
 		{
 			trace(pacmanSequence);
-			for (var stack in pacmanSequence)
+			for (var stackPos = 0; stackPos < pacmanSequence.length; stackPos++)
 			{
-				switch(pacmanSequence[stack])
+				switch(pacmanSequence[stackPos])
 				{
 					case null:
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: NoControlAdded }));
@@ -321,8 +350,93 @@
 						pacmanRotationZ += 90;
 						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ, onStart: this.TurnFlashLightOff }));
 					break;
+					case Control.CONTROL_IF_CLEAR:
+						// Check if flashlight is on
+						var pacmanLabelsArray = pacmanTimeline.getLabelsArray();
+						var flashlightOn:Boolean = false;
+					
+						for (var pacmanLabel in pacmanLabelsArray)
+						{
+							if (pacmanLabelsArray[pacmanLabel].name == Game.LABEL_FLASHLIGHT_ON)
+							{
+								if (pacmanLabelsArray[pacmanLabel].time == pacmanTimeline.duration())
+									flashlightOn = true;
+							}
+						}
+						
+						if (flashlightOn == false)
+						{
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingFlashLight }));
+							break;
+						}
+					
+						var controlIfClearEndExists:Boolean = false;
+						var ifClearEndPosition:Number = 0;
+						
+						// Does CONTROL_IF_CLEAR_END exist?
+						for (var i = stackPos; i < pacmanSequence.length; i++)
+						{
+							if (pacmanSequence[i] == Control.CONTROL_IF_CLEAR_END)
+							{
+								controlIfClearEndExists = true;
+								ifClearEndPosition = i;
+							}
+						}
+						
+						// Display error that there is no if clear end
+						if (controlIfClearEndExists == false)
+						{
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingIfClearEnd }));
+							break;
+						}
+							
+						// If monster hole is null, hole is clear
+						if (this.monsterHole == null)
+						{
+							trace("Hole is clear");
+							// Play sequence until ifClearEndPosision
+						}else{
+							// Go to CONTORL_IF_CLEAR_END
+							trace("There is a monster!");
+							stackPos = ifClearEndPosition;
+						}
+					break;
+					case Control.CONTROL_IF_CLEAR_END:
+						var nextPos:Number = stackPos + 1;
+					
+						if (pacmanSequence[nextPos] == Control.CONTROL_ELSE_CLEAR)
+						{
+							
+							trace("Next control: " + Control.CONTROL_ELSE_CLEAR);
+
+							var controlIfElseClearEndExists:Boolean = false;
+							var ifElseClearEndPosition:Number = 0;
+							
+							// Does CONTROL_IF_ELSE_CLEAR_END exist?
+							for (var p = stackPos; p < pacmanSequence.length; p++)
+							{
+								if (pacmanSequence[p] == Control.CONTROL_ELSE_CLEAR_END)
+								{
+									controlIfElseClearEndExists = true;
+									ifElseClearEndPosition = p;
+								}
+							}
+							
+							trace("controlIfElseClearEndExists: " + controlIfElseClearEndExists);
+							
+							// Display error that there is no if clear end
+							if (controlIfElseClearEndExists == false)
+							{
+								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingElseClearEnd }));
+								break;
+							}
+							
+							stackPos = ifElseClearEndPosition;
+						}
+					break;
 					case Control.ACTION_FLASHLIGHT:
-						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { frame: 20, useFrames: true, ease:Linear.easeNone, onStart: this.ShowMonster}));
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { frame: 20, useFrames: true, ease:Linear.easeNone, onStart: this.ShowMonster }));
+						pacmanTimeline.addLabel(Game.LABEL_FLASHLIGHT_ON);
 						
 						// The next grid
 						// Gets the current grid placeholder of pacman
