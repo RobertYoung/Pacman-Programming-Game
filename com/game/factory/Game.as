@@ -32,7 +32,7 @@
 		private var pacmanSequence:Array = new Array();
 		private var pacmanTimeline:TimelineMax = new TimelineMax();
 		private var pacmanStage:MovieClip;
-		private var pacmanMC:DisplayObject;
+		private var pacmanMC:MovieClip;
 		private var pacmanPoint:Point;
 		private var pacmanRotationZ:int;
 		private var currentGridPlaceholder:GridPlaceholder;
@@ -59,7 +59,7 @@
 			
 			// Create variables for the movie clips
 			pacmanStage = main.getChildByName(Game.SWF_PACMAN_STAGE)["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
-			pacmanMC = pacmanStage.getChildByName(Grid.PACMAN);
+			pacmanMC = pacmanStage.getChildByName(Grid.PACMAN) as MovieClip;
 			
 			if (pacmanMC == null) 
 				throw new Error("Pacman MovieClip not found on Pacman Stage");
@@ -301,7 +301,7 @@
 								var point:Point = new Point(nextGridPlaceholder.x, nextGridPlaceholder.y);
 							
 								// Create animation
-								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: nextGridPlaceholder.x, y: nextGridPlaceholder.y, onComplete: UpdatePacmanStage, onCompleteParams: [ this.nextPacmanPoint ] }));
+								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: nextGridPlaceholder.x, y: nextGridPlaceholder.y, onComplete: UpdatePacmanStage, onCompleteParams: [ this.nextPacmanPoint ], onStart: this.TurnFlashLightOff }));
 								
 								pacmanPoint = this.nextPacmanPoint;
 							}else{
@@ -315,14 +315,14 @@
 					break;
 					case Control.MOVEMENT_LEFT:
 						pacmanRotationZ -= 90;
-						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ, onStart: this.TurnFlashLightOff }));
 					break;
 					case Control.MOVEMENT_RIGHT:
 						pacmanRotationZ += 90;
-						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ }));
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { rotationZ: pacmanRotationZ, onStart: this.TurnFlashLightOff }));
 					break;
 					case Control.ACTION_FLASHLIGHT:
-						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { frame: 20, onStart: this.ShowMonster, useFrames: true, ease:Linear.easeNone}));
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { frame: 20, useFrames: true, ease:Linear.easeNone, onStart: this.ShowMonster}));
 						
 						// The next grid
 						// Gets the current grid placeholder of pacman
@@ -400,6 +400,13 @@
 		private function ShowMonster()
 		{
 			this.monsterTimeline.play();
+		}
+		
+		private function TurnFlashLightOff()
+		{
+			this.pacmanMC.gotoAndStop(1);
+			this.monsterTimeline.timeScale(4);
+			this.monsterTimeline.reverse();
 		}
 		
 		//********************//
