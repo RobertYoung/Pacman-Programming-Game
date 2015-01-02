@@ -288,6 +288,15 @@
 			main.addChild(alertView);
 		}
 		
+		private function MissingHoleCheck()
+		{
+			this.ResetAllAnimations();
+			
+			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "You need to check if the hole is clear first before moving over it", this.ResetAfterUserError);
+								
+			main.addChild(alertView);
+		}
+		
 		private function LevelComplete()
 		{
 			trace("COMPLETE: Next Level...");
@@ -345,6 +354,16 @@
 							// Check that pacman is allowed to move into next block
 							if (nextGridBlock.allowedPaths.getPos(oppositePacmanCardinalDirection) != null)
 							{
+								// Check if the next grid block is a hole
+								if (this.nextGridPlaceholder.ElementExists(Grid.HOLE))
+								{
+									// If it is, check if it has been checked for monsters
+									if (pacmanSequence[stackPos - 1] != Control.CONTROL_IF_CLEAR)
+									{
+										pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingHoleCheck }));
+									}
+								}
+								
 								// Store new grid position
 								var point:Point = new Point(nextGridPlaceholder.x, nextGridPlaceholder.y);
 							
@@ -489,7 +508,7 @@
 						this.GetNextGridPlaceholder();
 						
 						// Checks if the placeholder has a hole
-						if (this.nextGridPlaceholder.getChildByName(Grid.HOLE))
+						if (this.nextGridPlaceholder.ElementExists(Grid.HOLE))
 						{
 							var hole:Hole = this.nextGridPlaceholder.getChildByName(Grid.HOLE) as Hole;
 							

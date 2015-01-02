@@ -32,42 +32,103 @@
 // public static const MONSTER_CLYDE:String = "MONSTER_CLYDE";
 // public static const MONSTER_INKY:String = "MONSTER_INKY";
 // public static const MONSTER_PINKY:String = "MONSTER_PINKY";
+
 {
   "row": {
+    "2": {
+      "column": {
+        "2": {
+          "gridBlock": "LEFT_DOWN"
+        },
+        "3": {
+          "gridBlock": "HORIZONTAL"
+        },
+        "4": {
+          "gridBlock": "HORIZONTAL"
+        },
+        "5": {
+          "gridBlock": "RIGHT_DOWN"
+        }
+      }
+    },
+    "3": {
+      "column": {
+        "2": {
+          "gridBlock": "LEFT_UP"
+        },
+        "3": {
+          "gridBlock": "HORIZONTAL"
+        },
+        "4": {
+          "gridBlock": "END_RIGHT",
+          "pacmanStart": true
+        },
+        "5": {
+          "gridBlock": "T_VERTICAL_RIGHT"
+        },
+        "6": {
+          "gridBlock": "RIGHT_DOWN",
+          "hole": true
+        }
+      }
+    },
     "4": {
       "column": {
+        "2": {
+          "gridBlock": "LEFT_DOWN",
+          "key": {
+            "isKey": true,
+            "numberOfKeys": 1
+          }
+        },
+        "3": {
+          "gridBlock": "HORIZONTAL"
+        },
         "4": {
-          "gridBlock": "LEFT_DOWN"
-        }, 
+          "gridBlock": "HORIZONTAL" 
+        },
         "5": {
-          "gridBlock": "T_HORIZONTAL_DOWN",
+          "gridBlock": "RIGHT_UP",
           "hole": true
-        }, 
+        },
         "6": {
-          "gridBlock": "RIGHT_DOWN"
+          "gridBlock": "VERTICAL"
         }
       }
     },
     "5": {
       "column": {
+        "2": {
+          "gridBlock": "LEFT_UP"
+        },
         "3": {
-          "gridBlock": "END_LEFT",
-          "pacmanStart": true     
+          "gridBlock": "HORIZONTAL"
         },
         "4": {
-          "gridBlock": "T_HORIZONTAL_UP"
-        }, 
+          "gridBlock": "T_HORIZONTAL_DOWN"
+        },
         "5": {
-          "gridBlock": "T_HORIZONTAL_UP",
-          "hole": true
+          "gridBlock": "HORIZONTAL"      
         },
         "6": {
-          "gridBlock": "T_HORIZONTAL_UP"      
-        },
-        "7": {
-          "gridBlock": "END_RIGHT",
+          "gridBlock": "RIGHT_UP"
+        }
+      }
+    },
+    "6": {
+      "column": {
+        "4": {
+          "gridBlock": "VERTICAL",
+          "door": true
+        }
+      }
+    },
+    "7": {
+      "column": {
+        "4": {
+          "gridBlock": "END_DOWN",
           "reward": "REWARD_APPLE"
-        }   
+        }
       }
     }
   }

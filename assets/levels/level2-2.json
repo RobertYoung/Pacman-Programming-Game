@@ -32,42 +32,83 @@
 // public static const MONSTER_CLYDE:String = "MONSTER_CLYDE";
 // public static const MONSTER_INKY:String = "MONSTER_INKY";
 // public static const MONSTER_PINKY:String = "MONSTER_PINKY";
+
 {
   "row": {
-    "4": {
+    "2": {
       "column": {
-        "4": {
+        "3": {
           "gridBlock": "LEFT_DOWN"
         }, 
+        "4": {
+          "gridBlock": "HORIZONTAL"
+        }, 
         "5": {
-          "gridBlock": "T_HORIZONTAL_DOWN",
-          "hole": true
+          "gridBlock": "HORIZONTAL"
         }, 
         "6": {
           "gridBlock": "RIGHT_DOWN"
         }
       }
     },
+    "3": {
+      "column": {
+        "3": {
+          "gridBlock": "VERTICAL"   
+        },
+        "6": {
+          "gridBlock": "VERTICAL"      
+        } 
+      }
+    },
+    "4": {
+      "column": {
+        "3": {
+          "gridBlock": "VERTICAL",
+          "hole": true 
+        },
+        "6": {
+          "gridBlock": "VERTICAL"      
+        } 
+      }
+    },
     "5": {
       "column": {
         "3": {
-          "gridBlock": "END_LEFT",
-          "pacmanStart": true     
+          "gridBlock": "T_VERTICAL_RIGHT"
         },
         "4": {
-          "gridBlock": "T_HORIZONTAL_UP"
+          "gridBlock": "HORIZONTAL",
+          "hole": true
         }, 
         "5": {
-          "gridBlock": "T_HORIZONTAL_UP",
-          "hole": true
+          "gridBlock": "HORIZONTAL"
         },
         "6": {
-          "gridBlock": "T_HORIZONTAL_UP"      
+          "gridBlock": "T_VERTICAL_LEFT"      
+        } 
+      }
+    },
+    "6": {
+      "column": {
+        "3": {
+          "gridBlock": "VERTICAL"     
         },
-        "7": {
-          "gridBlock": "END_RIGHT",
-          "reward": "REWARD_APPLE"
-        }   
+        "6": {
+          "gridBlock": "VERTICAL"      
+        } 
+      }
+    },
+    "7": {
+      "column": {
+        "3": {
+          "gridBlock": "END_DOWN",
+          "pacmanStart": true     
+        },
+        "6": {
+          "gridBlock": "END_DOWN",
+          "reward": "REWARD_APPLE"      
+        } 
       }
     }
   }

@@ -32,42 +32,107 @@
 // public static const MONSTER_CLYDE:String = "MONSTER_CLYDE";
 // public static const MONSTER_INKY:String = "MONSTER_INKY";
 // public static const MONSTER_PINKY:String = "MONSTER_PINKY";
+
 {
   "row": {
+    "3": {
+      "column": {
+        "2": {
+          "gridBlock": "LEFT_DOWN",
+          "hole": true
+        },
+        "3": {
+          "gridBlock": "HORIZONTAL"
+        },
+        "4": {
+          "gridBlock": "HORIZONTAL",
+          "pacmanStart": true
+        },
+        "5": {
+          "gridBlock": "HORIZONTAL"
+        },
+        "6": {
+          "gridBlock": "RIGHT_DOWN",
+          "hole": true
+        }
+      }
+    },
     "4": {
       "column": {
+        "2": {
+          "gridBlock": "VERTICAL"
+        },
         "4": {
-          "gridBlock": "LEFT_DOWN"
-        }, 
-        "5": {
-          "gridBlock": "T_HORIZONTAL_DOWN",
-          "hole": true
-        }, 
+          "gridBlock": "END_UP",
+          "reward": "REWARD_APPLE"
+        },
         "6": {
-          "gridBlock": "RIGHT_DOWN"
+          "gridBlock": "VERTICAL"
         }
       }
     },
     "5": {
       "column": {
+        "2": {
+          "gridBlock": "T_VERTICAL_RIGHT"
+        },
         "3": {
-          "gridBlock": "END_LEFT",
-          "pacmanStart": true     
+          "gridBlock": "T_HORIZONTAL_DOWN"
         },
         "4": {
-          "gridBlock": "T_HORIZONTAL_UP"
-        }, 
-        "5": {
           "gridBlock": "T_HORIZONTAL_UP",
-          "hole": true
+          "door": true 
+        },
+        "5": {
+          "gridBlock": "T_HORIZONTAL_DOWN",
+          "monster": "MONSTER_INKY"
         },
         "6": {
-          "gridBlock": "T_HORIZONTAL_UP"      
+          "gridBlock": "T_VERTICAL_LEFT"
+        }
+      }
+    },
+    "6": {
+      "column": {
+        "2": {
+          "gridBlock": "T_VERTICAL_RIGHT"
         },
-        "7": {
-          "gridBlock": "END_RIGHT",
-          "reward": "REWARD_APPLE"
-        }   
+        "3": {
+          "gridBlock": "CROSSROADS",
+          "monster": "MONSTER_BLINKY"
+        },
+        "4": {
+          "gridBlock": "HORIZONTAL"
+        },
+        "5": {
+          "gridBlock": "CROSSROADS"      
+        },
+        "6": {
+          "gridBlock": "T_VERTICAL_LEFT"
+        }
+      }
+    },
+    "7": {
+      "column": {
+        "2": {
+          "gridBlock": "LEFT_UP",
+          "key": {
+            "isKey": true,
+            "numberOfKeys": 1
+          }
+        },
+        "3": {
+          "gridBlock": "T_HORIZONTAL_UP"
+        },
+        "4": {
+          "gridBlock": "HORIZONTAL"
+        },
+        "5": {
+          "gridBlock": "T_HORIZONTAL_UP"
+        },
+        "6": {
+          "gridBlock": "RIGHT_UP"
+        }
       }
     }
   }

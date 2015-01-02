@@ -32,42 +32,69 @@
 // public static const MONSTER_CLYDE:String = "MONSTER_CLYDE";
 // public static const MONSTER_INKY:String = "MONSTER_INKY";
 // public static const MONSTER_PINKY:String = "MONSTER_PINKY";
+
 {
   "row": {
+    "3": {
+      "column": {
+        "5": {
+          "gridBlock": "END_UP",
+          "pacmanStart": true
+        }
+      }
+    },
     "4": {
       "column": {
-        "4": {
-          "gridBlock": "LEFT_DOWN"
-        }, 
         "5": {
-          "gridBlock": "T_HORIZONTAL_DOWN",
-          "hole": true
-        }, 
-        "6": {
-          "gridBlock": "RIGHT_DOWN"
+          "gridBlock": "VERTICAL"
         }
       }
     },
     "5": {
       "column": {
-        "3": {
-          "gridBlock": "END_LEFT",
-          "pacmanStart": true     
-        },
-        "4": {
-          "gridBlock": "T_HORIZONTAL_UP"
-        }, 
         "5": {
-          "gridBlock": "T_HORIZONTAL_UP",
-          "hole": true
+          "gridBlock": "T_VERTICAL_RIGHT"
         },
         "6": {
-          "gridBlock": "T_HORIZONTAL_UP"      
+          "gridBlock": "HORIZONTAL",
+          "door": true
         },
         "7": {
           "gridBlock": "END_RIGHT",
-          "reward": "REWARD_APPLE"
-        }   
+          "reward": "REWARD_APPLE"      
+        }
+      }
+    },
+    "6": {
+      "column": {
+        "3": {
+          "gridBlock": "LEFT_DOWN"
+        },
+        "4": {
+          "gridBlock": "HORIZONTAL",
+          "hole": true
+        },
+        "5": {
+          "gridBlock": "T_VERTICAL_LEFT"      
+        }
+      }
+    },
+    "7": {
+      "column": {
+        "3": {
+          "gridBlock": "LEFT_UP",
+          "key": {
+            "isKey": true,
+            "numberOfKeys": 1
+          }
+        },
+        "4": {
+          "gridBlock": "HORIZONTAL",
+          "hole": true
+        },
+        "5": {
+          "gridBlock": "RIGHT_UP"      
+        }
       }
     }
   }

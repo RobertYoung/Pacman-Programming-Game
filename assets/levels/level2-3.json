@@ -32,6 +32,7 @@
 // public static const MONSTER_CLYDE:String = "MONSTER_CLYDE";
 // public static const MONSTER_INKY:String = "MONSTER_INKY";
 // public static const MONSTER_PINKY:String = "MONSTER_PINKY";
+
 {
   "row": {
     "4": {
@@ -52,22 +53,36 @@
       "column": {
         "3": {
           "gridBlock": "END_LEFT",
-          "pacmanStart": true     
+          "pacmanStart": true
         },
         "4": {
-          "gridBlock": "T_HORIZONTAL_UP"
-        }, 
+          "gridBlock": "CROSSROADS"      
+        },
+        "5": {
+          "gridBlock": "CROSSROADS",
+          "hole": true
+        },
+        "6": {
+          "gridBlock": "CROSSROADS"      
+        },
+        "7": {
+          "gridBlock": "END_RIGHT",
+          "reward": "REWARD_APPLE"
+        }
+      }
+    },
+    "6": {
+      "column": {
+        "4": {
+          "gridBlock": "LEFT_UP"
+        },
         "5": {
           "gridBlock": "T_HORIZONTAL_UP",
           "hole": true
         },
         "6": {
-          "gridBlock": "T_HORIZONTAL_UP"      
-        },
-        "7": {
-          "gridBlock": "END_RIGHT",
-          "reward": "REWARD_APPLE"
-        }   
+          "gridBlock": "RIGHT_UP"      
+        }
       }
     }
   }

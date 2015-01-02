@@ -26,7 +26,7 @@
 		
 		public static const T_HORIZONTAL_DOWN:String = "T_HORIZONTAL_DOWN";
 		public static const T_HORIZONTAL_UP:String = "T_HORIZONTAL_UP";
-		public static const T_VERTCIAL_LEFT:String = "T_VERTICAl_LEFT";
+		public static const T_VERTCIAL_LEFT:String = "T_VERTICAL_LEFT";
 		public static const T_VERTICAL_RIGHT:String = "T_VERTICAL_RIGHT";
 		
 		public static const CROSSROADS:String = "CROSSROADS";
