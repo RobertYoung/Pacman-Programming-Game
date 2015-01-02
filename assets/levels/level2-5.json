@@ -61,7 +61,10 @@
         },
         "4": {
           "gridBlock": "END_RIGHT",
-          "pacmanStart": true
+          "pacman": {
+            "start": true,
+            "position": "pacman_west"
+          }
         },
         "5": {
           "gridBlock": "T_VERTICAL_RIGHT"

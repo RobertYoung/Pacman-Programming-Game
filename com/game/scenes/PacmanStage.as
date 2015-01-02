@@ -155,6 +155,7 @@
 					pacman.x = gbPlaceholder.x;
 					pacman.y = gbPlaceholder.y;
 					pacman.name = Grid.PACMAN;
+					pacman.SetPosition(level.grids[i].pacmanPosition);
 					
 					this.addChild(pacman);
 				}else if (level.grids[i].apple == true){

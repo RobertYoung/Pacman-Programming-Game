@@ -52,7 +52,6 @@
 		{
 			game = new Game(this);
 			
-			trace("RESET AFTER USER ERROR");
 			this.removeChild(this.getChildByName(Game.SWF_HEADER));
 			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE));
 			

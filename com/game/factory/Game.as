@@ -73,6 +73,9 @@
 			// Find which grid position Pacman is currently at
 			FindPacmanGridPoint()
 			
+			// Sets the pacman rotationZ to the pacman stored rotationZ which is set from the JSON data
+			this.pacmanRotationZ = this.pacmanMC.rotationZ;
+			
 			// Go throw the controls in the array and identify the action 
 			// pacman should take
 			CompileSequence();
@@ -358,7 +361,7 @@
 								if (this.nextGridPlaceholder.ElementExists(Grid.HOLE))
 								{
 									// If it is, check if it has been checked for monsters
-									if (pacmanSequence[stackPos - 1] != Control.CONTROL_IF_CLEAR)
+									if (!this.ControlExistsBefore(Control.ACTION_FLASHLIGHT, stackPos).exists)
 									{
 										pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingHoleCheck }));
 									}
@@ -443,25 +446,7 @@
 						
 						if (pacmanSequence[nextPos] == Control.CONTROL_ELSE_CLEAR)
 						{
-							
-							trace("Next control: " + Control.CONTROL_ELSE_CLEAR);
-
 							var controlIfElseClearEndExists:ControlExists = this.ControlExistsAfter(Control.CONTROL_ELSE_CLEAR_END, stackPos);
-							/*
-							var ifElseClearEndPosition:Number = 0;
-							
-							// Does CONTROL_IF_ELSE_CLEAR_END exist?
-							for (var p = stackPos; p < pacmanSequence.length; p++)
-							{
-								if (pacmanSequence[p] == Control.CONTROL_ELSE_CLEAR_END)
-								{
-									controlIfElseClearEndExists = true;
-									ifElseClearEndPosition = p;
-								}
-							}
-							*/
-							
-							trace("controlIfElseClearEndExists: " + controlIfElseClearEndExists);
 							
 							// Display error that there is no if clear end
 							if (controlIfElseClearEndExists.exists == false)

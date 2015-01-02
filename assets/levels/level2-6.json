@@ -46,7 +46,9 @@
         },
         "4": {
           "gridBlock": "HORIZONTAL",
-          "pacmanStart": true
+          "pacman": {
+            "start": true
+          }
         },
         "5": {
           "gridBlock": "HORIZONTAL"

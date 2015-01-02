@@ -12,7 +12,6 @@
 		public var movementSelect_mc:MovieClip;
 		
 		public function Controls() {
-			trace("Control Constructor");
 			flash.system.Security.allowDomain("*");
 
 			this.SwitchToMovement();
@@ -150,8 +149,6 @@
 			// Remove controls starting for the end of the array
 			for (var i = (this.numChildren - 1); i > 0; i--)
 			{
-				trace(this.getChildAt(i).name);
-				//trace(this.getChildAt(i).name);
 				var pattern:RegExp = /^movement_|control_|action_/;
 				
 				if (pattern.test(this.getChildAt(i).name))

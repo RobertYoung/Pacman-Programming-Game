@@ -1,6 +1,7 @@
 ﻿package com.game.elements {
 	
 	import com.game.objects.KeyObject;
+	import com.game.factory.Game;
 	
 	public class Grid {		
 		
@@ -63,6 +64,7 @@
 		public var col:int;
 		public var gridBlock:String;
 		public var pacmanStart:Boolean = false;
+		public var pacmanPosition:String = Game.PACMAN_EAST;
 		public var apple:Boolean = false;
 		public var cherry:Boolean = false;
 		public var strawberry:Boolean = false;
@@ -92,8 +94,11 @@
 			gridBlock = newGridBlock;
 		}
 		
-		public function SetPacmanStart(newPacmanStart:Boolean) {
-			pacmanStart = newPacmanStart;
+		public function SetPacmanStart(newPacman:Object) {
+			pacmanStart = newPacman.start;
+			
+			if (newPacman.position)
+				pacmanPosition = newPacman.position;
 		}
 		
 		public function SetReward(newReward:String) {

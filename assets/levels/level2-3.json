@@ -53,7 +53,9 @@
       "column": {
         "3": {
           "gridBlock": "END_LEFT",
-          "pacmanStart": true
+          "pacman": {
+            "start": true
+          }
         },
         "4": {
           "gridBlock": "CROSSROADS"      

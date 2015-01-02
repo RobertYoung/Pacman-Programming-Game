@@ -39,7 +39,10 @@
       "column": {
         "5": {
           "gridBlock": "END_UP",
-          "pacmanStart": true
+          "pacman": {
+            "start": true,
+            "position": "pacman_south"
+          }
         }
       }
     },

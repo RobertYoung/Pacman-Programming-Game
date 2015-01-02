@@ -107,8 +107,8 @@
 								grid.SetGridBlock(jsonGridData.gridBlock);
 							
 							// Get Pacman start position
-							if (jsonGridData.pacmanStart)
-								grid.SetPacmanStart(jsonGridData.pacmanStart);
+							if (jsonGridData.pacman)
+								grid.SetPacmanStart(jsonGridData.pacman);
 							
 							// Get reward
 							if (jsonGridData.reward)
@@ -168,10 +168,11 @@
 			// Randomly select a grid
 			var randomNumber = (Math.floor(Math.random() * ((gridsWithHole.length - 1) - 0 + 1)) + 0);
 			
-			trace("RandomNumber: " + randomNumber);
+			trace("Random Monster Number: " + randomNumber);
 			
 			// Set the randomly selected grid with hole to true for a monster
-			grids[gridsWithHole[randomNumber]].holeWithMonster = true;
+			if (gridsWithHole.length > 0)
+				grids[gridsWithHole[randomNumber]].holeWithMonster = true;
 		}
 	}
 	

@@ -54,7 +54,9 @@
         },
         "5": {
           "gridBlock": "END_LEFT",
-          "pacmanStart": true
+          "pacman": {
+            "start": true
+          }
         }, 
         "6": {
           "gridBlock": "RIGHT_UP"

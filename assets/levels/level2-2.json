@@ -103,7 +103,10 @@
       "column": {
         "3": {
           "gridBlock": "END_DOWN",
-          "pacmanStart": true     
+          "pacman": {
+            "start": true,
+            "position": "pacman_north"
+          }   
         },
         "6": {
           "gridBlock": "END_DOWN",

@@ -64,7 +64,10 @@
         },
         "6": {
           "gridBlock": "END_RIGHT",
-          "pacmanStart": true
+          "pacman": {
+            "start": true,
+            "position": "pacman_west"
+          }
         },
       }
     }
