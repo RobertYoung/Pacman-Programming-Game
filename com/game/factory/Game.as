@@ -15,6 +15,7 @@
 	import com.greensock.plugins.*;
 	import com.greensock.easing.*;
 	import com.game.controls.ControlElseHoleClear;
+	import com.greensock.TweenMax;
 	
 	public class Game {
 
@@ -46,6 +47,7 @@
 		private var nextGridBlock:GridBlock;
 		private var monsterTimeline:TimelineMax = new TimelineMax();
 		private var monsterHole;
+		private var pacmanKeys:Number = 0;
 
 		public function Game(mc:Main) {
 			main = mc;
@@ -169,13 +171,14 @@
 			// PACDOT
 			if (currentGridPlaceholder.ElementExists(Grid.PACDOT))
 				currentGridPlaceholder.RemoveChildByName(Grid.PACDOT);
-			
+			/*
 			if (currentGridPlaceholder.ElementExists(Grid.DOOR))
 				currentGridPlaceholder.RemoveChildByName(Grid.DOOR);
-			
+			*/
+			/*
 			if (currentGridPlaceholder.ElementExists(Grid.KEY))
 				currentGridPlaceholder.RemoveChildByName(Grid.KEY);
-			
+			*/
 			//**********//
 			// MONSTERS //
 			//**********//
@@ -228,76 +231,73 @@
 		//*************//
 		// ALERT VIEWS //
 		//*************//
-		private function NoControlAdded()
+		private function SequenceIncorrectAlertView(hint:String)
 		{
 			this.ResetAllAnimations();
 			
-			var alertView:AlertView = new AlertView("Alert", "The sequence you entered is not correct, please try again", "Are there any missing controls?", this.ResetAfterUserError);
+			var alertView:AlertView = new AlertView("Alert", "The sequence you entered is not correct, please try again", hint, this.ResetAfterUserError);
 			
 			main.addChild(alertView);
+		}
+		
+		private function NoControlAdded()
+		{
+			this.SequenceIncorrectAlertView("Are there any missing controls?");
 		}
 		
 		private function InvalidSequenceDueToPaths()
 		{
-			this.ResetAllAnimations();
-			
-			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "Take it a step at a time", this.ResetAfterUserError);
-								
-			main.addChild(alertView);
+			this.SequenceIncorrectAlertView("Take it a step at a time");
 		}
 		
 		private function MissingIfClear()
 		{
-			this.ResetAllAnimations();
-			
-			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "All 'End If' controls must have a matching 'If Clear'", this.ResetAfterUserError);
-								
-			main.addChild(alertView);
+			this.SequenceIncorrectAlertView("All 'End If' controls must have a matching 'If Clear'");
 		}
 		
 		private function MissingIfClearEnd()
 		{
-			this.ResetAllAnimations();
-			
-			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "All 'If Clear' controls must end with an 'End If'", this.ResetAfterUserError);
-								
-			main.addChild(alertView);
+			this.SequenceIncorrectAlertView("All 'If Clear' controls must end with an 'End If'");
 		}
 		
 		private function MissingElseClear()
 		{
-			this.ResetAllAnimations();
-			
-			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "All 'End Else' controls must have a matching 'Else'", this.ResetAfterUserError);
-								
-			main.addChild(alertView);
+			this.SequenceIncorrectAlertView("All 'End Else' controls must have a matching 'Else'");
 		}
 		
 		private function MissingElseClearEnd()
 		{
-			this.ResetAllAnimations();
-			
-			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "All 'Else' controls must end with an 'End Else'", this.ResetAfterUserError);
-								
-			main.addChild(alertView);
+			this.SequenceIncorrectAlertView("All 'Else' controls must end with an 'End Else'");
 		}
 		
 		private function MissingFlashLight()
 		{
-			this.ResetAllAnimations();
-			
-			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "Pacman can't see if the hole is clear. Try using the flashlight", this.ResetAfterUserError);
-								
-			main.addChild(alertView);
+			this.SequenceIncorrectAlertView("Pacman can't see if the hole is clear. Try using the flashlight");
 		}
 		
 		private function MissingHoleCheck()
 		{
-			this.ResetAllAnimations();
-			
-			var alertView:AlertView = new AlertView("Ooops", "The sequence you entered is not correct, please try again", "You need to check if the hole is clear first before moving over it", this.ResetAfterUserError);
-								
-			main.addChild(alertView);
+			this.SequenceIncorrectAlertView("You need to check if the hole is clear first before moving over it");
+		}
+		
+		private function NoKeyAlertView()
+		{
+			this.SequenceIncorrectAlertView("Are you sure there is a key to pick up in this grid?");
+		}
+		
+		private function NoKeyToOpenDoorAlertView()
+		{
+			this.SequenceIncorrectAlertView("You need a key to open the door");
+		}
+		
+		private function NoDoorAlertView()
+		{
+			this.SequenceIncorrectAlertView("There seems to be no door open");
+		}
+		
+		private function DoorInPath()
+		{
+			this.SequenceIncorrectAlertView("There is a door in the way! It needs a key and then unlocked to be opened");
 		}
 		
 		private function LevelComplete()
@@ -364,7 +364,15 @@
 									if (!this.ControlExistsBefore(Control.ACTION_FLASHLIGHT, stackPos).exists)
 									{
 										pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingHoleCheck }));
+										return;
 									}
+								}
+								
+								// Check if there is a door
+								if (this.currentGridPlaceholder.ElementExists(Grid.DOOR) && this.pacmanSequence[stackPos - 1] != Control.ACTION_USE_KEY)
+								{
+									pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.DoorInPath }));
+									return;
 								}
 								
 								// Store new grid position
@@ -506,6 +514,66 @@
 							}
 						}
 					break;
+					case Control.ACTION_PICK_UP_KEY:
+						// Gets the current grid placeholder of pacman
+						this.GetCurrentGridplaceholder();
+						// Gets the current grid block inside the place holder of pacman
+						this.GetCurrentGridBlock();
+					
+						var key:Key;
+					
+						if (this.currentGridPlaceholder.ElementExists(Grid.KEY))
+						{
+							key = this.currentGridPlaceholder.getChildByName(Grid.KEY) as Key;
+						}
+					
+						// Check if key exists in the current grid
+						if (key == null || key.key.actualNumberOfKeys == 0)
+						{
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.NoKeyAlertView }));
+							return;
+						}
+						
+						this.pacmanKeys++;
+						
+						// Check how many keys there are
+						if (key.key.actualNumberOfKeys > 1)
+						{
+							pacmanTimeline.add(new TweenMax(key, 1, { glowFilter: { color: 0xffffff, alpha: 1, blurX: 30, blurY: 30, strength: 2 }, ease: Sine.easeIn, onComplete: this.DecrementNumberOfKeys, onCompleteParams: [ key ] }));
+							pacmanTimeline.add(new TweenMax(key, 1, { glowFilter: { color: 0xffffff, alpha: 0, blurX: 30, blurY: 30 }, ease: Sine.easeIn }));
+						}else{
+							pacmanTimeline.add(new TweenMax(key, 0.8, { glowFilter: { color: 0xffffff, alpha: 1, blurX: 30, blurY: 30, strength: 2 }, ease: Sine.easeIn, onComplete: this.DecrementNumberOfKeys, onCompleteParams: [ key ] }));
+							pacmanTimeline.add(new TweenMax(key, 0.8, { glowFilter: { color: 0xffffff, alpha: 0, blurX: 30, blurY: 30 }, ease: Sine.easeIn }));
+							pacmanTimeline.add(new TweenLite(key, 0.4, { alpha: 0, onComplete: this.RemoveElement, onCompleteParams: [key] }));
+						}
+						
+						key.key.actualNumberOfKeys--;
+					break;
+					case Control.ACTION_USE_KEY:
+						// Gets the current grid placeholder of pacman
+						this.GetCurrentGridplaceholder();
+						// Gets the current grid block inside the place holder of pacman
+						this.GetCurrentGridBlock();
+					
+						if (!this.currentGridPlaceholder.ElementExists(Grid.DOOR))
+						{
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.NoDoorAlertView }));
+							return;
+						}
+					
+						// Validate pacman has a key to open the door
+						if (this.pacmanKeys < 1)
+						{
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.NoKeyToOpenDoorAlertView }));
+							return;
+						}
+						
+						var door = this.currentGridPlaceholder.getChildByName(Grid.DOOR);
+						
+						pacmanTimeline.add(new TweenLite(door, 2, { alpha: 0, onComplete: this.RemoveElement, onCompleteParams: [door] }));
+						
+						this.pacmanKeys--;
+					break;
 				}
 			}
 		}
@@ -553,6 +621,9 @@
 			nextGridBlock = nextGridPlaceholder.GetGridBlockMovieClip();
 		}
 		
+		//*********//
+		// ACTIONS //
+		//*********//
 		private function ShowMonster()
 		{
 			this.monsterTimeline.play();
@@ -563,6 +634,16 @@
 			this.pacmanMC.gotoAndStop(1);
 			this.monsterTimeline.timeScale(4);
 			this.monsterTimeline.reverse();
+		}
+		
+		private function DecrementNumberOfKeys(key:MovieClip)
+		{
+			key["numberOfKeys_txt"].text -= 1;
+		}
+		
+		private function RemoveElement(movieClip:MovieClip)
+		{
+			movieClip.parent.removeChild(movieClip);
 		}
 		
 		private function ControlExistsBefore(controlName:String, fromPosition:Number):ControlExists

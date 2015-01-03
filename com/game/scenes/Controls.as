@@ -133,12 +133,32 @@
 			var flashlight:ActionFlashlight = new ActionFlashlight();
 			
 			flashlight.name = Control.ACTION_FLASHLIGHT;
-			flashlight.x = 770;
+			flashlight.x = 380;
 			flashlight.y = 720;
-			flashlight.nX = 770;
+			flashlight.nX = 380;
 			flashlight.nY = 720;
 			
 			this.addChild(flashlight);
+			
+			var pickUpKey:ActionPickUpKey = new ActionPickUpKey();
+			
+			pickUpKey.name = Control.ACTION_PICK_UP_KEY;
+			pickUpKey.x = 623;
+			pickUpKey.y = 720;
+			pickUpKey.nX = 623;
+			pickUpKey.nY = 720;
+			
+			this.addChild(pickUpKey);
+			
+			var useKey:ActionUseKey = new ActionUseKey();
+			
+			useKey.name = Control.ACTION_USE_KEY;
+			useKey.x = 867;
+			useKey.y = 720;
+			useKey.nX = 867;
+			useKey.nY = 720;
+			
+			this.addChild(useKey);
 		}
 		
 		//********************//
