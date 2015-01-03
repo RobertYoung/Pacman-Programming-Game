@@ -87,7 +87,7 @@
 			controlsChild.addChild(newMovement);		}				public function DeleteControl()		{
 			this.parent.removeChild(this);		}				//**********//		// MOVEMENT //		//**********//		function MoveControlToControlArea()		{			this.x = nX;			this.y = nY;		}
 		
-		private function AddControlToStack(e:MouseEvent, stackPosition:Stack)
+		function AddControlToStack(e:MouseEvent, stackPosition:Stack)
 		{
 			e.target.removeEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromControlArea);
 			e.target.removeEventListener(MouseEvent.MOUSE_UP, OnMouseUpFromControlArea);					
