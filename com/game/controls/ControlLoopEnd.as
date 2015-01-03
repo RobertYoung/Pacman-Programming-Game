@@ -9,6 +9,9 @@
 		public function ControlLoopEnd() {
 			this.x = super.nX
 			this.y = super.nY;
+			
+			this.controlName = "Loop End";
+			this.controlDescription = "";
 		}
 	}
 	

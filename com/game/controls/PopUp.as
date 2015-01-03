@@ -7,12 +7,14 @@
 	public class PopUp extends MovieClip {
 		
 		public var delete_mc:MovieClip;
+		public var info_mc:MovieClip;
 		
 		private var controlMC:Control;
 		
 		public function PopUp(control:Control) {
 			delete_mc.addEventListener(MouseEvent.MOUSE_UP, DeleteControl);
-			
+			info_mc.addEventListener(MouseEvent.MOUSE_UP, InfoControl);
+			trace("Control: " + control.controlName);
 			controlMC = control;
 			
 			controlMC.stage.addEventListener(MouseEvent.MOUSE_UP, HidePopUp);
@@ -22,6 +24,14 @@
 		{
 			controlMC.stage.removeEventListener(MouseEvent.MOUSE_UP, HidePopUp);
 			controlMC.DeleteControl();
+		}
+		
+		function InfoControl(e:MouseEvent)
+		{
+			trace(controlMC.controlName);
+			var informationPopup:InformationPopup = new InformationPopup(controlMC.controlName, controlMC.controlDescription);
+			
+			this.stage.addChild(informationPopup);
 		}
 		
 		function HidePopUp(e:MouseEvent)

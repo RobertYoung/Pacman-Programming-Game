@@ -54,13 +54,14 @@
 			
 			this.removeChild(this.getChildByName(Game.SWF_HEADER));
 			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE));
+			this.removeChild(this.getChildByName(Game.SWF_CONTROLS));
 			
 			var queue:LoaderMax = new LoaderMax({ name:"mainQueue" });
 		
 			queue.append(new SWFLoader("header.swf", {name: Game.SWF_HEADER, container:this}));
 			queue.append(new SWFLoader("pacman_stage.swf", {name: Game.SWF_PACMAN_STAGE, container:this}));
 			//queue.append(new SWFLoader("pacman_code.swf", {name: Game.SWF_PACMAN_CODING_AREA, container:this}));
-			//queue.append(new SWFLoader("controls.swf", {name: Game.SWF_CONTROLS, container:this}));
+			queue.append(new SWFLoader("controls.swf", {name: Game.SWF_CONTROLS, container:this}));
 			
 			queue.load();
 		}

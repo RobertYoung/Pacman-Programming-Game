@@ -4,6 +4,7 @@
 	import com.game.factory.Game;
 	import com.game.scenes.Main;
 	import com.game.scenes.Controls;
+	import flash.events.Event;
 		public class Control extends MovieClip {		//***********//		// CONSTANTS //		//***********//		public static const MOVEMENT_FORWARD:String = "movement_forward";		public static const MOVEMENT_LEFT:String = "movement_left";		public static const MOVEMENT_RIGHT:String = "movement_right";
 		public static const CONTROL_IF_CLEAR:String = "control_if_clear";
 		public static const CONTROL_IF_CLEAR_END:String = "control_if_clear_end";
@@ -14,6 +15,11 @@
 		public static const ACTION_PICK_UP_KEY:String = "action_pick_up_key";
 		public static const ACTION_USE_KEY:String = "action_use_key";
 				//***********//		// VARIABLES //		//***********//		// Store point of where control dragged from		public var nX:int;		public var nY:int;
+		
+		// Information about the control
+		public var controlName:String;
+		public var controlDescription:String;
+		
 		
 		var movementForward:MovementForward;
 		var movementLeft:MovementLeft;
@@ -47,14 +53,23 @@
 		{
 			popupTimer.stop();
 		}		
+		function AddOnMouseDownFromStackAreaEvent(e:Event)
+		{
+			this.addEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromStackArea);
+		}
+		
 		//**********************//
 		// TIMER EVENT HANDLERS //
 		//**********************//
 		function TimerCompleteDisplayPopup (e:TimerEvent) {
+			this.removeEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromStackArea);
+			
 			var popup:PopUp = new PopUp(this);
 			
 			popup.x = mouseX;
 			popup.y = mouseY;
+			
+			popup.addEventListener(Event.REMOVED_FROM_STAGE, this.AddOnMouseDownFromStackAreaEvent);
 			
 			this.addChild(popup);
 		};
