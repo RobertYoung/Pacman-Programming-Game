@@ -16,6 +16,7 @@
 	import com.greensock.easing.*;
 	import com.game.controls.ControlElseHoleClear;
 	import com.greensock.TweenMax;
+	import com.game.controls.ControlLoop;
 	
 	public class Game {
 
@@ -35,6 +36,7 @@
 		private var main:Main;
 		private var pacmanSequence:Array = new Array();
 		private var pacmanTimeline:TimelineMax = new TimelineMax();
+		private var stackContainer:DisplayObject
 		private var pacmanStage:MovieClip;
 		private var pacmanMC:MovieClip;
 		private var pacmanPoint:Point;
@@ -48,6 +50,7 @@
 		private var monsterTimeline:TimelineMax = new TimelineMax();
 		private var monsterHole;
 		private var pacmanKeys:Number = 0;
+		private var loopArray:Array = new Array(); 
 
 		public function Game(mc:Main) {
 			main = mc;
@@ -102,12 +105,17 @@
 		private function AddControlsToArray()
 		{
 			// Get list of all the sequences on the stack
-			var stackContainer:DisplayObject = main.getChildByName(Game.SWF_PACMAN_CODING_AREA)["rawContent"]["pacmanCodingArea_mc"]["scrollArea_mc"]["stackContainer_mc"];
+			stackContainer = main.getChildByName(Game.SWF_PACMAN_CODING_AREA)["rawContent"]["pacmanCodingArea_mc"]["scrollArea_mc"]["stackContainer_mc"];
 			var stackLength = 1;
+			var inLoop:Boolean = false;
+			var loopArray:Array = new Array();
 			
 			while (stackContainer["stack" + stackLength] != null)
 			{
-				pacmanSequence.push(stackContainer["stack" + stackLength].controlInStack);
+				var controlInStack:String = stackContainer["stack" + stackLength].controlInStack;
+			
+				pacmanSequence.push(controlInStack);
+				
 				stackLength++;
 			}
 		}
@@ -300,6 +308,21 @@
 			this.SequenceIncorrectAlertView("There is a door in the way! It needs a key and then unlocked to be opened");
 		}
 		
+		private function NoLoopAmountInputted()
+		{
+			this.SequenceIncorrectAlertView("The loop control needs an amount entering - How many times should it loop?");
+		}
+		
+		private function IncorrectLoopAmountInputted()
+		{
+			this.SequenceIncorrectAlertView("The loop amount cannot be 0 or 1");
+		}
+		
+		private function MissingLoopEnd()
+		{
+			this.SequenceIncorrectAlertView("The Loop control needs a Loop End");
+		}
+		
 		private function LevelComplete()
 		{
 			trace("COMPLETE: Next Level...");
@@ -312,7 +335,6 @@
 		
 		private function CompileSequence()
 		{
-			trace(pacmanSequence);
 			for (var stackPos = 0; stackPos < pacmanSequence.length; stackPos++)
 			{
 				switch(pacmanSequence[stackPos])
@@ -574,6 +596,61 @@
 						
 						this.pacmanKeys--;
 					break;
+					case Control.CONTROL_LOOP:
+						// Gets the current grid placeholder of pacman
+						this.GetCurrentGridplaceholder();
+						// Gets the current grid block inside the place holder of pacman
+						this.GetCurrentGridBlock();
+					
+						var currentStack:Stack = this.stackContainer["stack" + (stackPos + 1)];
+						var loop:ControlLoop = currentStack.getChildByName(Control.CONTROL_LOOP) as ControlLoop;
+						var loopTimes:Number = loop.GetLoopTimes();
+					
+						// Checks if there is any number inputted for the loop amount
+						if (isNaN(loopTimes))
+						{
+							this.NoLoopAmountInputted();
+							return;
+						}
+						
+						// Checks to see if 0 or 1 has been inputted
+						if (loopTimes <= 1)
+						{
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.IncorrectLoopAmountInputted }));
+							return;
+						}
+						
+						var loopEndExists:ControlExists = this.ControlExistsAfter(Control.CONTROL_LOOP_END, stackPos);
+						
+						// Checks if there is a loop end
+						if (!loopEndExists.exists)
+						{
+							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingLoopEnd }));
+							return;
+						}
+						
+						var newLoop:Loop = new Loop(stackPos, loopTimes - 1);
+						
+						this.loopArray.unshift(newLoop);
+					break;
+					case Control.CONTROL_LOOP_END:
+						// Get the first loop in the array
+						var currentLoop:Loop = this.loopArray[0] as Loop;
+					
+						// If it doesnt' exist, carry on
+						if (currentLoop == null)
+							return;
+						
+						// Check the amount of times it needs to loop
+						if (currentLoop.amount > 0)
+						{
+							stackPos = currentLoop.startPosition;
+							currentLoop.amount--;
+						}else{
+							// If it reaches 0, remove it from the array (remove from 0 position)
+							this.loopArray.shift();
+						}
+					break;
 				}
 			}
 		}
@@ -703,5 +780,17 @@ class ControlExists
 	{
 		this.exists = controlExists;
 		this.position = controlPosition;
+	}
+}
+
+class Loop
+{
+	public var startPosition:Number;
+	public var amount:Number;
+	
+	public function Loop(setStartPosition:Number, setAmount:Number)
+	{
+		this.startPosition = setStartPosition;
+		this.amount = setAmount;
 	}
 }

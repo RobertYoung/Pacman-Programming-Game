@@ -26,6 +26,11 @@
 			
 			this.loopTimes_txt.restrict = "0-9";
 		}
+		
+		public function GetLoopTimes():Number
+		{
+			return parseInt(this.loopTimes_txt.text) as Number;
+		}
 	}
 	
 }

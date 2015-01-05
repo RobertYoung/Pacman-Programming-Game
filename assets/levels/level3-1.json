@@ -33,30 +33,31 @@
 // public static const MONSTER_INKY:String = "MONSTER_INKY";
 // public static const MONSTER_PINKY:String = "MONSTER_PINKY";
 
+// public static const PACMAN_NORTH:String = "pacman_north";
+// public static const PACMAN_EAST:String = "pacman_east";
+// public static const PACMAN_SOUTH:String = "pacman_south";
+// public static const PACMAN_WEST:String = "pacman_west";
+
 {
   "row": {
-    "3": {
+    "4": {
       "column": {
-        "2": {
+        "3": {
           "gridBlock": "END_LEFT",
           "pacman": {
             "start": true
           }
         },
-        "3": {
-          "gridBlock": "HORIZONTAL",
-          "key": {
-            "isKey": true,
-            "numberOfKeys": 3
-          }
-        },
         "4": {
-          "gridBlock": "HORIZONTAL",
-          "door": true
+          "gridBlock": "HORIZONTAL"
         },
         "5": {
-          "gridBlock": "END_RIGHT"
-        }
+          "gridBlock": "HORIZONTAL"
+        },
+        "6": {
+          "gridBlock": "END_RIGHT",
+          "reward": "REWARD_CHERRY"
+        },
       }
     }
   }
