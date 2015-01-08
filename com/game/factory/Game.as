@@ -62,31 +62,34 @@
 		// GAME BUTTONS //
 		//**************//
 		public function Play() {
+			// Reset the game state if they have pressed play already
+			this.ResetPlayState();
+			
 			// Adds the stack elements to an array
-			AddControlsToArray();
+			this.AddControlsToArray();
 			
 			// Create variables for the movie clips
-			pacmanStage = main.getChildByName(Game.SWF_PACMAN_STAGE)["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
-			pacmanMC = pacmanStage.getChildByName(Grid.PACMAN) as MovieClip;
+			this.pacmanStage = main.getChildByName(Game.SWF_PACMAN_STAGE)["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
+			this.pacmanMC = pacmanStage.getChildByName(Grid.PACMAN) as MovieClip;
 			
-			if (pacmanMC == null) 
+			if (this.pacmanMC == null) 
 				throw new Error("Pacman MovieClip not found on Pacman Stage");
 			
 			// Bring pacman to the front
-			pacmanStage.setChildIndex(pacmanMC, pacmanStage.numChildren - 1);
+			this.pacmanStage.setChildIndex(pacmanMC, pacmanStage.numChildren - 1);
 			
 			// Find which grid position Pacman is currently at
-			FindPacmanGridPoint()
+			this.FindPacmanGridPoint()
 			
 			// Sets the pacman rotationZ to the pacman stored rotationZ which is set from the JSON data
 			this.pacmanRotationZ = this.pacmanMC.rotationZ;
 			
 			// Go throw the controls in the array and identify the action 
 			// pacman should take
-			CompileSequence();
+			this.CompileSequence();
 			
 			// Start the animation
-			pacmanTimeline.play();
+			this.pacmanTimeline.play();
 		}
 		
 		public function Reset()
@@ -97,6 +100,32 @@
 		public function ResetAfterUserError()
 		{
 			main.ResetAfterUserError();
+		}
+		
+		public function ResetPlayState()
+		{
+			// Clear pacman Sequence
+			// Clear loop array
+			// /*
+				//	private var main:Main;
+				//	private var pacmanSequence:Array = new Array();
+				//	private var pacmanTimeline:TimelineMax = new TimelineMax();
+				//	private var stackContainer:DisplayObject
+				//	private var pacmanStage:MovieClip;
+				//	private var pacmanMC:MovieClip;
+				//	private var pacmanPoint:Point;
+				//	private var pacmanRotationZ:int;
+				//	private var currentGridPlaceholder:GridPlaceholder;
+				//	private var currentGridBlock:GridBlock;
+				//	private var pacmanCardinalDirection:String;
+				//	private var nextPacmanPoint:Point;
+				//	private var nextGridPlaceholder:GridPlaceholder;
+				///	private var nextGridBlock:GridBlock;
+					//private var monsterTimeline:TimelineMax = new TimelineMax();
+					//private var monsterHole;
+					//private var pacmanKeys:Number = 0;
+					//private var loopArray:Array = new Array();
+		
 		}
 
 		//******************//
@@ -337,6 +366,7 @@
 		{
 			for (var stackPos = 0; stackPos < pacmanSequence.length; stackPos++)
 			{
+				trace(pacmanSequence[stackPos]);
 				switch(pacmanSequence[stackPos])
 				{
 					case null:
@@ -391,10 +421,15 @@
 								}
 								
 								// Check if there is a door
-								if (this.currentGridPlaceholder.ElementExists(Grid.DOOR) && this.pacmanSequence[stackPos - 1] != Control.ACTION_USE_KEY)
+								var gridDoor:Door = this.currentGridPlaceholder.getChildByName(Grid.DOOR) as Door;
+								
+								if (gridDoor)// && this.pacmanSequence[stackPos - 1] != Control.ACTION_USE_KEY)
 								{
-									pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.DoorInPath }));
-									return;
+									if (!gridDoor.isOpen)
+									{
+										pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.DoorInPath }));
+										return;
+									}
 								}
 								
 								// Store new grid position
@@ -590,9 +625,11 @@
 							return;
 						}
 						
-						var door = this.currentGridPlaceholder.getChildByName(Grid.DOOR);
+						var door:Door = this.currentGridPlaceholder.getChildByName(Grid.DOOR) as Door;
 						
 						pacmanTimeline.add(new TweenLite(door, 2, { alpha: 0, onComplete: this.RemoveElement, onCompleteParams: [door] }));
+						
+						door.SetOpen();
 						
 						this.pacmanKeys--;
 					break;

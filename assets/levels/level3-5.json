@@ -1,0 +1,112 @@
+// pacmanStart
+
+// public static const BLANK:String = "BLANK";
+// public static const BOX:String = "BOX";
+
+// public static const HORIZONTAL:String = "HORIZONTAL";
+// public static const VERTICAL:String = "VERTICAL";
+
+// public static const END_UP:String = "END_UP";
+// public static const END_DOWN:String = "END_DOWN";
+// public static const END_RIGHT:String = "END_RIGHT";
+// public static const END_LEFT:String = "END_LEFT";
+
+// public static const LEFT_DOWN:String = "LEFT_DOWN";
+// public static const LEFT_UP:String = "LEFT_UP";
+
+// public static const RIGHT_DOWN:String = "RIGHT_DOWN";
+// public static const RIGHT_UP:String = "RIGHT_UP";
+
+// public static const T_HORIZONTAL_DOWN:String = "T_HORIZONTAL_DOWN";
+// public static const T_HORIZONTAL_UP:String = "T_HORIZONTAL_UP";
+// public static const T_VERTCIAL_LEFT:String = "T_VERTICAL_LEFT";
+// public static const T_VERTICAL_RIGHT:String = "T_VERTICAL_RIGHT";
+
+// public static const CROSSROADS:String = "CROSSROADS";
+
+// public static const REWARD_APPLE:String = "REWARD_APPLE";
+// public static const REWARD_CHERRY:String = "REWARD_CHERRY";
+// public static const REWARD_STRAWBERRY:String = "REWARD_STRAWBERRY";
+
+// public static const MONSTER_BLINKY:String = "MONSTER_BLINKY";
+// public static const MONSTER_CLYDE:String = "MONSTER_CLYDE";
+// public static const MONSTER_INKY:String = "MONSTER_INKY";
+// public static const MONSTER_PINKY:String = "MONSTER_PINKY";
+
+// public static const PACMAN_NORTH:String = "pacman_north";
+// public static const PACMAN_EAST:String = "pacman_east";
+// public static const PACMAN_SOUTH:String = "pacman_south";
+// public static const PACMAN_WEST:String = "pacman_west";
+
+{
+  "row": {
+    "4": {
+      "column": {
+        "2": {
+          "gridBlock": "END_LEFT",
+          "pacman": {
+            "start": true
+          }
+        },
+        "3": {
+          "gridBlock": "HORIZONTAL",
+          "key": {
+            "isKey": true,
+            "numberOfKeys": 1
+          }
+        },
+        "4": {
+          "gridBlock": "HORIZONTAL",
+          "door": true
+        },
+        "5": {
+          "gridBlock": "HORIZONTAL",
+          "key": {
+            "isKey": true,
+            "numberOfKeys": 1
+          }
+        },
+        "6": {
+          "gridBlock": "HORIZONTAL",
+          "door": true
+        },
+        "7": {
+          "gridBlock": "RIGHT_DOWN"
+        }
+      }
+    },
+    "5": {
+      "column": {
+        "2": {
+          "gridBlock": "END_LEFT",
+          "reward": "REWARD_STRAWBERRY"
+        },
+        "3": {
+          "gridBlock": "HORIZONTAL",
+          "door": true
+        },
+        "4": {
+          "gridBlock": "HORIZONTAL",
+          "key": {
+            "isKey": true,
+            "numberOfKeys": 1
+          }
+        },
+        "5": {
+          "gridBlock": "HORIZONTAL",
+          "door": true
+        },
+        "6": {
+          "gridBlock": "HORIZONTAL",
+          "key": {
+            "isKey": true,
+            "numberOfKeys": 1
+          }
+        },
+        "7": {
+          "gridBlock": "RIGHT_UP"
+        }
+      }
+    }
+  }
+}
