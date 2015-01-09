@@ -1,25 +1,35 @@
 ﻿package com.game.scenes  {
 	
 	import flash.display.MovieClip;
-	import flash.display.Loader;
+/*	import flash.display.Loader;
 	import flash.net.URLRequest;
 	import com.game.factory.Game;
+	
+	import flash.system.Security;
+	import flash.text.TextField;*/
+	
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.SWFLoader;
 	import com.greensock.events.LoaderEvent;
-	import flash.system.Security;
-	import flash.text.TextField;
+	import com.game.factory.Game;
 	
 	public class Main extends MovieClip {
 		
-		public var game:Game;
+		//public var game:Game;
 		
 		public function Main() {
-			flash.system.Security.allowDomain("*");
+			//flash.system.Security.allowDomain("*");
 
-			BuildLevel();
+			//BuildLevel();
+			
+			var queue:LoaderMax = new LoaderMax({ name:"mainQueue" });
+		
+			queue.append(new SWFLoader("game.swf", {name: Game.SWF_GAME, container:this}));
+			
+			queue.load();
 		}
 		
+		/*
 		public function BuildLevel()
 		{
 			game = new Game(this);
@@ -65,5 +75,6 @@
 			
 			queue.load();
 		}
+		*/
 	}
 }

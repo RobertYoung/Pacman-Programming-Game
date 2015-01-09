@@ -5,6 +5,7 @@
 	import com.game.scenes.Main;
 	import com.game.scenes.Controls;
 	import flash.events.Event;
+	import com.greensock.loading.display.ContentDisplay;
 		public class Control extends MovieClip {		//***********//		// CONSTANTS //		//***********//		public static const MOVEMENT_FORWARD:String = "movement_forward";		public static const MOVEMENT_LEFT:String = "movement_left";		public static const MOVEMENT_RIGHT:String = "movement_right";
 		public static const CONTROL_IF_CLEAR:String = "control_if_clear";
 		public static const CONTROL_IF_CLEAR_END:String = "control_if_clear_end";
@@ -75,17 +76,24 @@
 		};
 					//*******************//		// CREATE AND DELETE //		//*******************//		function CreateControl()		{			var MovementClass:Class = GetClass();			var newMovement = new MovementClass();
 					newMovement.nX = nX;			newMovement.nY = nY;				newMovement.x = nX;			newMovement.y = nY;						newMovement.name = this.name;
-		
+					
+			var game:ContentDisplay;
 			var main:Main = this.stage.getChildAt(0) as Main;
-
-			for (var x = 0; x < main.numChildren; x++)
-				trace("Main: " + main.getChildAt(x).name);
 			
-			var controls = main.getChildByName(Game.SWF_CONTROLS);
+			for (var i = 0; i < main.parent.numChildren; i++)
+			{
+				if (main.getChildAt(i).name == Game.SWF_GAME)
+					game = main.getChildAt(i) as ContentDisplay;
+			}
+			
+			var controls = game.rawContent.getChildByName(Game.SWF_CONTROLS);
 			var controlsChild = controls.getChildAt(0);
 			
 			controlsChild.addChild(newMovement);		}				public function DeleteControl()		{
-			this.parent.removeChild(this);		}				//**********//		// MOVEMENT //		//**********//		function MoveControlToControlArea()		{			this.x = nX;			this.y = nY;		}
+			var stack:Stack = this.parent as Stack;
+			
+			stack.removeChild(this);
+			stack.controlInStack = "";		}				//**********//		// MOVEMENT //		//**********//		function MoveControlToControlArea()		{			this.x = nX;			this.y = nY;		}
 		
 		function AddControlToStack(e:MouseEvent, stackPosition:Stack)
 		{

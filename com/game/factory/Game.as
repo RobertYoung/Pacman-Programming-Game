@@ -17,10 +17,19 @@
 	import com.game.controls.ControlElseHoleClear;
 	import com.greensock.TweenMax;
 	import com.game.controls.ControlLoop;
+	import flash.display.Loader;
+	import flash.net.URLRequest;
+	import com.game.factory.Game;
+	import com.greensock.loading.LoaderMax;
+	import com.greensock.loading.SWFLoader;
+	import com.greensock.events.LoaderEvent;
+	import flash.system.Security;
+	import flash.text.TextField;
 	
-	public class Game {
+	public class Game extends MovieClip {
 
 		public static const SWF_MAIN:String = "root1";
+		public static const SWF_GAME:String = "game";
 		public static const SWF_HEADER:String = "header";
 		public static const SWF_PACMAN_STAGE:String = "pacman_stage";
 		public static const SWF_PACMAN_CODING_AREA:String = "pacman_code";
@@ -33,7 +42,6 @@
 		
 		private static const LABEL_FLASHLIGHT_ON:String = "flashlight_on";
 		
-		private var main:Main;
 		private var pacmanSequence:Array = new Array();
 		private var pacmanTimeline:TimelineMax = new TimelineMax();
 		private var stackContainer:DisplayObject
@@ -52,10 +60,83 @@
 		private var pacmanKeys:Number = 0;
 		private var loopArray:Array = new Array(); 
 
-		public function Game(mc:Main) {
-			main = mc;
+		public function Game() {//mc:Main) {
+			//main = mc;
 			
 			TweenPlugin.activate([FramePlugin]);
+			
+			flash.system.Security.allowDomain("*");
+
+			BuildLevel();
+		}
+		
+		public function BuildLevel()
+		{
+			//game = new Game(this);
+
+			var queue:LoaderMax = new LoaderMax({ name:"mainQueue" });
+		
+			queue.append(new SWFLoader("header.swf", {name: Game.SWF_HEADER, container:this}));
+			queue.append(new SWFLoader("pacman_stage.swf", {name: Game.SWF_PACMAN_STAGE, container:this}));
+			queue.append(new SWFLoader("pacman_code.swf", {name: Game.SWF_PACMAN_CODING_AREA, container:this}));
+			queue.append(new SWFLoader("controls.swf", {name: Game.SWF_CONTROLS, container:this}));
+			
+			queue.load();
+		}
+		
+		public function ReloadLevel()
+		{
+			ResetAllAnimations();
+			
+			//game = new Game(this);
+			
+			this.removeChild(this.getChildByName(Game.SWF_HEADER));
+			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE));
+			this.removeChild(this.getChildByName(Game.SWF_PACMAN_CODING_AREA));
+			this.removeChild(this.getChildByName(Game.SWF_CONTROLS));
+			
+			BuildLevel();
+		}
+		
+		public function ResetAfterUserError()
+		{
+			//game = new Game(this);
+			
+			this.removeChild(this.getChildByName(Game.SWF_HEADER));
+			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE));
+			this.removeChild(this.getChildByName(Game.SWF_CONTROLS));
+			
+			var queue:LoaderMax = new LoaderMax({ name:"mainQueue" });
+		
+			queue.append(new SWFLoader("header.swf", {name: Game.SWF_HEADER, container:this}));
+			queue.append(new SWFLoader("pacman_stage.swf", {name: Game.SWF_PACMAN_STAGE, container:this}));
+			//queue.append(new SWFLoader("pacman_code.swf", {name: Game.SWF_PACMAN_CODING_AREA, container:this}));
+			queue.append(new SWFLoader("controls.swf", {name: Game.SWF_CONTROLS, container:this}));
+			
+			queue.load();
+		}
+		
+		public function ResetPlayState()
+		{
+			pacmanSequence = new Array();
+			pacmanTimeline = new TimelineMax();
+			/*
+			stackContainer:DisplayObject
+			pacmanStage:MovieClip;
+			pacmanMC:MovieClip;
+			pacmanPoint:Point;
+			pacmanRotationZ:int;
+			currentGridPlaceholder:GridPlaceholder;
+			currentGridBlock:GridBlock;
+			pacmanCardinalDirection:String;
+			nextPacmanPoint:Point;
+			nextGridPlaceholder:GridPlaceholder;
+			nextGridBlock:GridBlock;
+			*/
+			monsterTimeline = new TimelineMax();
+			//monsterHole;
+			pacmanKeys = 0;
+			loopArray = new Array();
 		}
 
 		//**************//
@@ -69,7 +150,7 @@
 			this.AddControlsToArray();
 			
 			// Create variables for the movie clips
-			this.pacmanStage = main.getChildByName(Game.SWF_PACMAN_STAGE)["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
+			this.pacmanStage = this.getChildByName(Game.SWF_PACMAN_STAGE)["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
 			this.pacmanMC = pacmanStage.getChildByName(Grid.PACMAN) as MovieClip;
 			
 			if (this.pacmanMC == null) 
@@ -91,42 +172,6 @@
 			// Start the animation
 			this.pacmanTimeline.play();
 		}
-		
-		public function Reset()
-		{
-			main.ReloadLevel();
-		}
-		
-		public function ResetAfterUserError()
-		{
-			main.ResetAfterUserError();
-		}
-		
-		public function ResetPlayState()
-		{
-			// Clear pacman Sequence
-			// Clear loop array
-			// /*
-				//	private var main:Main;
-				//	private var pacmanSequence:Array = new Array();
-				//	private var pacmanTimeline:TimelineMax = new TimelineMax();
-				//	private var stackContainer:DisplayObject
-				//	private var pacmanStage:MovieClip;
-				//	private var pacmanMC:MovieClip;
-				//	private var pacmanPoint:Point;
-				//	private var pacmanRotationZ:int;
-				//	private var currentGridPlaceholder:GridPlaceholder;
-				//	private var currentGridBlock:GridBlock;
-				//	private var pacmanCardinalDirection:String;
-				//	private var nextPacmanPoint:Point;
-				//	private var nextGridPlaceholder:GridPlaceholder;
-				///	private var nextGridBlock:GridBlock;
-					//private var monsterTimeline:TimelineMax = new TimelineMax();
-					//private var monsterHole;
-					//private var pacmanKeys:Number = 0;
-					//private var loopArray:Array = new Array();
-		
-		}
 
 		//******************//
 		// CONTROLS METHODS //
@@ -134,7 +179,7 @@
 		private function AddControlsToArray()
 		{
 			// Get list of all the sequences on the stack
-			stackContainer = main.getChildByName(Game.SWF_PACMAN_CODING_AREA)["rawContent"]["pacmanCodingArea_mc"]["scrollArea_mc"]["stackContainer_mc"];
+			stackContainer = this.getChildByName(Game.SWF_PACMAN_CODING_AREA)["rawContent"]["pacmanCodingArea_mc"]["scrollArea_mc"]["stackContainer_mc"];
 			var stackLength = 1;
 			var inLoop:Boolean = false;
 			var loopArray:Array = new Array();
@@ -274,7 +319,7 @@
 			
 			var alertView:AlertView = new AlertView("Alert", "The sequence you entered is not correct, please try again", hint, this.ResetAfterUserError);
 			
-			main.addChild(alertView);
+			this.addChild(alertView);
 		}
 		
 		private function NoControlAdded()
@@ -359,7 +404,7 @@
 			
 			var levelComplete:AlertView = new AlertView("Well Done !", "You have successfully reached the end of the level", "", this.NextLevel);
 			
-			main.addChild(levelComplete);
+			this.addChild(levelComplete);
 		}
 		
 		private function CompileSequence()
@@ -640,6 +685,7 @@
 						this.GetCurrentGridBlock();
 					
 						var currentStack:Stack = this.stackContainer["stack" + (stackPos + 1)];
+						trace("currentStack: " + currentStack);
 						var loop:ControlLoop = currentStack.getChildByName(Control.CONTROL_LOOP) as ControlLoop;
 						var loopTimes:Number = loop.GetLoopTimes();
 					

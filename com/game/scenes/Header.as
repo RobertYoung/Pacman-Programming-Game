@@ -31,13 +31,13 @@
 
 		function ResetMouseUp(e:MouseEvent)
 		{
-			game.Reset();
+			game.ReloadLevel();
 		}
 		
 		function AddedToStageEvent(e:Event)
 		{
-			if (this.parent.root.hasOwnProperty("game"))
-				game = this.parent.root["game"];
+			if (this.parent.root)
+				game = this.parent.root as Game;
 		}
 	}
 	
