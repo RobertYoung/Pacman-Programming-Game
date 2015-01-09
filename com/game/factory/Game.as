@@ -69,14 +69,15 @@
 		private var pacmanKeys:Number = 0;
 		private var loopArray:Array = new Array(); 
 
-		public function Game(setLevel:Level) {
+		public function Game(setLevel:Level = null) {
 			level = setLevel;
 			
 			TweenPlugin.activate([FramePlugin]);
 			
 			flash.system.Security.allowDomain("*");
 
-			LoadGame();
+			if (level != null)
+				LoadGame();
 		}
 		
 		public function LoadGame()
@@ -415,7 +416,9 @@
 			trace("COMPLETE: Next Level...");
 			this.ResetAllAnimations();
 			
-			var levelComplete:AlertView = new AlertView("Well Done !", "You have successfully reached the end of the level", "", this.NextLevel);
+			//var levelComplete:AlertView = new AlertView("Well Done !", "You have successfully reached the end of the level", "", this.NextLevel);
+
+			var levelComplete:LevelCompleteAlertView = new LevelCompleteAlertView();
 			
 			this.addChild(levelComplete);
 		}
