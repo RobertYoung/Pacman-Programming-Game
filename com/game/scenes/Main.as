@@ -17,14 +17,49 @@
 		
 		//public var game:Game;
 		
+		var queue:LoaderMax;
+		
 		public function Main() {
 			//flash.system.Security.allowDomain("*");
 
 			//BuildLevel();
 			
-			var queue:LoaderMax = new LoaderMax({ name:"mainQueue" });
+			queue = new LoaderMax({ name:"mainQueue" });
 		
-			queue.append(new SWFLoader("game.swf", {name: Game.SWF_GAME, container:this}));
+			queue.append(new SWFLoader(Game.SWF_LOGO + ".swf", {name: Game.SWF_LOGO, container:this}));
+			queue.append(new SWFLoader(Game.SWF_MENU + ".swf", {name: Game.SWF_MENU, container:this}));
+			
+			queue.load();
+		}
+		
+		private function RemoveChildren()
+		{
+			for (var i = (this.numChildren - 1); i >= 0; i--)
+			{
+				this.removeChildAt(i);
+			}
+		}
+		
+		public function GoToMenu()
+		{
+			this.RemoveChildren();
+			
+			queue = new LoaderMax({ name:"mainQueue" });
+			
+			queue.append(new SWFLoader(Game.SWF_LOGO + ".swf", {name: Game.SWF_LOGO, container:this}));
+			queue.append(new SWFLoader(Game.SWF_MENU + ".swf", {name: Game.SWF_MENU, container:this}));
+			
+			queue.load();
+		}
+		
+		public function GoToLevelSelection()
+		{
+			this.RemoveChildren();
+			
+			queue = new LoaderMax({ name:"mainQueue" });
+			
+			queue.append(new SWFLoader(Game.SWF_LOGO + ".swf", {name: Game.SWF_LOGO, container:this}));
+			queue.append(new SWFLoader(Game.SWF_LEVEL_SELECTION + ".swf", {name: Game.SWF_LEVEL_SELECTION, container:this}));
 			
 			queue.load();
 		}

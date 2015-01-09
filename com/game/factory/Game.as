@@ -29,7 +29,10 @@
 	public class Game extends MovieClip {
 
 		public static const SWF_MAIN:String = "root1";
+		public static const SWF_MENU:String = "menu";
+		public static const SWF_LOGO:String = "logo";
 		public static const SWF_GAME:String = "game";
+		public static const SWF_LEVEL_SELECTION:String = "level_selection";
 		public static const SWF_HEADER:String = "header";
 		public static const SWF_PACMAN_STAGE:String = "pacman_stage";
 		public static const SWF_PACMAN_CODING_AREA:String = "pacman_code";
@@ -76,10 +79,10 @@
 
 			var queue:LoaderMax = new LoaderMax({ name:"mainQueue" });
 		
-			queue.append(new SWFLoader("header.swf", {name: Game.SWF_HEADER, container:this}));
-			queue.append(new SWFLoader("pacman_stage.swf", {name: Game.SWF_PACMAN_STAGE, container:this}));
-			queue.append(new SWFLoader("pacman_code.swf", {name: Game.SWF_PACMAN_CODING_AREA, container:this}));
-			queue.append(new SWFLoader("controls.swf", {name: Game.SWF_CONTROLS, container:this}));
+			queue.append(new SWFLoader(Game.SWF_HEADER + ".swf", {name: Game.SWF_HEADER, container:this}));
+			queue.append(new SWFLoader(Game.SWF_PACMAN_STAGE + ".swf", {name: Game.SWF_PACMAN_STAGE, container:this}));
+			queue.append(new SWFLoader(Game.SWF_PACMAN_CODING_AREA + ".swf", {name: Game.SWF_PACMAN_CODING_AREA, container:this}));
+			queue.append(new SWFLoader(Game.SWF_CONTROLS + ".swf", {name: Game.SWF_CONTROLS, container:this}));
 			
 			queue.load();
 		}
