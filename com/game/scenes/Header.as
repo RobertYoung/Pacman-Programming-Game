@@ -36,8 +36,10 @@
 		
 		function AddedToStageEvent(e:Event)
 		{
-			if (this.parent.root)
-				game = this.parent.root as Game;
+			var main:Main = this.stage.getChildAt(0) as Main;
+			
+			if (main != null)
+				game = main.getChildByName(Game.SWF_GAME) as Game;
 		}
 	}
 	

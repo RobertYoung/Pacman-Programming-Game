@@ -5,6 +5,7 @@
 	import flash.display.DisplayObject;
 	import com.game.controls.Control;
 	import com.game.elements.*;
+	import com.game.scenes.PacmanStage;
 	import flash.geom.Point;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenLite;
@@ -35,6 +36,7 @@
 		public static const SWF_LEVEL_SELECTION:String = "level_selection";
 		public static const SWF_HEADER:String = "header";
 		public static const SWF_PACMAN_STAGE:String = "pacman_stage";
+		public static const SWF_PACMAN_STAGE_CONTAINER:String = "pacman_stage_container";
 		public static const SWF_PACMAN_CODING_AREA:String = "pacman_code";
 		public static const SWF_CONTROLS:String = "controls";
 		
@@ -45,6 +47,7 @@
 		
 		private static const LABEL_FLASHLIGHT_ON:String = "flashlight_on";
 		
+		private var level:Level;
 		private var pacmanSequence:Array = new Array();
 		private var pacmanTimeline:TimelineMax = new TimelineMax();
 		private var stackContainer:DisplayObject
@@ -63,28 +66,46 @@
 		private var pacmanKeys:Number = 0;
 		private var loopArray:Array = new Array(); 
 
-		public function Game() {//mc:Main) {
+		public function Game(setLevel:Level) {//mc:Main) {
 			//main = mc;
+			
+			level = setLevel;
 			
 			TweenPlugin.activate([FramePlugin]);
 			
 			flash.system.Security.allowDomain("*");
 
-			BuildLevel();
+			LoadGame();
 		}
 		
-		public function BuildLevel()
+		public function LoadGame()
 		{
 			//game = new Game(this);
 
-			var queue:LoaderMax = new LoaderMax({ name:"mainQueue" });
+			var queue = new LoaderMax({ name:"mainQueue", onComplete: OnCompleteBuildLevel});
 		
 			queue.append(new SWFLoader(Game.SWF_HEADER + ".swf", {name: Game.SWF_HEADER, container:this}));
-			queue.append(new SWFLoader(Game.SWF_PACMAN_STAGE + ".swf", {name: Game.SWF_PACMAN_STAGE, container:this}));
+			queue.append(new SWFLoader(Game.SWF_PACMAN_STAGE + ".swf", {name: Game.SWF_PACMAN_STAGE_CONTAINER, container:this}));
 			queue.append(new SWFLoader(Game.SWF_PACMAN_CODING_AREA + ".swf", {name: Game.SWF_PACMAN_CODING_AREA, container:this}));
 			queue.append(new SWFLoader(Game.SWF_CONTROLS + ".swf", {name: Game.SWF_CONTROLS, container:this}));
 			
 			queue.load();
+		}
+		
+		private function OnCompleteBuildLevel(event:LoaderEvent)
+		{
+			BuildLevel();
+		}
+		
+		private function BuildLevel()
+		{
+			var pacmanStage:PacmanStage = new PacmanStage(level);
+
+			pacmanStage.x = 280;
+			pacmanStage.y = 400;
+			pacmanStage.name = Game.SWF_PACMAN_STAGE;
+
+			this.addChildAt(pacmanStage, 1);
 		}
 		
 		public function ReloadLevel()
@@ -92,13 +113,18 @@
 			ResetAllAnimations();
 			
 			//game = new Game(this);
+			/*
 			
 			this.removeChild(this.getChildByName(Game.SWF_HEADER));
 			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE));
 			this.removeChild(this.getChildByName(Game.SWF_PACMAN_CODING_AREA));
 			this.removeChild(this.getChildByName(Game.SWF_CONTROLS));
+			*/
 			
-			BuildLevel();
+			for (var i = (this.numChildren - 1); i >= 0; i--)
+				this.removeChildAt(i);
+			
+			LoadGame();
 		}
 		
 		public function ResetAfterUserError()
@@ -107,14 +133,14 @@
 			
 			this.removeChild(this.getChildByName(Game.SWF_HEADER));
 			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE));
+			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE_CONTAINER));
 			this.removeChild(this.getChildByName(Game.SWF_CONTROLS));
 			
-			var queue:LoaderMax = new LoaderMax({ name:"mainQueue" });
+			var queue = new LoaderMax({ name:"mainQueue", onComplete: OnCompleteBuildLevel});
 		
-			queue.append(new SWFLoader("header.swf", {name: Game.SWF_HEADER, container:this}));
-			queue.append(new SWFLoader("pacman_stage.swf", {name: Game.SWF_PACMAN_STAGE, container:this}));
-			//queue.append(new SWFLoader("pacman_code.swf", {name: Game.SWF_PACMAN_CODING_AREA, container:this}));
-			queue.append(new SWFLoader("controls.swf", {name: Game.SWF_CONTROLS, container:this}));
+			queue.append(new SWFLoader(Game.SWF_HEADER + ".swf", {name: Game.SWF_HEADER, container:this}));
+			queue.append(new SWFLoader(Game.SWF_PACMAN_STAGE + ".swf", {name: Game.SWF_PACMAN_STAGE_CONTAINER, container:this}));
+			queue.append(new SWFLoader(Game.SWF_CONTROLS + ".swf", {name: Game.SWF_CONTROLS, container:this}));
 			
 			queue.load();
 		}
@@ -153,7 +179,11 @@
 			this.AddControlsToArray();
 			
 			// Create variables for the movie clips
-			this.pacmanStage = this.getChildByName(Game.SWF_PACMAN_STAGE)["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
+
+			for (var i = 0; i < this.numChildren; i++)
+				trace("pacmanstage:" + this.getChildAt(i).name);
+			
+			this.pacmanStage = this.getChildByName(Game.SWF_PACMAN_STAGE) as MovieClip;//["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
 			this.pacmanMC = pacmanStage.getChildByName(Grid.PACMAN) as MovieClip;
 			
 			if (this.pacmanMC == null) 

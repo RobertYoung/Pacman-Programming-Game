@@ -12,12 +12,16 @@
 	import com.greensock.loading.SWFLoader;
 	import com.greensock.events.LoaderEvent;
 	import com.game.factory.Game;
+	import com.game.elements.Level;
+	import com.greensock.loading.data.SWFLoaderVars;
+	import com.game.scenes.PacmanStage;
 	
 	public class Main extends MovieClip {
 		
 		//public var game:Game;
 		
 		var queue:LoaderMax;
+		var level:Level;
 		
 		public function Main() {
 			//flash.system.Security.allowDomain("*");
@@ -63,6 +67,46 @@
 			
 			queue.load();
 		}
+		
+		public function GoToLevel(setStageNumber:int, setLevelNumber:int)
+		{
+			this.RemoveChildren();
+			
+			level = new Level(this, "../assets/levels/level" + setStageNumber + "-" + setLevelNumber + ".json");
+			
+			/*queue = new LoaderMax({ name:"mainQueue", onComplete: BuildLevel});
+			
+			/*
+			queue.append(new SWFLoader(Game.SWF_HEADER + ".swf", {name: Game.SWF_LOGO, container:this}));
+			queue.append(new SWFLoader(Game.SWF_PACMAN_STAGE + ".swf", {name: Game.SWF_PACMAN_STAGE, container:this}));
+			queue.append(new SWFLoader(Game.SWF_PACMAN_CODING_AREA + ".swf", {name: Game.SWF_PACMAN_CODING_AREA, container:this}));
+			queue.append(new SWFLoader(Game.SWF_CONTROLS + ".swf", {name: Game.SWF_CONTROLS, container:this}));
+			
+			
+			queue.append(new SWFLoader(Game.SWF_GAME + ".swf", {name: Game.SWF_GAME, container:this}));
+			
+			queue.load();
+			*/
+			
+			var game:Game = new Game(level);
+			
+			game.name = Game.SWF_GAME;
+			
+			this.addChild(game);
+		}
+		
+		/*
+		private function BuildLevel(event:LoaderEvent)
+		{
+			var pacmanStage:PacmanStage = new PacmanStage(level);
+
+			pacmanStage.x = 280;
+			pacmanStage.y = 400;
+			pacmanStage.name = Game.SWF_PACMAN_STAGE;
+
+			this.addChildAt(pacmanStage, 1);
+		}
+		*/
 		
 		/*
 		public function BuildLevel()

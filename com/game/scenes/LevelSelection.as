@@ -74,6 +74,7 @@
 			return function (e:MouseEvent)
 			{
 				trace("Go to Stage (" + stageNumber + "), Level (" + levelNumber + ")");	
+				main.GoToLevel(stageNumber, levelNumber);
 			}
 		}
 		

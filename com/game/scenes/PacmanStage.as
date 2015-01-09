@@ -8,16 +8,23 @@
 	
 	public class PacmanStage extends MovieClip {
 		
-		var level:Level;
 		var stack:Stack;
+		
+		public var grid_row1_col1, grid_row1_col2, grid_row1_col3, grid_row1_col4, grid_row1_col5, grid_row1_col6, grid_row1_col7, grid_row1_col8:GridPlaceholder;
+		public var grid_row2_col1, grid_row2_col2, grid_row2_col3, grid_row2_col4, grid_row2_col5, grid_row2_col6, grid_row2_col7, grid_row2_col8:GridPlaceholder;
+		public var grid_row3_col1, grid_row3_col2, grid_row3_col3, grid_row3_col4, grid_row3_col5, grid_row3_col6, grid_row3_col7, grid_row3_col8:GridPlaceholder;
+		public var grid_row4_col1, grid_row4_col2, grid_row4_col3, grid_row4_col4, grid_row4_col5, grid_row4_col6, grid_row4_col7, grid_row4_col8:GridPlaceholder;
+		public var grid_row5_col1, grid_row5_col2, grid_row5_col3, grid_row5_col4, grid_row5_col5, grid_row5_col6, grid_row5_col7, grid_row5_col8:GridPlaceholder;
+		public var grid_row6_col1, grid_row6_col2, grid_row6_col3, grid_row6_col4, grid_row6_col5, grid_row6_col6, grid_row6_col7, grid_row6_col8:GridPlaceholder;
+		public var grid_row7_col1, grid_row7_col2, grid_row7_col3, grid_row7_col4, grid_row7_col5, grid_row7_col6, grid_row7_col7, grid_row7_col8:GridPlaceholder;
+		public var grid_row8_col1, grid_row8_col2, grid_row8_col3, grid_row8_col4, grid_row8_col5, grid_row8_col6, grid_row8_col7, grid_row8_col8:GridPlaceholder;
 		
 		//*****************************************************************//
 		// WHEN INSTANTIATED: LOOPS THROUGH ALL THE GRIDS IN THE LEVEL AND //
 		// DISPLAYS THEM ON THE STAGE									   //
 		//*****************************************************************//
 		public function PacmanStage(level:Level) {
-			level = level;
-			
+
 			for (var i = 0; i < level.grids.length; i++)
 			{
 				// Get the placeholder of the grid on the stage
@@ -156,6 +163,7 @@
 					pacman.y = gbPlaceholder.y;
 					pacman.name = Grid.PACMAN;
 					pacman.SetPosition(level.grids[i].pacmanPosition);
+					pacman.gotoAndStop(1);
 					
 					this.addChild(pacman);
 				}else if (level.grids[i].apple == true){

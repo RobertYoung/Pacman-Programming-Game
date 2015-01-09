@@ -77,16 +77,9 @@
 					//*******************//		// CREATE AND DELETE //		//*******************//		function CreateControl()		{			var MovementClass:Class = GetClass();			var newMovement = new MovementClass();
 					newMovement.nX = nX;			newMovement.nY = nY;				newMovement.x = nX;			newMovement.y = nY;						newMovement.name = this.name;
 					
-			var game:ContentDisplay;
 			var main:Main = this.stage.getChildAt(0) as Main;
-			
-			for (var i = 0; i < main.parent.numChildren; i++)
-			{
-				if (main.getChildAt(i).name == Game.SWF_GAME)
-					game = main.getChildAt(i) as ContentDisplay;
-			}
-			
-			var controls = game.rawContent.getChildByName(Game.SWF_CONTROLS);
+			var game:Game = main.getChildAt(0) as Game;
+			var controls = game.getChildByName(Game.SWF_CONTROLS);
 			var controlsChild = controls.getChildAt(0);
 			
 			controlsChild.addChild(newMovement);		}				public function DeleteControl()		{

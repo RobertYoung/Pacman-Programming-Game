@@ -142,6 +142,7 @@
 			ImplementHoleWithMonster();
 			
 			// Create the stage and add to the view
+			/*
 			var pacmanStage:PacmanStage = new PacmanStage(this);
 
 			pacmanStage.x = 280;
@@ -149,6 +150,7 @@
 			pacmanStage.name = Game.SWF_PACMAN_STAGE;
 
 			main.addChild(pacmanStage);
+			*/
 		}
 		
 		function ImplementHoleWithMonster()
