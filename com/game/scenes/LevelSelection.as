@@ -3,22 +3,41 @@
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.events.Event;
-	
+	import com.game.factory.Game;
+	import com.greensock.loading.LoaderMax;
+	import flash.text.TextField;
 	
 	public class LevelSelection extends MovieClip {
 		
 		var main:Main;
 		var stageNumber:int = 0;
+		var backButton:BackButton;
+		public var stage1_mc:MovieClip;
+		public var stage2_mc:MovieClip;
+		public var stage3_mc:MovieClip;
+		public var stage_txt:TextField;
+		public var level1_mc:MovieClip;
+		public var level2_mc:MovieClip;
+		public var level3_mc:MovieClip;
+		public var level4_mc:MovieClip;
+		public var level5_mc:MovieClip;
+		public var level6_mc:MovieClip;
 		
 		public function LevelSelection() {
-			this.SetupStageSelection();
 			
-			this.addEventListener(Event.ADDED_TO_STAGE, GetElements);
 		}
 
-		private function GetElements(e:Event)
+		public function Init()
 		{
+			this.gotoAndStop(1);
+			
 			main = this.stage.getChildAt(0) as Main;
+			
+			if (main) {
+				backButton = LoaderMax.getContent(Game.SWF_BACK_BUTTON).rawContent as BackButton;
+				
+				SetupStageSelection();
+			}
 		}
 
 		//*****************//
@@ -29,12 +48,12 @@
 			stage1_mc.mouseChildren = false;
 			stage2_mc.mouseChildren = false;
 			stage3_mc.mouseChildren = false;
-			back_mc.mouseChildren = false;
 			
 			stage1_mc.addEventListener(MouseEvent.MOUSE_UP, OnClickLevel(1));
 			stage2_mc.addEventListener(MouseEvent.MOUSE_UP, OnClickLevel(2));
 			stage3_mc.addEventListener(MouseEvent.MOUSE_UP, OnClickLevel(3));
-			back_mc.addEventListener(MouseEvent.MOUSE_UP, OnClickBackButtonMenu);
+			
+			backButton.AddMouseUpEventListener(OnClickBackButtonMenu);
 		}
 		
 		private function OnClickLevel(setStageNumber:int) {
@@ -47,8 +66,8 @@
 				
 				stage_txt.text = stageNumber.toString();
 				
-				back_mc.removeEventListener(MouseEvent.MOUSE_UP, OnClickBackButtonMenu);
-				back_mc.addEventListener(MouseEvent.MOUSE_UP, OnClickBackButtonStageSelection);
+				backButton.RemoveMouseUpEventListener(OnClickBackButtonMenu);
+				backButton.AddMouseUpEventListener(OnClickBackButtonStageSelection);
 				
 				SetupLevelSelection();
 			}
@@ -83,6 +102,7 @@
 		//********************//
 		private function OnClickBackButtonMenu(e:MouseEvent)
 		{
+			trace("main: " + main);
 			main.GoToMenu();
 		}
 		

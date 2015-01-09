@@ -26,12 +26,15 @@
 	import com.greensock.events.LoaderEvent;
 	import flash.system.Security;
 	import flash.text.TextField;
+	import com.game.scenes.BackButton;
+	import flash.events.MouseEvent;
 	
 	public class Game extends MovieClip {
 
 		public static const SWF_MAIN:String = "root1";
 		public static const SWF_MENU:String = "menu";
 		public static const SWF_LOGO:String = "logo";
+		public static const SWF_BACK_BUTTON:String = "back_button";
 		public static const SWF_GAME:String = "game";
 		public static const SWF_LEVEL_SELECTION:String = "level_selection";
 		public static const SWF_HEADER:String = "header";
@@ -66,9 +69,7 @@
 		private var pacmanKeys:Number = 0;
 		private var loopArray:Array = new Array(); 
 
-		public function Game(setLevel:Level) {//mc:Main) {
-			//main = mc;
-			
+		public function Game(setLevel:Level) {
 			level = setLevel;
 			
 			TweenPlugin.activate([FramePlugin]);
@@ -80,13 +81,12 @@
 		
 		public function LoadGame()
 		{
-			//game = new Game(this);
-
 			var queue = new LoaderMax({ name:"mainQueue", onComplete: OnCompleteBuildLevel});
 		
 			queue.append(new SWFLoader(Game.SWF_HEADER + ".swf", {name: Game.SWF_HEADER, container:this}));
 			queue.append(new SWFLoader(Game.SWF_PACMAN_STAGE + ".swf", {name: Game.SWF_PACMAN_STAGE_CONTAINER, container:this}));
 			queue.append(new SWFLoader(Game.SWF_PACMAN_CODING_AREA + ".swf", {name: Game.SWF_PACMAN_CODING_AREA, container:this}));
+			queue.append(new SWFLoader(Game.SWF_BACK_BUTTON + ".swf", {name: Game.SWF_BACK_BUTTON, container:this}));
 			queue.append(new SWFLoader(Game.SWF_CONTROLS + ".swf", {name: Game.SWF_CONTROLS, container:this}));
 			
 			queue.load();
@@ -95,6 +95,18 @@
 		private function OnCompleteBuildLevel(event:LoaderEvent)
 		{
 			BuildLevel();
+			
+			var backButton:BackButton = LoaderMax.getContent(Game.SWF_BACK_BUTTON).rawContent as BackButton;
+			
+			backButton.AddMouseUpEventListener(BackButtonPressed);
+		}
+		
+		private function BackButtonPressed(e:MouseEvent)
+		{
+			trace("back button pressed");
+			var main:Main = this.root as Main;
+			
+			main.GoToLevelSelection();
 		}
 		
 		private function BuildLevel()
@@ -112,15 +124,6 @@
 		{
 			ResetAllAnimations();
 			
-			//game = new Game(this);
-			/*
-			
-			this.removeChild(this.getChildByName(Game.SWF_HEADER));
-			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE));
-			this.removeChild(this.getChildByName(Game.SWF_PACMAN_CODING_AREA));
-			this.removeChild(this.getChildByName(Game.SWF_CONTROLS));
-			*/
-			
 			for (var i = (this.numChildren - 1); i >= 0; i--)
 				this.removeChildAt(i);
 			
@@ -129,8 +132,6 @@
 		
 		public function ResetAfterUserError()
 		{
-			//game = new Game(this);
-			
 			this.removeChild(this.getChildByName(Game.SWF_HEADER));
 			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE));
 			this.removeChild(this.getChildByName(Game.SWF_PACMAN_STAGE_CONTAINER));
@@ -149,21 +150,7 @@
 		{
 			pacmanSequence = new Array();
 			pacmanTimeline = new TimelineMax();
-			/*
-			stackContainer:DisplayObject
-			pacmanStage:MovieClip;
-			pacmanMC:MovieClip;
-			pacmanPoint:Point;
-			pacmanRotationZ:int;
-			currentGridPlaceholder:GridPlaceholder;
-			currentGridBlock:GridBlock;
-			pacmanCardinalDirection:String;
-			nextPacmanPoint:Point;
-			nextGridPlaceholder:GridPlaceholder;
-			nextGridBlock:GridBlock;
-			*/
 			monsterTimeline = new TimelineMax();
-			//monsterHole;
 			pacmanKeys = 0;
 			loopArray = new Array();
 		}
@@ -286,14 +273,7 @@
 			// PACDOT
 			if (currentGridPlaceholder.ElementExists(Grid.PACDOT))
 				currentGridPlaceholder.RemoveChildByName(Grid.PACDOT);
-			/*
-			if (currentGridPlaceholder.ElementExists(Grid.DOOR))
-				currentGridPlaceholder.RemoveChildByName(Grid.DOOR);
-			*/
-			/*
-			if (currentGridPlaceholder.ElementExists(Grid.KEY))
-				currentGridPlaceholder.RemoveChildByName(Grid.KEY);
-			*/
+			
 			//**********//
 			// MONSTERS //
 			//**********//

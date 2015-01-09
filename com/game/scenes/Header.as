@@ -8,6 +8,7 @@
 	public class Header extends MovieClip {
 		
 		private var game:Game;
+		var main:Main;
 		
 		public function Header() {
 			this.addEventListener(Event.ADDED_TO_STAGE, AddedToStageEvent);
@@ -23,6 +24,7 @@
 		{
 			play_mc.addEventListener(MouseEvent.MOUSE_UP, PlayMouseUp);	
 		}
+		
 		function PlayMouseUp(e:MouseEvent)
 		{
 			game.Play();
@@ -36,7 +38,7 @@
 		
 		function AddedToStageEvent(e:Event)
 		{
-			var main:Main = this.stage.getChildAt(0) as Main;
+			main = this.stage.getChildAt(0) as Main;
 			
 			if (main != null)
 				game = main.getChildByName(Game.SWF_GAME) as Game;
