@@ -14,19 +14,26 @@
 		private var currentLevel:int;
 		private var score:int;
 		private var highScore:int;
+		private var bonusScore:int;
 		private var main:Main;
 		
 		// Stage elements
 		public var score_txt:TextField;
 		public var highScore_txt:TextField;
+		public var bonusScore_txt:TextField;
+		public var bonusScoreLabel_txt:TextField;
 		
 		public var next_mc:MovieClip;
 		
-		public function LevelCompleteAlertView(setCurrentStage:int, setCurrentLevel:int, setScore:int, setHighScore:int) {
+		public function LevelCompleteAlertView(setCurrentStage:int, setCurrentLevel:int, setScore:int, setHighScore:int, setBonusScore:int = 0) {
 			this.currentStage = setCurrentStage;
 			this.currentLevel = setCurrentLevel;
 			this.score = setScore;
 			this.highScore = setHighScore;
+			this.bonusScore = setBonusScore;
+			
+			this.bonusScore_txt.visible = false;
+			this.bonusScoreLabel_txt.visible = false;
 			
 			this.addEventListener(Event.ADDED_TO_STAGE, Init);
 		}
@@ -42,6 +49,13 @@
 			
 			score_txt.text = this.score.toString();
 			highScore_txt.text = this.highScore.toString();
+			
+			if (this.bonusScore > 0)
+			{
+				bonusScore_txt.visible = true;
+				bonusScore_txt.text = this.bonusScore.toString();
+				bonusScoreLabel_txt.visible = true;
+			}
 			
 			this.main = this.stage.getChildAt(0) as Main;
 		}

@@ -202,6 +202,7 @@
 		{
 			trace("UPDATED BONUS SCORE: " + incrementScoreBy);
 			this.levelData.bonusScore += incrementScoreBy;
+			this.levelData.levelScore += incrementScoreBy;
 		}
 
 		//**************//
@@ -495,7 +496,7 @@
 				level.levelNumber += 1;
 			}
 			
-			var levelComplete:LevelCompleteAlertView = new LevelCompleteAlertView(level.stageNumber, level.levelNumber, levelData.levelScore, levelData.highScore);
+			var levelComplete:LevelCompleteAlertView = new LevelCompleteAlertView(level.stageNumber, level.levelNumber, levelData.levelScore, levelData.highScore, levelData.bonusScore);
 			
 			this.addChild(levelComplete);
 			
