@@ -128,9 +128,9 @@
 			
 			header = LoaderMax.getContent(Game.SWF_HEADER).rawContent as Header;
 			
+			this.totalScore = PacmanSharedObjectHelper.getInstance().GetTotalScore();
 			this.levelData.levelScore = 0;
 			this.levelData.bonusScore = 0;
-			this.totalScore = PacmanSharedObjectHelper.getInstance().GetTotalScore();
 
 			header.SetHighScoreText(this.levelData.highScore);
 			header.SetScoreText(this.levelData.levelScore);
@@ -197,11 +197,11 @@
 			this.levelData.levelScore += incrementScoreBy;
 			header.SetScoreText(this.levelData.levelScore);
 			
-			if (this.levelData.levelScore > this.levelData.highScore)
+			if (this.levelData.levelScore > this.levelData.highScore){
 				header.SetHighScoreText(this.levelData.levelScore);
-			
-			this.totalScore += incrementScoreBy;
-			header.SetTotalHighScoreText(this.totalScore);
+				this.totalScore += incrementScoreBy;
+				header.SetTotalHighScoreText(this.totalScore);
+			}
 		}
 		
 		private function UpdateBonusScore(incrementScoreBy:int)
