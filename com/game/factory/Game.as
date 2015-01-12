@@ -463,6 +463,15 @@
 			this.SequenceIncorrectAlertView("The Loop control needs a Loop End");
 		}
 		
+		private function LevelRequiresLoop()
+		{
+			this.ResetAllAnimations();
+			
+			var alertView:AlertView = new AlertView("Loop Control", "Stage 3 requires you to use loops", "Select Loop from the controls at the bottom - Make sure it has a start and end loop", this.ResetAfterUserError);
+			
+			this.addChild(alertView);
+		}
+		
 		private function LevelComplete()
 		{
 			trace("COMPLETE: Next Level...");
@@ -486,7 +495,7 @@
 				level.levelNumber += 1;
 			}
 			
-			var levelComplete:LevelCompleteAlertView = new LevelCompleteAlertView(level.stageNumber, level.levelNumber);
+			var levelComplete:LevelCompleteAlertView = new LevelCompleteAlertView(level.stageNumber, level.levelNumber, levelData.levelScore, levelData.highScore);
 			
 			this.addChild(levelComplete);
 			
@@ -495,9 +504,16 @@
 		
 		private function CompileSequence()
 		{
+			// Make sure the user is using loops in stage 3
+			if (this.level.stageNumber == 3 && pacmanSequence.indexOf(Control.CONTROL_LOOP) == -1)
+			{
+				this.LevelRequiresLoop();
+				
+				return;
+			}
+
 			for (var stackPos = 0; stackPos < pacmanSequence.length; stackPos++)
 			{
-				trace(pacmanSequence[stackPos]);
 				switch(pacmanSequence[stackPos])
 				{
 					case null:
