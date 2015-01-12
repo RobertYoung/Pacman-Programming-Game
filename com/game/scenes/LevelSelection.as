@@ -61,6 +61,7 @@
 			
 			backButton.AddMouseUpEventListener(OnClickBackButtonMenu);
 
+			/*
 			var userStage:int = userLocalData.GetStage();
 			
 			if (userStage > 1){
@@ -76,6 +77,7 @@
 				
 				stage3_mc.addChild(completeTick3);
 			}
+			*/
 		}
 		
 		private function OnClickLevel(setStageNumber:int) {
@@ -112,10 +114,7 @@
 				
 				var completeTick:CompleteTick = new CompleteTick(70, 50);
 				
-				if (this.stageNumber < this.userLocalData.GetStage())
-				{
-					level.addChild(completeTick);
-				}else if (this.stageNumber == this.userLocalData.GetStage() && i < this.userLocalData..GetLevel()) 
+				if (this.userLocalData.GetLevelData(this.stageNumber, i).completed == true)
 				{
 					level.addChild(completeTick);
 				}

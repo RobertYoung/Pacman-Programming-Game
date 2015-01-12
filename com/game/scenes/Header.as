@@ -17,6 +17,7 @@
 		public var level_txt:TextField;
 		public var highScore_txt:TextField;
 		public var score_txt:TextField;
+		public var totalScore_txt:TextField;
 		
 		public function Header() {
 			this.addEventListener(Event.ADDED_TO_STAGE, AddedToStageEvent);
@@ -71,6 +72,11 @@
 		public function SetHighScoreText(highScore:int)
 		{
 			highScore_txt.text = highScore.toString();
+		}
+		
+		public function SetTotalHighScoreText(totalHighScore:int)
+		{
+			totalScore_txt.text = totalHighScore.toString();
 		}
 	}
 	

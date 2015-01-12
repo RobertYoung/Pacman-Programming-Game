@@ -7,6 +7,7 @@
 		public var levelNumber:int;
 		public var pacmanSequence:Array;
 		public var timeCompleted:Date;
+		public var completed:Boolean = false;
 		
 		// Scores
 		public var levelScore:int = 0;

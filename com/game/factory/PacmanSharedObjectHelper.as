@@ -67,6 +67,7 @@
 			return this.userLocalData.data[PacmanSharedObjectHelper.USER_LEVEL];
 		}
 		
+		/*
 		public function GetHighScore():int
 		{
 			var highScore = this.userLocalData.data[PacmanSharedObjectHelper.USER_HIGH_SCORE];
@@ -75,7 +76,7 @@
 				highScore = 0;
 			
 			return highScore;
-		}
+		}*/
 		
 		public function GetLevelData(stageNumber:int, levelNumber:int):LevelData
 		{
@@ -99,10 +100,28 @@
 			levelData.ifScore = savedLevelData.ifScore;
 			levelData.ifElseScore = savedLevelData.ifElseScore;
 			levelData.loopScore = savedLevelData.loopScore;
+			levelData.completed = savedLevelData.completed;
 
 			this["stage" + stageNumber + "level" + levelNumber] = levelData;
 			
 			return levelData;
+		}
+		
+		public function GetTotalScore():int
+		{
+			var totalScore:int = 0;
+			
+			for (var stageNum = 1; stageNum <= 3; stageNum++)
+			{
+				for (var levelNum = 1; levelNum <= 3; levelNum++)
+				{
+					totalScore += this.GetLevelData(stageNum, levelNum).highScore;
+				}
+			}
+			
+			trace(totalScore);
+			
+			return totalScore;
 		}
 		
 		//*****//

@@ -83,6 +83,7 @@
 		
 		// Level data
 		var levelData:LevelData;
+		var totalScore:int;
 
 		public function Game(setLevel:Level = null) {
 			level = setLevel;
@@ -129,9 +130,11 @@
 			
 			this.levelData.levelScore = 0;
 			this.levelData.bonusScore = 0;
+			this.totalScore = PacmanSharedObjectHelper.getInstance().GetTotalScore();
 
 			header.SetHighScoreText(this.levelData.highScore);
 			header.SetScoreText(this.levelData.levelScore);
+			header.SetTotalHighScoreText(this.totalScore);
 		}
 		
 		private function BackButtonPressed(e:MouseEvent)
@@ -196,13 +199,16 @@
 			
 			if (this.levelData.levelScore > this.levelData.highScore)
 				header.SetHighScoreText(this.levelData.levelScore);
+			
+			this.totalScore += incrementScoreBy;
+			header.SetTotalHighScoreText(this.totalScore);
 		}
 		
 		private function UpdateBonusScore(incrementScoreBy:int)
 		{
-			trace("UPDATED BONUS SCORE: " + incrementScoreBy);
 			this.levelData.bonusScore += incrementScoreBy;
 			this.levelData.levelScore += incrementScoreBy;
+			this.totalScore += incrementScoreBy;
 		}
 
 		//**************//
@@ -481,6 +487,7 @@
 			// Store level data
 			levelData.pacmanSequence = this.pacmanSequence;
 			levelData.timeCompleted = null;
+			levelData.completed = true;
 			
 			PacmanSharedObjectHelper.getInstance().SetLevelData(this.level.stageNumber, this.level.levelNumber, levelData);
 			
