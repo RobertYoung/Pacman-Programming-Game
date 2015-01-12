@@ -16,7 +16,7 @@
 	import com.greensock.loading.data.SWFLoaderVars;
 	import com.game.scenes.PacmanStage;
 	import flash.events.MouseEvent
-	import com.game.factory.UserData;
+	import com.game.factory.PacmanSharedObjectHelper;
 	
 	public class Main extends MovieClip {
 		
@@ -31,7 +31,7 @@
 		
 		private function SetupUserLocalData()
 		{
-			UserData.getInstance();
+			PacmanSharedObjectHelper.getInstance();
 		}
 		
 		private function RemoveChildren()

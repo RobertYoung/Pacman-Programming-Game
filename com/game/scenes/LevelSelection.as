@@ -7,14 +7,14 @@
 	import com.greensock.loading.LoaderMax;
 	import flash.text.TextField;
 	import com.game.elements.CompleteTick;
-	import com.game.factory.UserData;
+	import com.game.factory.PacmanSharedObjectHelper;
 	
 	public class LevelSelection extends MovieClip {
 		
 		var main:Main;
 		var stageNumber:int = 0;
 		var backButton:BackButton;
-		var userLocalData:UserData;
+		var userLocalData:PacmanSharedObjectHelper;
 		public var stage1_mc:MovieClip;
 		public var stage2_mc:MovieClip;
 		public var stage3_mc:MovieClip;
@@ -40,7 +40,7 @@
 			if (main) {
 				backButton = LoaderMax.getContent(Game.SWF_BACK_BUTTON).rawContent as BackButton;
 				
-				userLocalData = UserData.getInstance();
+				userLocalData = PacmanSharedObjectHelper.getInstance();
 				
 				SetupStageSelection();
 			}

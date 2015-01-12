@@ -29,6 +29,7 @@
 	import com.game.scenes.BackButton;
 	import flash.events.MouseEvent;
 	import flash.events.Event;
+	import com.game.scenes.Header;
 	
 	public class Game extends MovieClip {
 		
@@ -51,8 +52,17 @@
 		
 		private static const LABEL_FLASHLIGHT_ON:String = "flashlight_on";
 		
+		private static const SCORE_PAC_DOT:int = 125;
+		private static const SCORE_CHERRY:int = 555;
+		private static const SCORE_APPLE:int = 755;
+		private static const SCORE_STRAWBERRY:int = 955;
+		private static const SCORE_IF:int = 2050;
+		private static const SCORE_IF_ELSE:int = 2250;
+		private static const SCORE_LOOP:int = 1895;
+		
 		private var main:Main;
 		private var level:Level;
+		private var header:Header;
 		private var pacmanSequence:Array = new Array();
 		private var pacmanTimeline:TimelineMax = new TimelineMax();
 		private var stackContainer:DisplayObject
@@ -70,6 +80,9 @@
 		private var monsterHole;
 		private var pacmanKeys:Number = 0;
 		private var loopArray:Array = new Array(); 
+		
+		// Level data
+		var levelData:LevelData;
 
 		public function Game(setLevel:Level = null) {
 			level = setLevel;
@@ -80,6 +93,8 @@
 
 			if (level != null)
 				LoadGame();
+			
+			this.levelData = PacmanSharedObjectHelper.getInstance().GetLevelData(level.stageNumber, level.levelNumber);
 			
 			this.addEventListener(Event.ADDED_TO_STAGE, Init);			
 		}
@@ -109,6 +124,14 @@
 			var backButton:BackButton = LoaderMax.getContent(Game.SWF_BACK_BUTTON).rawContent as BackButton;
 			
 			backButton.AddMouseUpEventListener(BackButtonPressed);
+			
+			header = LoaderMax.getContent(Game.SWF_HEADER).rawContent as Header;
+			
+			this.levelData.levelScore = 0;
+			this.levelData.bonusScore = 0;
+
+			header.SetHighScoreText(this.levelData.highScore);
+			header.SetScoreText(this.levelData.levelScore);
 		}
 		
 		private function BackButtonPressed(e:MouseEvent)
@@ -161,7 +184,24 @@
 			pacmanTimeline = new TimelineMax();
 			monsterTimeline = new TimelineMax();
 			pacmanKeys = 0;
+			levelData.levelScore = 0;
+			levelData.bonusScore = 0;
 			loopArray = new Array();
+		}
+		
+		private function UpdateScores(incrementScoreBy:int)
+		{
+			this.levelData.levelScore += incrementScoreBy;
+			header.SetScoreText(this.levelData.levelScore);
+			
+			if (this.levelData.levelScore > this.levelData.highScore)
+				header.SetHighScoreText(this.levelData.levelScore);
+		}
+		
+		private function UpdateBonusScore(incrementScoreBy:int)
+		{
+			trace("UPDATED BONUS SCORE: " + incrementScoreBy);
+			this.levelData.bonusScore += incrementScoreBy;
 		}
 
 		//**************//
@@ -175,10 +215,6 @@
 			this.AddControlsToArray();
 			
 			// Create variables for the movie clips
-
-			for (var i = 0; i < this.numChildren; i++)
-				trace("pacmanstage:" + this.getChildAt(i).name);
-			
 			this.pacmanStage = this.getChildByName(Game.SWF_PACMAN_STAGE) as MovieClip;//["rawContent"].getChildByName(Game.SWF_PACMAN_STAGE);
 			this.pacmanMC = pacmanStage.getChildByName(Grid.PACMAN) as MovieClip;
 			
@@ -280,8 +316,10 @@
 			// GAME ELEMENTS //
 			//***************//
 			// PACDOT
-			if (currentGridPlaceholder.ElementExists(Grid.PACDOT))
+			if (currentGridPlaceholder.ElementExists(Grid.PACDOT)) {
 				currentGridPlaceholder.RemoveChildByName(Grid.PACDOT);
+				this.UpdateScores(Game.SCORE_PAC_DOT);
+			}
 			
 			//**********//
 			// MONSTERS //
@@ -308,19 +346,25 @@
 			if (currentGridPlaceholder.ElementExists(Grid.REWARD_APPLE))
 			{
 				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_APPLE);
+				this.UpdateScores(Game.SCORE_APPLE);
 				LevelComplete();
+				return;
 			}
 			
 			if (currentGridPlaceholder.ElementExists(Grid.REWARD_CHERRY))
 			{
 				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_CHERRY);
+				this.UpdateScores(Game.SCORE_CHERRY);
 				LevelComplete();
+				return;
 			}
 			
 			if (currentGridPlaceholder.ElementExists(Grid.REWARD_STRAWBERRY))
 			{
 				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_STRAWBERRY);
+				this.UpdateScores(Game.SCORE_STRAWBERRY);
 				LevelComplete();
+				return;
 			}
 		}
 		
@@ -424,8 +468,12 @@
 			trace("COMPLETE: Next Level...");
 			this.ResetAllAnimations();
 			
-			//var levelComplete:AlertView = new AlertView("Well Done !", "You have successfully reached the end of the level", "", this.NextLevel);
-
+			// Store level data
+			levelData.pacmanSequence = this.pacmanSequence;
+			levelData.timeCompleted = null;
+			
+			PacmanSharedObjectHelper.getInstance().SetLevelData(this.level.stageNumber, this.level.levelNumber, levelData);
+			
 			if (level.levelNumber == 6 && level.stageNumber == 3)
 			{
 				trace("GAME COMPLETE");
@@ -442,7 +490,7 @@
 			
 			this.addChild(levelComplete);
 			
-			UserData.getInstance().SetStageAndLevel(level.stageNumber, level.levelNumber);
+			PacmanSharedObjectHelper.getInstance().SetStageAndLevel(level.stageNumber, level.levelNumber);
 		}
 		
 		private function CompileSequence()
@@ -519,16 +567,14 @@
 								var point:Point = new Point(nextGridPlaceholder.x, nextGridPlaceholder.y);
 							
 								// Create animation
-								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: nextGridPlaceholder.x, y: nextGridPlaceholder.y, onComplete: UpdatePacmanStage, onCompleteParams: [ this.nextPacmanPoint ], onStart: this.TurnFlashLightOff }));
+								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { x: nextGridPlaceholder.x, y: nextGridPlaceholder.y, onComplete: UpdatePacmanStage, onCompleteParams: [ this.nextPacmanPoint ], onStart: this.TurnFlashLightOff, onComplete: UpdateScores }));
 								
 								pacmanPoint = this.nextPacmanPoint;
 							}else{
 								pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: InvalidSequenceDueToPaths }));
-								//throw new Error("Cannot move to that path due to next path");
 							}
 						}else{
 							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: InvalidSequenceDueToPaths }));
-							//throw new Error("Cannot move to that path due to current path");
 						};
 					break;
 					case Control.MOVEMENT_LEFT:
@@ -578,6 +624,8 @@
 							trace("There is a monster!");
 							stackPos = controlIfClearEndExists.position;
 						}
+						
+						this.UpdateBonusScore(Game.SCORE_IF);
 					break;
 					case Control.CONTROL_IF_CLEAR_END:
 						// Check there is a matching IF_CLEAR
@@ -614,6 +662,8 @@
 							pacmanTimeline.add(new TweenLite(pacmanMC, 2, { onStart: this.MissingElseClearEnd }));
 							return;
 						}
+						
+						this.UpdateBonusScore(Game.SCORE_IF_ELSE);
 					break;
 					case Control.CONTROL_ELSE_CLEAR_END:
 						var controlElseClearExists:ControlExists = this.ControlExistsBefore(Control.CONTROL_ELSE_CLEAR, stackPos);
@@ -710,7 +760,7 @@
 						
 						var door:Door = this.currentGridPlaceholder.getChildByName(Grid.DOOR) as Door;
 						
-						pacmanTimeline.add(new TweenLite(door, 2, { alpha: 0, onComplete: this.RemoveElement, onCompleteParams: [door] }));
+						pacmanTimeline.add(new TweenLite(door, 2, { alpha: 0, onComplete: this.RemoveDoor, onCompleteParams: [door] }));
 						
 						door.SetOpen();
 						
@@ -753,6 +803,8 @@
 						var newLoop:Loop = new Loop(stackPos, loopTimes - 1);
 						
 						this.loopArray.unshift(newLoop);
+						
+						this.UpdateBonusScore(Game.SCORE_LOOP);
 					break;
 					case Control.CONTROL_LOOP_END:
 						// Get the first loop in the array
@@ -844,6 +896,11 @@
 			movieClip.parent.removeChild(movieClip);
 		}
 		
+		private function RemoveDoor(movieClip:MovieClip)
+		{
+			this.RemoveElement(movieClip);
+		}
+		
 		private function ControlExistsBefore(controlName:String, fromPosition:Number):ControlExists
 		{
 			for (var i = fromPosition; i > 0; i--)
@@ -872,6 +929,14 @@
 		private function NextLevel()
 		{
 			trace("Next Level");
+		}
+		
+		//*******************//
+		// GET LEVEL DETAILS //
+		//*******************//
+		public function GetLevelDetails():Level
+		{
+			return this.level;
 		}
 		
 		//************//

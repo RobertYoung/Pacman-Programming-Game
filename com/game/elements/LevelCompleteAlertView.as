@@ -13,7 +13,6 @@
 		private var currentLevel:int;
 		private var main:Main;
 		
-		public var exit_mc:MovieClip;
 		public var next_mc:MovieClip;
 		
 		public function LevelCompleteAlertView(setCurrentStage:int, setCurrentLevel:int) {
@@ -29,10 +28,7 @@
 			this.y = this.stage.stageHeight / 2;
 			this.x = this.stage.stageWidth / 2;
 			
-			exit_mc.mouseChildren = false;
 			next_mc.mouseChildren = false;
-			
-			exit_mc.addEventListener(MouseEvent.MOUSE_UP, CloseAlertView);
 			next_mc.addEventListener(MouseEvent.MOUSE_UP, NextLevel);
 			
 			this.main = this.stage.getChildAt(0) as Main;
@@ -41,11 +37,6 @@
 		private function NextLevel(e:MouseEvent)
 		{
 			this.main.GoToLevel(currentStage, currentLevel);
-		}
-		
-		private function CloseAlertView(e:MouseEvent)
-		{
-			this.parent.removeChild(this);
 		}
 	}
 }
