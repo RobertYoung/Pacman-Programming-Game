@@ -17,6 +17,12 @@
 		//*******************************//
 		public var grids:Array = new Array();
 		
+		//******************//
+		// LEVEL PROPERTIES //
+		//******************//
+		public var stageNumber:int = 0;
+		public var levelNumber:int = 0;
+		
 		//*************************************//
 		// ALL THE GRID VARIABLES OF TYPE GRID //
 		//*************************************//
@@ -44,7 +50,7 @@
 		//*******************//
 		// LEVEL CONSTRUCTOR //
 		//*******************//
-		public function Level(mc:MovieClip, urlOfJSON:String = "") {
+		public function Level(mc:MovieClip, setStageNumber:int, setLevelNumber:int) {
 			flash.system.Security.allowDomain("*");
 			// On initilization, create all the grid variables with the correct 
 			// column and row 
@@ -59,10 +65,13 @@
 
 			main = mc;
 			
-			request.url = urlOfJSON;
+			request.url = "../assets/levels/level" + setStageNumber + "-" + setLevelNumber + ".json";
 			loader.load(request);
 
 			loader.addEventListener(Event.COMPLETE, JSONLoadComplete);
+			
+			this.stageNumber = setStageNumber;
+			this.levelNumber = setLevelNumber;
 		}
 		
 		//*******************************************//

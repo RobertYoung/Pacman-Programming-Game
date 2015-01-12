@@ -15,14 +15,23 @@
 	import com.game.elements.Level;
 	import com.greensock.loading.data.SWFLoaderVars;
 	import com.game.scenes.PacmanStage;
+	import flash.events.MouseEvent
+	import com.game.factory.UserData;
 	
 	public class Main extends MovieClip {
 		
 		var queue:LoaderMax;
 		var level:Level;
+		var stageNumber:int;
 		
 		public function Main() {
 			this.GoToMenu();
+			this.SetupUserLocalData();
+		}
+		
+		private function SetupUserLocalData()
+		{
+			UserData.getInstance();
 		}
 		
 		private function RemoveChildren()
@@ -45,7 +54,7 @@
 			queue.load();
 		}
 		
-		public function GoToLevelSelection()
+		public function GoToLevelSelection(e:MouseEvent = null, withStageNumber:int = 0)
 		{
 			this.RemoveChildren();
 			
@@ -56,20 +65,27 @@
 			queue.append(new SWFLoader(Game.SWF_BACK_BUTTON + ".swf", {name: Game.SWF_BACK_BUTTON, container:this}));			
 			
 			queue.load();
+			
+			this.stageNumber = withStageNumber;
 		}
 		
-		private function LevelSelectionComplete(e:LoaderEvent)
+		function LevelSelectionComplete(e:LoaderEvent)
 		{
 			var levelSelection:LevelSelection = LoaderMax.getContent(Game.SWF_LEVEL_SELECTION).rawContent as LevelSelection;
 			
 			levelSelection.Init();
+			
+			if (this.stageNumber != 0)
+				levelSelection.GoToLevelSelection(this.stageNumber);
+			
+			trace("Level Number: " + this.stageNumber);
 		}
 		
 		public function GoToLevel(setStageNumber:int, setLevelNumber:int)
 		{
 			this.RemoveChildren();
 			
-			level = new Level(this, "../assets/levels/level" + setStageNumber + "-" + setLevelNumber + ".json");
+			level = new Level(this, setStageNumber, setLevelNumber);
 
 			var game:Game = new Game(level);
 			

@@ -2,12 +2,24 @@
 	
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import com.game.scenes.Main;
 	
 	
 	public class LevelCompleteAlertView extends MovieClip {
 		
+		//private var nextFunction:Function;
+		private var currentStage:int;
+		private var currentLevel:int;
+		private var main:Main;
 		
-		public function LevelCompleteAlertView() {
+		public var exit_mc:MovieClip;
+		public var next_mc:MovieClip;
+		
+		public function LevelCompleteAlertView(setCurrentStage:int, setCurrentLevel:int) {
+			this.currentStage = setCurrentStage;
+			this.currentLevel = setCurrentLevel;
+			
 			this.addEventListener(Event.ADDED_TO_STAGE, Init);
 		}
 		
@@ -19,8 +31,21 @@
 			
 			exit_mc.mouseChildren = false;
 			next_mc.mouseChildren = false;
-			this.mouseChildren = false;
+			
+			exit_mc.addEventListener(MouseEvent.MOUSE_UP, CloseAlertView);
+			next_mc.addEventListener(MouseEvent.MOUSE_UP, NextLevel);
+			
+			this.main = this.stage.getChildAt(0) as Main;
+		}
+		
+		private function NextLevel(e:MouseEvent)
+		{
+			this.main.GoToLevel(currentStage, currentLevel);
+		}
+		
+		private function CloseAlertView(e:MouseEvent)
+		{
+			this.parent.removeChild(this);
 		}
 	}
-	
 }

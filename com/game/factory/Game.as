@@ -28,9 +28,10 @@
 	import flash.text.TextField;
 	import com.game.scenes.BackButton;
 	import flash.events.MouseEvent;
+	import flash.events.Event;
 	
 	public class Game extends MovieClip {
-
+		
 		public static const SWF_MAIN:String = "root1";
 		public static const SWF_MENU:String = "menu";
 		public static const SWF_LOGO:String = "logo";
@@ -50,6 +51,7 @@
 		
 		private static const LABEL_FLASHLIGHT_ON:String = "flashlight_on";
 		
+		private var main:Main;
 		private var level:Level;
 		private var pacmanSequence:Array = new Array();
 		private var pacmanTimeline:TimelineMax = new TimelineMax();
@@ -78,6 +80,13 @@
 
 			if (level != null)
 				LoadGame();
+			
+			this.addEventListener(Event.ADDED_TO_STAGE, Init);			
+		}
+		
+		private function Init(e:Event)
+		{
+			main = this.stage.getChildAt(0) as Main;
 		}
 		
 		public function LoadGame()
@@ -104,10 +113,9 @@
 		
 		private function BackButtonPressed(e:MouseEvent)
 		{
-			trace("back button pressed");
 			var main:Main = this.root as Main;
 			
-			main.GoToLevelSelection();
+			main.GoToLevelSelection(e, level.stageNumber);
 		}
 		
 		private function BuildLevel()
@@ -418,9 +426,23 @@
 			
 			//var levelComplete:AlertView = new AlertView("Well Done !", "You have successfully reached the end of the level", "", this.NextLevel);
 
-			var levelComplete:LevelCompleteAlertView = new LevelCompleteAlertView();
+			if (level.levelNumber == 6 && level.stageNumber == 3)
+			{
+				trace("GAME COMPLETE");
+				return;
+			}else if (level.levelNumber == 6)
+			{
+				level.stageNumber += 1;
+				level.levelNumber = 1;				
+			}else{
+				level.levelNumber += 1;
+			}
+			
+			var levelComplete:LevelCompleteAlertView = new LevelCompleteAlertView(level.stageNumber, level.levelNumber);
 			
 			this.addChild(levelComplete);
+			
+			UserData.getInstance().SetStageAndLevel(level.stageNumber, level.levelNumber);
 		}
 		
 		private function CompileSequence()

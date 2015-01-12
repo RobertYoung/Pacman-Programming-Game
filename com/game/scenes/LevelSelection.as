@@ -6,12 +6,15 @@
 	import com.game.factory.Game;
 	import com.greensock.loading.LoaderMax;
 	import flash.text.TextField;
+	import com.game.elements.CompleteTick;
+	import com.game.factory.UserData;
 	
 	public class LevelSelection extends MovieClip {
 		
 		var main:Main;
 		var stageNumber:int = 0;
 		var backButton:BackButton;
+		var userLocalData:UserData;
 		public var stage1_mc:MovieClip;
 		public var stage2_mc:MovieClip;
 		public var stage3_mc:MovieClip;
@@ -29,12 +32,15 @@
 
 		public function Init()
 		{
+			trace("init");
 			this.gotoAndStop(1);
 			
 			main = this.stage.getChildAt(0) as Main;
 			
 			if (main) {
 				backButton = LoaderMax.getContent(Game.SWF_BACK_BUTTON).rawContent as BackButton;
+				
+				userLocalData = UserData.getInstance();
 				
 				SetupStageSelection();
 			}
@@ -54,23 +60,42 @@
 			stage3_mc.addEventListener(MouseEvent.MOUSE_UP, OnClickLevel(3));
 			
 			backButton.AddMouseUpEventListener(OnClickBackButtonMenu);
+
+			var userStage:int = userLocalData.GetStage();
+			
+			if (userStage > 1){
+				var completeTick1:CompleteTick = new CompleteTick(70, 50);
+				
+				stage1_mc.addChild(completeTick1);
+			}if (userStage > 2){
+				var completeTick2:CompleteTick = new CompleteTick(70, 50);
+				
+				stage2_mc.addChild(completeTick2);
+			}if (userStage > 3){
+				var completeTick3:CompleteTick = new CompleteTick(70, 50);
+				
+				stage3_mc.addChild(completeTick3);
+			}
 		}
 		
 		private function OnClickLevel(setStageNumber:int) {
 			return function (e:MouseEvent) {
-				trace("go to level " + setStageNumber);
-				
-				gotoAndStop(2);
-				
-				stageNumber = setStageNumber;
-				
-				stage_txt.text = stageNumber.toString();
-				
-				backButton.RemoveMouseUpEventListener(OnClickBackButtonMenu);
-				backButton.AddMouseUpEventListener(OnClickBackButtonStageSelection);
-				
-				SetupLevelSelection();
+				GoToLevelSelection(setStageNumber);
 			}
+		}
+		
+		public function GoToLevelSelection(setStageNumber:int) 
+		{
+			gotoAndStop(2);
+			
+			stageNumber = setStageNumber;
+			
+			stage_txt.text = stageNumber.toString();
+			
+			backButton.RemoveMouseUpEventListener(OnClickBackButtonMenu);
+			backButton.AddMouseUpEventListener(OnClickBackButtonStageSelection);
+			
+			SetupLevelSelection();
 		}
 		
 		//*****************//
@@ -85,6 +110,15 @@
 				level.mouseChildren = false;
 				level.addEventListener(MouseEvent.MOUSE_UP, GoToLevel(i));
 				
+				var completeTick:CompleteTick = new CompleteTick(70, 50);
+				
+				if (this.stageNumber < this.userLocalData.GetStage())
+				{
+					level.addChild(completeTick);
+				}else if (this.stageNumber == this.userLocalData.GetStage() && i < this.userLocalData..GetLevel()) 
+				{
+					level.addChild(completeTick);
+				}
 			}
 		}
 		
