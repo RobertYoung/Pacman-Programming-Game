@@ -30,6 +30,7 @@
 	import flash.events.MouseEvent;
 	import flash.events.Event;
 	import com.game.scenes.Header;
+	import flash.utils.Timer;
 	
 	public class Game extends MovieClip {
 		
@@ -80,6 +81,7 @@
 		private var monsterHole;
 		private var pacmanKeys:Number = 0;
 		private var loopArray:Array = new Array(); 
+		private var timer:Timer = new Timer(1000);
 		
 		// Level data
 		var levelData:LevelData;
@@ -135,6 +137,8 @@
 			header.SetHighScoreText(this.levelData.highScore);
 			header.SetScoreText(this.levelData.levelScore);
 			header.SetTotalHighScoreText(this.totalScore);
+			
+			timer.start();
 		}
 		
 		private function BackButtonPressed(e:MouseEvent)
@@ -190,6 +194,7 @@
 			levelData.levelScore = 0;
 			levelData.bonusScore = 0;
 			loopArray = new Array();
+			timer.reset();
 		}
 		
 		private function UpdateScores(incrementScoreBy:int)
@@ -215,6 +220,10 @@
 		// GAME BUTTONS //
 		//**************//
 		public function Play() {
+			// Stop the timer
+			this.levelData.timeCompleted = this.timer.currentCount;
+			trace("timer: " + this.levelData.timeCompleted);
+			
 			// Reset the game state if they have pressed play already
 			this.ResetPlayState();
 			
@@ -389,6 +398,7 @@
 		private function SequenceIncorrectAlertView(hint:String)
 		{
 			this.ResetAllAnimations();
+			this.SaveIncompleteData();
 			
 			var alertView:AlertView = new AlertView("Alert", "The sequence you entered is not correct, please try again", hint, this.ResetAfterUserError);
 			
@@ -486,10 +496,9 @@
 			
 			// Store level data
 			levelData.pacmanSequence = this.pacmanSequence;
-			levelData.timeCompleted = null;
 			levelData.completed = true;
 			
-			PacmanSharedObjectHelper.getInstance().SetLevelData(this.level.stageNumber, this.level.levelNumber, levelData);
+			this.SaveData();
 			
 			if (level.levelNumber == 6 && level.stageNumber == 3)
 			{
@@ -508,6 +517,19 @@
 			this.addChild(levelComplete);
 			
 			PacmanSharedObjectHelper.getInstance().SetStageAndLevel(level.stageNumber, level.levelNumber);
+		}
+		
+		private function SaveData()
+		{
+			PacmanSharedObjectHelper.getInstance().SetLevelData(this.level.stageNumber, this.level.levelNumber, levelData);
+		}
+		
+		private function SaveIncompleteData()
+		{
+			levelData.pacmanSequence = this.pacmanSequence;
+			levelData.completed = false;
+			
+			PacmanSharedObjectHelper.getInstance().SetIncompleteLevelData(this.level.stageNumber, this.level.levelNumber, levelData);
 		}
 		
 		private function CompileSequence()

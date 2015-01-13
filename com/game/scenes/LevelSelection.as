@@ -61,6 +61,27 @@
 			
 			backButton.AddMouseUpEventListener(OnClickBackButtonMenu);
 
+			if (this.userLocalData.GetStageCompletion(1) == true)
+			{
+				var completeTick1:CompleteTick = new CompleteTick(70, 50);
+				
+				stage1_mc.addChild(completeTick1);
+			}
+			
+			if (this.userLocalData.GetStageCompletion(2) == true)
+			{
+				var completeTick2:CompleteTick = new CompleteTick(70, 50);
+				
+				stage2_mc.addChild(completeTick2);
+			}
+			
+			if (this.userLocalData.GetStageCompletion(3) == true)
+			{
+				var completeTick3:CompleteTick = new CompleteTick(70, 50);
+				
+				stage3_mc.addChild(completeTick3);
+			}
+			
 			/*
 			var userStage:int = userLocalData.GetStage();
 			

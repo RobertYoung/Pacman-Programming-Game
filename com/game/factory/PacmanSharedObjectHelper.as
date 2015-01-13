@@ -11,7 +11,6 @@
 		private static const USER_STAGE:String = "userStage";
 		private static const USER_LEVEL:String = "userLevel";
 		private static const USER_HIGH_SCORE:String = "userHighScore";
-		private static const STAGE1_LEVEL1:String = "stage1level1";
 		
 		public var userLocalData:SharedObject;
 		
@@ -33,6 +32,25 @@
 		public var stage3level4:LevelData = new LevelData(3, 4);
 		public var stage3level5:LevelData = new LevelData(3, 5);
 		public var stage3level6:LevelData = new LevelData(3, 6);
+		
+		public var stage1level1Incomplete:Array = new Array(); // Of data type LevelData
+		public var stage1level2Incomplete:Array = new Array();
+		public var stage1level3Incomplete:Array = new Array();
+		public var stage1level4Incomplete:Array = new Array();
+		public var stage1level5Incomplete:Array = new Array();
+		public var stage1level6Incomplete:Array = new Array();
+		public var stage2level1Incomplete:Array = new Array();
+		public var stage2level2Incomplete:Array = new Array();
+		public var stage2level3Incomplete:Array = new Array();
+		public var stage2level4Incomplete:Array = new Array();
+		public var stage2level5Incomplete:Array = new Array();
+		public var stage2level6Incomplete:Array = new Array();
+		public var stage3level1Incomplete:Array = new Array();
+		public var stage3level2Incomplete:Array = new Array();
+		public var stage3level3Incomplete:Array = new Array();
+		public var stage3level4Incomplete:Array = new Array();
+		public var stage3level5Incomplete:Array = new Array();
+		public var stage3level6Incomplete:Array = new Array();
 		
 		public function PacmanSharedObjectHelper() {
 			if (!isOkayToCreate)
@@ -67,17 +85,6 @@
 			return this.userLocalData.data[PacmanSharedObjectHelper.USER_LEVEL];
 		}
 		
-		/*
-		public function GetHighScore():int
-		{
-			var highScore = this.userLocalData.data[PacmanSharedObjectHelper.USER_HIGH_SCORE];
-			
-			if (highScore == undefined)
-				highScore = 0;
-			
-			return highScore;
-		}*/
-		
 		public function GetLevelData(stageNumber:int, levelNumber:int):LevelData
 		{
 			var savedLevelData = this.userLocalData.data["stage" + stageNumber + "level" + levelNumber];
@@ -101,10 +108,43 @@
 			levelData.ifElseScore = savedLevelData.ifElseScore;
 			levelData.loopScore = savedLevelData.loopScore;
 			levelData.completed = savedLevelData.completed;
+			levelData.timeCompleted = savedLevelData.timeCompleted;
 
 			this["stage" + stageNumber + "level" + levelNumber] = levelData;
 			
 			return levelData;
+		}
+		
+		public function GetIncompleteLevelData(stageNumber:int, levelNumber:int)
+		{
+			var savedIncompleteLevelData = this.userLocalData.data["stage" + stageNumber + "level" + levelNumber + "Incomplete"];
+
+			if (savedIncompleteLevelData == null)
+				savedIncompleteLevelData = new Array();
+			
+			var levelIncompleteData:Array = this["stage" + stageNumber + "level" + levelNumber + "Incomplete"] as Array;
+			
+			if (levelIncompleteData == null)
+				levelIncompleteData = new Array();
+			
+			this["stage" + stageNumber + "level" + levelNumber + "Incomplete"] = savedIncompleteLevelData;
+			
+			/*
+			levelIncompleteData.highScore = savedIncompleteLevelData.highScore;
+			levelIncompleteData.levelScore = savedIncompleteLevelData.levelScore;
+			levelIncompleteData.bonusScore = savedIncompleteLevelData.bonusScore;
+			levelIncompleteData.pacDotScore = savedIncompleteLevelData.pacDotScore;
+			levelIncompleteData.cherryScore = savedIncompleteLevelData.cherryScore;
+			levelIncompleteData.appleScore = savedIncompleteLevelData.appleScore;
+			levelIncompleteData.strawberryScore = savedIncompleteLevelData.strawberryScore;
+			levelIncompleteData.ifScore = savedIncompleteLevelData.ifScore;
+			levelIncompleteData.ifElseScore = savedIncompleteLevelData.ifElseScore;
+			levelIncompleteData.loopScore = savedIncompleteLevelData.loopScore;
+			levelIncompleteData.completed = savedIncompleteLevelData.completed;
+			levelIncompleteData.levelIncomplete = savedIncompleteLevelData.levelIncomplete;
+
+			levelIncompleteData.pu
+			*/
 		}
 		
 		public function GetTotalScore():int
@@ -113,7 +153,7 @@
 			
 			for (var stageNum = 1; stageNum <= 3; stageNum++)
 			{
-				for (var levelNum = 1; levelNum <= 3; levelNum++)
+				for (var levelNum = 1; levelNum <= 6; levelNum++)
 				{
 					totalScore += this.GetLevelData(stageNum, levelNum).highScore;
 				}
@@ -122,6 +162,19 @@
 			trace(totalScore);
 			
 			return totalScore;
+		}
+		
+		public function GetStageCompletion(stageNumber:int)
+		{
+			var completed:Boolean = true;
+			
+			for (var levelNum = 1; levelNum <= 6; levelNum++)
+			{
+				if (this.GetLevelData(stageNumber, levelNum).completed == false)
+					completed = false;
+			}
+			
+			return completed;
 		}
 		
 		//*****//
@@ -153,6 +206,18 @@
 				levelData.highScore = levelData.levelScore;
 			
 			this.userLocalData.data["stage" + stageNumber + "level" + levelNumber] = levelData as LevelData;
+			userLocalData.flush();
+		}
+		
+		public function SetIncompleteLevelData(stageNumber:int, levelNumber:int, newLevelData:LevelData)
+		{
+			this.GetIncompleteLevelData(stageNumber, levelNumber);
+			
+			var incompleteLevelArray:Array = this["stage" + stageNumber + "level" + levelNumber + "Incomplete"] as Array;
+			
+			incompleteLevelArray.push(newLevelData);
+			
+			this.userLocalData.data["stage" + stageNumber + "level" + levelNumber + "Incomplete"] = incompleteLevelArray;
 			userLocalData.flush();
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿package com.game.factory {
+	import flash.utils.Timer;
 	
 	public class LevelData {
 	
@@ -6,7 +7,7 @@
 		public var stageNumber:int;
 		public var levelNumber:int;
 		public var pacmanSequence:Array;
-		public var timeCompleted:Date;
+		public var timeCompleted:int;
 		public var completed:Boolean = false;
 		
 		// Scores
