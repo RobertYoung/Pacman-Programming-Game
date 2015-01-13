@@ -1,6 +1,7 @@
 ﻿package com.game.factory {
 
 	import flash.net.SharedObject;
+	import com.game.scenes.Controls;
 	
 	public class PacmanSharedObjectHelper {
 
@@ -11,6 +12,7 @@
 		private static const USER_STAGE:String = "userStage";
 		private static const USER_LEVEL:String = "userLevel";
 		private static const USER_HIGH_SCORE:String = "userHighScore";
+		private static const USER_CONTROLS_SYMBOL:String = "userControlsSymbol";
 		
 		public var userLocalData:SharedObject;
 		
@@ -177,6 +179,16 @@
 			return completed;
 		}
 		
+		public function GetUserControlsSymbol():int
+		{
+			var controlSymbol:int = this.userLocalData.data[PacmanSharedObjectHelper.USER_CONTROLS_SYMBOL];
+			
+			if (controlSymbol == 0)
+				controlSymbol = Controls.CONTROLS_TEXTUAL;
+			
+			return controlSymbol;
+		}
+		
 		//*****//
 		// SET //
 		//*****//
@@ -219,6 +231,11 @@
 			
 			this.userLocalData.data["stage" + stageNumber + "level" + levelNumber + "Incomplete"] = incompleteLevelArray;
 			userLocalData.flush();
+		}
+		
+		public function SetUserControlsSymbol(userControlSymbol:int)
+		{
+			this.userLocalData.data[PacmanSharedObjectHelper.USER_CONTROLS_SYMBOL] = userControlSymbol;
 		}
 	}
 	

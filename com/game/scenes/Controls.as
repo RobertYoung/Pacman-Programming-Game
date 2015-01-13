@@ -4,15 +4,44 @@
 	import com.game.controls.*;
 	import flash.system.Security;
 	import com.game.elements.ControlDropDown;
+	import com.game.factory.Game;
+	import com.greensock.loading.LoaderMax;
+	import com.game.factory.PacmanSharedObjectHelper;
 	
 	public class Controls extends MovieClip {
+		
+		public static const CONTROLS_TEXTUAL:int = 1;
+		public static const CONTROLS_GRAPHICAL:int = 2;
+		public static const CONTROLS_TEXTUAL_GRAPHICAL:int = 3;
+		public static const CONTROLS_MOVEMENT:String = "controls_movement";
+		public static const CONTROLS_IF:String = "controls_if";
+		public static const CONTROLS_LOOP:String = "controls_loop";
+		public static const CONTROLS_ACTION:String = "controls_action";
+		
+		public var game:Game;
 		
 		public var controlDropDown_mc:ControlDropDown;
 		public var controlSelect_mc:MovieClip;
 		public var movementSelect_mc:MovieClip;
 		
+		private var currentSymbol:int = 0;
+		private var currentControl:String = Controls.CONTROLS_MOVEMENT;
+		
 		public function Controls() {
-			flash.system.Security.allowDomain("*");
+			if (this.currentSymbol == 0)
+				this.currentSymbol = PacmanSharedObjectHelper.getInstance().GetUserControlsSymbol();
+		}
+		
+		//******//
+		// INIT //
+		//******//
+		public function Init()
+		{
+			var main:Main = this.stage.getChildAt(0) as Main;
+			
+			if (main != null) {
+				game = main.getChildByName(Game.SWF_GAME) as Game;
+			}
 
 			this.SwitchToMovement();
 			this.TraceChildren();
@@ -32,6 +61,7 @@
 			movementForward.y = 720;
 			movementForward.nX = 397;
 			movementForward.nY = 720;
+			movementForward.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(movementForward);
 			
@@ -42,6 +72,7 @@
 			movementLeft.y = 720;
 			movementLeft.nX = 645;
 			movementLeft.nY = 720;
+			movementLeft.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(movementLeft);
 			
@@ -52,6 +83,7 @@
 			movementRight.y = 720;
 			movementRight.nX = 893;
 			movementRight.nY = 720;
+			movementRight.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(movementRight);
 		}
@@ -67,6 +99,7 @@
 			ifClear.y = 720;
 			ifClear.nX = 350;
 			ifClear.nY = 720;
+			ifClear.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(ifClear);
 			
@@ -77,6 +110,7 @@
 			ifClearEnd.y = 720;
 			ifClearEnd.nX = 537;
 			ifClearEnd.nY = 720;
+			ifClearEnd.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(ifClearEnd);
 			
@@ -87,6 +121,7 @@
 			elseClear.y = 720;
 			elseClear.nX = 726;
 			elseClear.nY = 720;
+			elseClear.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(elseClear);
 			
@@ -97,6 +132,7 @@
 			elseClearEnd.y = 720;
 			elseClearEnd.nX = 912;
 			elseClearEnd.nY = 720;
+			elseClearEnd.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(elseClearEnd);
 		}
@@ -112,6 +148,7 @@
 			loop.y = 720;
 			loop.nX = 478;
 			loop.nY = 720;
+			loop.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(loop);
 			
@@ -122,6 +159,7 @@
 			endLoop.y = 720;
 			endLoop.nX = 770;
 			endLoop.nY = 720;
+			endLoop.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(endLoop);
 		}
@@ -137,6 +175,7 @@
 			flashlight.y = 720;
 			flashlight.nX = 380;
 			flashlight.nY = 720;
+			flashlight.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(flashlight);
 			
@@ -147,6 +186,7 @@
 			pickUpKey.y = 720;
 			pickUpKey.nX = 623;
 			pickUpKey.nY = 720;
+			pickUpKey.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(pickUpKey);
 			
@@ -157,6 +197,7 @@
 			useKey.y = 720;
 			useKey.nX = 867;
 			useKey.nY = 720;
+			useKey.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(useKey);
 		}
@@ -185,6 +226,52 @@
 		{
 			for (var i = 0; i < this.numChildren; i++)
 				trace(this.getChildAt(i).name);
+		}
+		
+		//*******************************//
+		// SWITCHING TEXTUAL / GRAPHICAL //
+		//*******************************//
+		public function SwitchToTextual()
+		{
+			trace("Switch to textual");
+			PacmanSharedObjectHelper.getInstance().SetUserControlsSymbol(Controls.CONTROLS_TEXTUAL);
+			this.currentSymbol = Controls.CONTROLS_TEXTUAL;
+			this.ReloadControls();
+		}
+		
+		public function SwitchToGraphical()
+		{
+			trace("switch to graphical");
+			PacmanSharedObjectHelper.getInstance().SetUserControlsSymbol(Controls.CONTROLS_GRAPHICAL);
+			this.currentSymbol = Controls.CONTROLS_GRAPHICAL;
+			this.ReloadControls();
+		}
+		
+		public function SwitchToTextualGraphical()
+		{
+			trace("switch to textual graphical");
+			PacmanSharedObjectHelper.getInstance().SetUserControlsSymbol(Controls.CONTROLS_TEXTUAL_GRAPHICAL);
+			this.currentSymbol = Controls.CONTROLS_TEXTUAL_GRAPHICAL;
+			this.ReloadControls();
+		}
+		
+		private function ReloadControls()
+		{
+			switch (this.currentControl)
+			{
+				case Controls.CONTROLS_MOVEMENT:
+					this.SwitchToMovement();
+				break;
+				case Controls.CONTROLS_IF:
+					this.SwitchToIfClear();
+				break;
+				case Controls.CONTROLS_LOOP:
+					this.SwitchToLoop();
+				break;
+				case Controls.CONTROLS_ACTION:
+					this.SwitchToActions();
+				break;
+			}
 		}
 	}
 	

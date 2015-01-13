@@ -24,6 +24,8 @@
 		public var actionsSelect_mc:MovieClip;
 		public var controlDropDown_mc:ControlDropDown;
 		public var controlDropDown_txt:TextField;
+		public var loopSelect_mc:MovieClip;
+		public var ifSelect_mc:MovieClip;
 		
 		public function ControlDropDown() {
 			trace(stage);

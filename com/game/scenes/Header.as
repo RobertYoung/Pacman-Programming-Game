@@ -5,11 +5,13 @@
 	import com.game.factory.Game;
 	import flash.events.Event;
 	import flash.text.TextField;
+	import com.greensock.loading.LoaderMax;
 	
 	public class Header extends MovieClip {
 		
 		private var game:Game;
 		var main:Main;
+		var controls:Controls;
 		
 		public var play_mc:MovieClip;
 		public var reset_mc:MovieClip;
@@ -18,12 +20,16 @@
 		public var highScore_txt:TextField;
 		public var score_txt:TextField;
 		public var totalScore_txt:TextField;
+		public var controlsRadioButtonTextual_mc:MovieClip;
+		public var controlsRadioButtonGraphical_mc:MovieClip;
+		public var controlsRadioButtonTextualGraphical_mc:MovieClip;
 		
 		public function Header() {
-			this.addEventListener(Event.ADDED_TO_STAGE, AddedToStageEvent);
-			
 			play_mc.addEventListener(MouseEvent.MOUSE_DOWN, PlayMouseDown);		
 			reset_mc.addEventListener(MouseEvent.MOUSE_UP, ResetMouseUp);
+			controlsRadioButtonTextual_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToTextualControls);
+			controlsRadioButtonGraphical_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToGraphicalControls);
+			controlsRadioButtonTextualGraphical_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToTextualGraphicalControls);
 		}
 		
 		//*****************//
@@ -45,14 +51,31 @@
 			game.ReloadLevel();
 		}
 		
-		function AddedToStageEvent(e:Event)
+		public function Init()
 		{
 			main = this.stage.getChildAt(0) as Main;
 			
 			if (main != null) {
 				game = main.getChildByName(Game.SWF_GAME) as Game;
+				controls = LoaderMax.getContent(Game.SWF_CONTROLS).rawContent as Controls;
 				this.SetLevelDetails();
+				trace(controls);
 			}
+		}
+		
+		function SwitchToTextualControls(e:MouseEvent)
+		{
+			controls.SwitchToTextual();
+		}
+		
+		function SwitchToGraphicalControls(e:MouseEvent)
+		{
+			controls.SwitchToGraphical();
+		}
+		
+		function SwitchToTextualGraphicalControls(e:MouseEvent)
+		{
+			controls.SwitchToTextualGraphical();
 		}
 		
 		//***************************//

@@ -31,6 +31,7 @@
 	import flash.events.Event;
 	import com.game.scenes.Header;
 	import flash.utils.Timer;
+	import com.game.scenes.Controls;
 	
 	public class Game extends MovieClip {
 		
@@ -137,8 +138,12 @@
 			header.SetHighScoreText(this.levelData.highScore);
 			header.SetScoreText(this.levelData.levelScore);
 			header.SetTotalHighScoreText(this.totalScore);
-			
+			header.Init();
 			timer.start();
+			
+			var controls:Controls = LoaderMax.getContent(Game.SWF_CONTROLS).rawContent as Controls;
+			
+			controls.Init();
 		}
 		
 		private function BackButtonPressed(e:MouseEvent)
