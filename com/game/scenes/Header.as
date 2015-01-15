@@ -6,6 +6,8 @@
 	import flash.events.Event;
 	import flash.text.TextField;
 	import com.greensock.loading.LoaderMax;
+	import flash.utils.Timer;
+	import flash.events.TimerEvent;
 	
 	public class Header extends MovieClip {
 		
@@ -24,17 +26,58 @@
 		public var controlsRadioButtonGraphical_mc:MovieClip;
 		public var controlsRadioButtonTextualGraphical_mc:MovieClip;
 		
+		private var controlTimer:Timer;
+		
 		public function Header() {
 			play_mc.addEventListener(MouseEvent.MOUSE_DOWN, PlayMouseDown);		
 			reset_mc.addEventListener(MouseEvent.MOUSE_UP, ResetMouseUp);
+			
+			/*
 			controlsRadioButtonTextual_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToTextualControls);
 			controlsRadioButtonGraphical_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToGraphicalControls);
 			controlsRadioButtonTextualGraphical_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToTextualGraphicalControls);
+			*/
+			
+			controlsRadioButtonTextual_mc.addEventListener(MouseEvent.MOUSE_DOWN, MouseDownControlTextual);
+			controlsRadioButtonTextual_mc.addEventListener(MouseEvent.MOUSE_UP, StopControlTimer);
+			controlsRadioButtonGraphical_mc.addEventListener(MouseEvent.MOUSE_DOWN, MouseDownControlGraphical);
+			controlsRadioButtonGraphical_mc.addEventListener(MouseEvent.MOUSE_UP, StopControlTimer);
+			controlsRadioButtonTextualGraphical_mc.addEventListener(MouseEvent.MOUSE_DOWN, MouseDownControlTextualGraphical);
+			controlsRadioButtonTextualGraphical_mc.addEventListener(MouseEvent.MOUSE_UP, StopControlTimer);
 		}
 		
 		//*****************//
 		// EVENT LISTENERS //
 		//*****************//
+		function MouseDownControlTextual(e:MouseEvent)
+		{
+			controlTimer = new Timer(1000, 1);
+			
+			controlTimer.addEventListener(TimerEvent.TIMER_COMPLETE, this.SwitchToTextualControls);
+			controlTimer.start();
+		}
+		
+		function StopControlTimer(e:MouseEvent)
+		{
+			controlTimer.stop();
+		}
+		
+		function MouseDownControlGraphical(e:MouseEvent)
+		{
+			controlTimer = new Timer(1000, 1);
+			
+			controlTimer.addEventListener(TimerEvent.TIMER_COMPLETE, this.SwitchToGraphicalControls);
+			controlTimer.start();
+		}
+		
+		function MouseDownControlTextualGraphical(e:MouseEvent)
+		{
+			controlTimer = new Timer(1000, 1);
+			
+			controlTimer.addEventListener(TimerEvent.TIMER_COMPLETE, this.SwitchToTextualGraphicalControls);
+			controlTimer.start();
+		}
+		
 		function PlayMouseDown(e:MouseEvent)
 		{
 			play_mc.addEventListener(MouseEvent.MOUSE_UP, PlayMouseUp);	
@@ -63,17 +106,17 @@
 			}
 		}
 		
-		function SwitchToTextualControls(e:MouseEvent)
+		function SwitchToTextualControls(e:TimerEvent)
 		{
 			controls.SwitchToTextual();
 		}
 		
-		function SwitchToGraphicalControls(e:MouseEvent)
+		function SwitchToGraphicalControls(e:TimerEvent)
 		{
 			controls.SwitchToGraphical();
 		}
 		
-		function SwitchToTextualGraphicalControls(e:MouseEvent)
+		function SwitchToTextualGraphicalControls(e:TimerEvent)
 		{
 			controls.SwitchToTextualGraphical();
 		}

@@ -7,6 +7,7 @@
 	import com.game.factory.Game;
 	import com.greensock.loading.LoaderMax;
 	import com.game.factory.PacmanSharedObjectHelper;
+	import com.game.elements.Stack;
 	
 	public class Controls extends MovieClip {
 		
@@ -44,7 +45,6 @@
 			}
 
 			this.SwitchToMovement();
-			this.TraceChildren();
 		}
 		
 		//*******************//
@@ -86,6 +86,8 @@
 			movementRight.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(movementRight);
+			
+			this.currentControl = Controls.CONTROLS_MOVEMENT;
 		}
 		
 		public function SwitchToIfClear()
@@ -135,6 +137,8 @@
 			elseClearEnd.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(elseClearEnd);
+			
+			this.currentControl = Controls.CONTROLS_IF;
 		}
 		
 		public function SwitchToLoop()
@@ -162,6 +166,8 @@
 			endLoop.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(endLoop);
+			
+			this.currentControl = Controls.CONTROLS_LOOP;
 		}
 		
 		public function SwitchToActions()
@@ -200,6 +206,8 @@
 			useKey.gotoAndStop(this.currentSymbol);
 			
 			this.addChild(useKey);
+			
+			this.currentControl = Controls.CONTROLS_ACTION;
 		}
 		
 		//********************//
@@ -271,6 +279,27 @@
 				case Controls.CONTROLS_ACTION:
 					this.SwitchToActions();
 				break;
+			}
+			
+			var pacmanCodingArea:MovieClip = LoaderMax.getContent(Game.SWF_PACMAN_CODING_AREA).rawContent as MovieClip;
+			var pacmanCodingAreaMC:MovieClip = pacmanCodingArea.getChildByName("pacmanCodingArea_mc") as MovieClip;
+			var scrollArea:MovieClip = pacmanCodingAreaMC.getChildByName("scrollArea_mc") as MovieClip;
+			var stackContainer:MovieClip = scrollArea.getChildByName("stackContainer_mc") as MovieClip;
+			
+			var i = 1;
+			
+			while (stackContainer["stack" + i] != null)
+			{
+				var stack:Stack = stackContainer["stack" + i] as Stack;
+				var controlInStack:String = stack.controlInStack;
+				
+				if (controlInStack)
+				{
+					var control:Control = stack.getChildByName(controlInStack) as Control;
+					control.gotoAndStop(this.currentSymbol);
+				}
+				
+				i++;
 			}
 		}
 	}

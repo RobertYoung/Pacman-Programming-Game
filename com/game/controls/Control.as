@@ -76,6 +76,7 @@
 		};
 					//*******************//		// CREATE AND DELETE //		//*******************//		function CreateControl()		{			var MovementClass:Class = GetClass();			var newMovement = new MovementClass();
 					newMovement.nX = nX;			newMovement.nY = nY;				newMovement.x = nX;			newMovement.y = nY;						newMovement.name = this.name;
+			newMovement.gotoAndStop(this.currentFrame);
 					
 			var main:Main = this.stage.getChildAt(0) as Main;
 			var game:Game = main.getChildAt(0) as Game;
