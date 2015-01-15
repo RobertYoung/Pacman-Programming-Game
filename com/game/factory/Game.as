@@ -527,6 +527,7 @@
 		private function SaveData()
 		{
 			PacmanSharedObjectHelper.getInstance().SetLevelData(this.level.stageNumber, this.level.levelNumber, levelData);
+			this.SaveToDatabase();
 		}
 		
 		private function SaveIncompleteData()
@@ -535,6 +536,12 @@
 			levelData.completed = false;
 			
 			PacmanSharedObjectHelper.getInstance().SetIncompleteLevelData(this.level.stageNumber, this.level.levelNumber, levelData);
+			this.SaveToDatabase();
+		}
+		
+		private function SaveToDatabase()
+		{
+			PacmanWebService.getInstance().SetLevelData(this.levelData);
 		}
 		
 		private function CompileSequence()
