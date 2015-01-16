@@ -155,6 +155,8 @@
 		
 		private function BuildLevel()
 		{
+			level.ImplementHoleWithMonster();
+			
 			var pacmanStage:PacmanStage = new PacmanStage(level);
 
 			pacmanStage.x = 280;

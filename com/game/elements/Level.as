@@ -148,7 +148,7 @@
 			CreateArrayOfGrids();
 			
 			// Check if there are holes to add a monster in a random place
-			ImplementHoleWithMonster();
+			//ImplementHoleWithMonster();
 			
 			// Create the stage and add to the view
 			/*
@@ -162,7 +162,7 @@
 			*/
 		}
 		
-		function ImplementHoleWithMonster()
+		public function ImplementHoleWithMonster()
 		{
 			var gridsWithHole:Array = new Array();
 			
@@ -172,8 +172,10 @@
 				var myGrid:Grid = grids[i] as Grid;
 				
 				// Add int position of grid in grids array
-				if (myGrid.hole)
+				if (myGrid.hole){
 					gridsWithHole.push(i);
+					myGrid.holeWithMonster = false;
+				}
 			}
 			
 			// Randomly select a grid

@@ -300,11 +300,24 @@
 				if (controlInStack)
 				{
 					var control:Control = stack.getChildByName(controlInStack) as Control;
-					control.gotoAndStop(this.currentSymbol);
+						
+					if (control.name == Control.CONTROL_LOOP)
+						control.gotoAndStop(this.currentSymbol + 3);
+					else{
+						control.gotoAndStop(this.currentSymbol);
+					}
 				}
 				
 				i++;
 			}
+		}
+		
+		//*****//
+		// GET //
+		//*****//
+		public function GetCurrentSymbol():int
+		{
+			return this.currentSymbol;
 		}
 	}
 	

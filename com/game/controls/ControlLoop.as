@@ -5,6 +5,9 @@
 	import com.game.elements.Stack;
 	import flash.text.TextField;
 	import flash.events.Event;
+	import com.greensock.loading.LoaderMax;
+	import com.game.factory.Game;
+	import com.game.scenes.Controls;
 	
 	public class ControlLoop extends Control {
 		
@@ -22,8 +25,11 @@
 		{
 			super.AddControlToStack(e, stackPosition);
 			
-			this.gotoAndStop(2);
+			var controls:Controls = LoaderMax.getContent(Game.SWF_CONTROLS).rawContent as Controls;
 			
+			if (controls){
+				this.gotoAndStop(controls.GetCurrentSymbol() + 3);
+			}
 			this.loopTimes_txt.restrict = "0-9";
 		}
 		
