@@ -31,6 +31,7 @@
 		public function Header() {
 			play_mc.addEventListener(MouseEvent.MOUSE_DOWN, PlayMouseDown);		
 			reset_mc.addEventListener(MouseEvent.MOUSE_UP, ResetMouseUp);
+			play_mc.gotoAndStop(1);
 			
 			/*
 			controlsRadioButtonTextual_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToTextualControls);
@@ -87,6 +88,21 @@
 		{
 			game.Play();
 			play_mc.removeEventListener(MouseEvent.MOUSE_UP, PlayMouseUp);	
+			play_mc.gotoAndStop(2);
+			play_mc.addEventListener(MouseEvent.MOUSE_DOWN, StopMouseDown);
+		}
+		
+		function StopMouseDown(e:MouseEvent)
+		{
+			play_mc.addEventListener(MouseEvent.MOUSE_UP, StopMouseUp);
+		}
+		
+		function StopMouseUp(e:MouseEvent)
+		{
+			game.Stop();
+			play_mc.removeEventListener(MouseEvent.MOUSE_DOWN, StopMouseDown);
+			play_mc.removeEventListener(MouseEvent.MOUSE_UP, StopMouseUp);
+			play_mc.addEventListener(MouseEvent.MOUSE_DOWN, PlayMouseDown);	
 		}
 
 		function ResetMouseUp(e:MouseEvent)

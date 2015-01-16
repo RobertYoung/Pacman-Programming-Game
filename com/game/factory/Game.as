@@ -194,6 +194,8 @@
 		
 		public function ResetPlayState()
 		{
+			pacmanTimeline.clear();
+			monsterTimeline.clear();
 			pacmanSequence = new Array();
 			pacmanTimeline = new TimelineMax();
 			monsterTimeline = new TimelineMax();
@@ -259,6 +261,13 @@
 			
 			// Start the animation
 			this.pacmanTimeline.play();
+		}
+		
+		public function Stop()
+		{
+			this.ResetAfterUserError();
+			this.ResetAllAnimations();
+			this.ResetPlayState();
 		}
 
 		//******************//
