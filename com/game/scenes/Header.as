@@ -11,6 +11,7 @@
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.*;
+	import com.game.factory.PacmanSharedObjectHelper;
 	
 	public class Header extends MovieClip {
 		
@@ -39,12 +40,6 @@
 			play_mc.gotoAndStop(1);
 			
 			this.serverIconTimeline = new TimelineMax();
-			
-			/*
-			controlsRadioButtonTextual_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToTextualControls);
-			controlsRadioButtonGraphical_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToGraphicalControls);
-			controlsRadioButtonTextualGraphical_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToTextualGraphicalControls);
-			*/
 			
 			controlsRadioButtonTextual_mc.addEventListener(MouseEvent.MOUSE_DOWN, MouseDownControlTextual);
 			controlsRadioButtonTextual_mc.addEventListener(MouseEvent.MOUSE_UP, StopControlTimer);
@@ -126,7 +121,7 @@
 				controls = LoaderMax.getContent(Game.SWF_CONTROLS).rawContent as Controls;
 				this.SetLevelDetails();
 				
-				if (game.serverConnected)
+				if (PacmanSharedObjectHelper.getInstance().GetWebServiceConnect())
 				{
 					this.SetWebServiceConnected();
 				}else{
@@ -194,6 +189,7 @@
 			if (!connected)
 				colour = 0xff0000;
 			
+			this.serverIconTimeline = new TimelineMax();
 			this.serverIconTimeline.append(new TweenMax(this.serverIcon_mc, 1, {glowFilter:{color:colour, alpha:1, blurX:30, blurY:30, strength:3}}));
 			this.serverIconTimeline.append(new TweenMax(this.serverIcon_mc, 1, {glowFilter:{color:colour, alpha:0, blurX:30, blurY:30, strength:3}}));
 			this.serverIconTimeline.repeat(-1);

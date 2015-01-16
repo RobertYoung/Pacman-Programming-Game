@@ -5,6 +5,7 @@
 	import flash.events.MouseEvent;
 	import com.game.scenes.Main;
 	import flash.text.TextField;
+	import com.game.factory.PacmanSharedObjectHelper;
 	
 	
 	public class LevelCompleteAlertView extends MovieClip {
@@ -22,10 +23,12 @@
 		public var highScore_txt:TextField;
 		public var bonusScore_txt:TextField;
 		public var bonusScoreLabel_txt:TextField;
+		public var title_txt:TextField;
+		public var description_txt:TextField;
 		
 		public var next_mc:MovieClip;
 		
-		public function LevelCompleteAlertView(setCurrentStage:int, setCurrentLevel:int, setScore:int, setHighScore:int, setBonusScore:int = 0) {
+		public function LevelCompleteAlertView(setCurrentStage:int, setCurrentLevel:int, setScore:int, setHighScore:int, setBonusScore:int = 0, setTitle:String = null, setDescription:String = null) {
 			this.currentStage = setCurrentStage;
 			this.currentLevel = setCurrentLevel;
 			this.score = setScore;
@@ -34,6 +37,11 @@
 			
 			this.bonusScore_txt.visible = false;
 			this.bonusScoreLabel_txt.visible = false;
+			
+			if (setTitle != null)
+				title_txt.text = setTitle;
+			if (setDescription != null)
+				description_txt.text = setDescription;
 			
 			this.addEventListener(Event.ADDED_TO_STAGE, Init);
 		}
@@ -62,7 +70,12 @@
 		
 		private function NextLevel(e:MouseEvent)
 		{
-			if (this.currentLevel == 1)
+			if (PacmanSharedObjectHelper.getInstance().GetGameCompletion())
+				this.main.GoToAchievements();
+			else if (this.currentLevel == 0 && this.currentStage == 0)
+			{
+				this.main.GoToLevelSelection(e, 3);
+			}else if (this.currentLevel == 1)
 			{
 				this.main.GoToLevelSelection(e, (this.currentStage - 1));
 			}else{

@@ -93,5 +93,10 @@
 			
 			this.addChild(game);
 		}
+		
+		public function GoToAchievements()
+		{
+			trace("GO TO ACHIEVEMENTS");
+		}
 	}
 }

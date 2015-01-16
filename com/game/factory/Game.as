@@ -84,8 +84,6 @@
 		private var loopArray:Array = new Array(); 
 		private var timer:Timer = new Timer(1000);
 		
-		public var serverConnected:Boolean = false;
-		
 		// Level data
 		var levelData:LevelData;
 		var totalScore:int;
@@ -522,10 +520,16 @@
 			
 			this.SaveData();
 			
+			/*
+			if (game complete)
+				display popup 
+				return
+			*/
+
 			if (level.levelNumber == 6 && level.stageNumber == 3)
 			{
-				trace("GAME COMPLETE");
-				return;
+				level.levelNumber = 0;
+				level.stageNumber = 0;
 			}else if (level.levelNumber == 6)
 			{
 				level.stageNumber += 1;
@@ -534,10 +538,16 @@
 				level.levelNumber += 1;
 			}
 			
-			var levelComplete:LevelCompleteAlertView = new LevelCompleteAlertView(level.stageNumber, level.levelNumber, levelData.levelScore, levelData.highScore, levelData.bonusScore);
-			
-			this.addChild(levelComplete);
-			
+			if (PacmanSharedObjectHelper.getInstance().GetGameCompletion() == true)
+			{
+				var gameComplete:LevelCompleteAlertView = new LevelCompleteAlertView(level.stageNumber, level.levelNumber, levelData.levelScore, levelData.highScore, levelData.bonusScore, "game complete", "CONGRATULATIONS!! You have successfully completed Program Pacman");
+				
+				this.addChild(gameComplete);
+			}else{
+				var levelComplete:LevelCompleteAlertView = new LevelCompleteAlertView(level.stageNumber, level.levelNumber, levelData.levelScore, levelData.highScore, levelData.bonusScore);
+				
+				this.addChild(levelComplete);
+			}
 			PacmanSharedObjectHelper.getInstance().SetStageAndLevel(level.stageNumber, level.levelNumber);
 		}
 		

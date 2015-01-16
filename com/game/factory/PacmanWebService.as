@@ -12,7 +12,6 @@
 		private static var isOkayToCreate:Boolean = false;
 		private var levelData:LevelData;
 		private var headerSWF:Header;
-		private var game:Game;
 		
 		private static const WEB_SERVICE_URL:String = "http://cmpproj.cms.livjm.ac.uk/cmpryoun/services/pacmanservice/PacmanService.asmx?WSDL";
 		
@@ -23,11 +22,6 @@
 				throw new Error(this + " is a Singleton. Access using getInstance()");
 			
 			headerSWF = LoaderMax.getContent(Game.SWF_HEADER).rawContent as Header;
-			var main:Main = headerSWF.stage.getChildAt(0) as Main;
-			
-			if (main != null) {
-				game = main.getChildByName(Game.SWF_GAME) as Game;
-			}
 		}
 
 		public static function getInstance():PacmanWebService
@@ -49,7 +43,7 @@
 			webService.addEventListener(Event.CONNECT, SetLevelDataConnection);
 			webService.connect(PacmanWebService.WEB_SERVICE_URL);
 			headerSWF.SetWebServiceDisconnected();
-			game.serverConnected = false;
+			PacmanSharedObjectHelper.getInstance().SetWebServiceConnect(false);
 		}
 		
 		private function SetLevelDataConnection(e:Event)
@@ -62,13 +56,14 @@
 		private function Done(response:XML)
 		{
 			trace("Response: " + response);
+			trace(response.child("*").child("*").child("*"));
 			
 			if (response.child("*").child("*").child("*") == "Saved") {
 				headerSWF.SetWebServiceConnected();
-				game.serverConnected = true;
+				PacmanSharedObjectHelper.getInstance().SetWebServiceConnect(true);
 			}else{
 				headerSWF.SetWebServiceDisconnected();
-				game.serverConnected = false;
+				PacmanSharedObjectHelper.getInstance().SetWebServiceConnect(false);
 			}
 		}
 	}

@@ -36,7 +36,7 @@
 		
 		private function GoToAchievements(e:MouseEvent)
 		{
-			trace("Achievements pressed");
+			this.main.GoToAchievements();
 		}
 		
 		private function GoToHelp(e:MouseEvent)

@@ -13,6 +13,8 @@
 		private static const USER_LEVEL:String = "userLevel";
 		private static const USER_HIGH_SCORE:String = "userHighScore";
 		private static const USER_CONTROLS_SYMBOL:String = "userControlsSymbol";
+		private static const WEB_SERVICE_CONNECT:String = "webServiceConnect";
+		private static const GAME_COMPLETION:String = "gameCompletion";
 		
 		public var userLocalData:SharedObject;
 		
@@ -59,7 +61,9 @@
 				throw new Error(this + " is a Singleton. Access using getInstance()");
 			
 			userLocalData = SharedObject.getLocal(PacmanSharedObjectHelper.PACMAN_LOCAL_DATA);
+			//this.SetAllLevelsComplete();
 			userLocalData.flush();
+			
 		}
 		
 		public static function getInstance():PacmanSharedObjectHelper
@@ -130,23 +134,6 @@
 				levelIncompleteData = new Array();
 			
 			this["stage" + stageNumber + "level" + levelNumber + "Incomplete"] = savedIncompleteLevelData;
-			
-			/*
-			levelIncompleteData.highScore = savedIncompleteLevelData.highScore;
-			levelIncompleteData.levelScore = savedIncompleteLevelData.levelScore;
-			levelIncompleteData.bonusScore = savedIncompleteLevelData.bonusScore;
-			levelIncompleteData.pacDotScore = savedIncompleteLevelData.pacDotScore;
-			levelIncompleteData.cherryScore = savedIncompleteLevelData.cherryScore;
-			levelIncompleteData.appleScore = savedIncompleteLevelData.appleScore;
-			levelIncompleteData.strawberryScore = savedIncompleteLevelData.strawberryScore;
-			levelIncompleteData.ifScore = savedIncompleteLevelData.ifScore;
-			levelIncompleteData.ifElseScore = savedIncompleteLevelData.ifElseScore;
-			levelIncompleteData.loopScore = savedIncompleteLevelData.loopScore;
-			levelIncompleteData.completed = savedIncompleteLevelData.completed;
-			levelIncompleteData.levelIncomplete = savedIncompleteLevelData.levelIncomplete;
-
-			levelIncompleteData.pu
-			*/
 		}
 		
 		public function GetTotalScore():int
@@ -160,8 +147,6 @@
 					totalScore += this.GetLevelData(stageNum, levelNum).highScore;
 				}
 			}
-			
-			trace(totalScore);
 			
 			return totalScore;
 		}
@@ -179,6 +164,16 @@
 			return completed;
 		}
 		
+		public function GetGameCompletion():Boolean
+		{
+			if (this.GetStageCompletion(1) == true && this.GetStageCompletion(2) == true && this.GetStageCompletion(3) == true)
+			{
+				return true;
+			}
+			
+			return false;
+		}
+		
 		public function GetUserControlsSymbol():int
 		{
 			var controlSymbol:int = this.userLocalData.data[PacmanSharedObjectHelper.USER_CONTROLS_SYMBOL];
@@ -187,6 +182,11 @@
 				controlSymbol = Controls.CONTROLS_TEXTUAL;
 			
 			return controlSymbol;
+		}
+		
+		public function GetWebServiceConnect():Boolean
+		{
+			return this.userLocalData.data[PacmanSharedObjectHelper.WEB_SERVICE_CONNECT];
 		}
 		
 		//*****//
@@ -236,6 +236,32 @@
 		public function SetUserControlsSymbol(userControlSymbol:int)
 		{
 			this.userLocalData.data[PacmanSharedObjectHelper.USER_CONTROLS_SYMBOL] = userControlSymbol;
+		}
+		
+		public function SetWebServiceConnect(connect:Boolean)
+		{
+			this.userLocalData.data[PacmanSharedObjectHelper.WEB_SERVICE_CONNECT] = connect;
+		}
+		
+		//***************//
+		// DEBUG METHODS //
+		//***************//
+		public function SetAllLevelsComplete()
+		{
+			for (var stageNum = 1; stageNum <= 3; stageNum++)
+			{
+				for (var levelNum = 1; levelNum <= 6; levelNum++)
+				{
+					var levelData:LevelData = new LevelData(stageNum, levelNum);
+					
+					if (stageNum == 1 && levelNum == 1)
+						levelData.completed = false;
+					else
+						levelData.completed = true;
+					
+					this.SetLevelData(stageNum, levelNum, levelData);
+				}
+			}
 		}
 	}
 	
