@@ -45,6 +45,7 @@
 			}
 
 			this.SwitchToMovement();
+			game.SetLevelControl(this.currentSymbol);
 		}
 		
 		//*******************//
@@ -244,6 +245,7 @@
 			trace("Switch to textual");
 			PacmanSharedObjectHelper.getInstance().SetUserControlsSymbol(Controls.CONTROLS_TEXTUAL);
 			this.currentSymbol = Controls.CONTROLS_TEXTUAL;
+			game.SetLevelControl(Controls.CONTROLS_TEXTUAL);
 			this.ReloadControls();
 		}
 		
@@ -252,6 +254,7 @@
 			trace("switch to graphical");
 			PacmanSharedObjectHelper.getInstance().SetUserControlsSymbol(Controls.CONTROLS_GRAPHICAL);
 			this.currentSymbol = Controls.CONTROLS_GRAPHICAL;
+			game.SetLevelControl(Controls.CONTROLS_GRAPHICAL);
 			this.ReloadControls();
 		}
 		
@@ -260,6 +263,7 @@
 			trace("switch to textual graphical");
 			PacmanSharedObjectHelper.getInstance().SetUserControlsSymbol(Controls.CONTROLS_TEXTUAL_GRAPHICAL);
 			this.currentSymbol = Controls.CONTROLS_TEXTUAL_GRAPHICAL;
+			game.SetLevelControl(Controls.CONTROLS_TEXTUAL_GRAPHICAL);
 			this.ReloadControls();
 		}
 		

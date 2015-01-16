@@ -340,6 +340,7 @@
 			if (currentGridPlaceholder.ElementExists(Grid.PACDOT)) {
 				currentGridPlaceholder.RemoveChildByName(Grid.PACDOT);
 				this.UpdateScores(Game.SCORE_PAC_DOT);
+				this.levelData.pacDotScore += Game.SCORE_PAC_DOT;
 			}
 			
 			//**********//
@@ -368,6 +369,7 @@
 			{
 				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_APPLE);
 				this.UpdateScores(Game.SCORE_APPLE);
+				this.levelData.appleScore += Game.SCORE_APPLE;
 				LevelComplete();
 				return;
 			}
@@ -376,6 +378,7 @@
 			{
 				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_CHERRY);
 				this.UpdateScores(Game.SCORE_CHERRY);
+				this.levelData.cherryScore += Game.SCORE_CHERRY;
 				LevelComplete();
 				return;
 			}
@@ -384,6 +387,7 @@
 			{
 				currentGridPlaceholder.RemoveChildByName(Grid.REWARD_STRAWBERRY);
 				this.UpdateScores(Game.SCORE_STRAWBERRY);
+				this.levelData.strawberryScore += Game.SCORE_STRAWBERRY;
 				LevelComplete();
 				return;
 			}
@@ -684,6 +688,7 @@
 						}
 						
 						this.UpdateBonusScore(Game.SCORE_IF);
+						this.levelData.ifScore += Game.SCORE_IF;
 					break;
 					case Control.CONTROL_IF_CLEAR_END:
 						// Check there is a matching IF_CLEAR
@@ -722,6 +727,7 @@
 						}
 						
 						this.UpdateBonusScore(Game.SCORE_IF_ELSE);
+						this.levelData.ifElseScore += Game.SCORE_IF_ELSE;
 					break;
 					case Control.CONTROL_ELSE_CLEAR_END:
 						var controlElseClearExists:ControlExists = this.ControlExistsBefore(Control.CONTROL_ELSE_CLEAR, stackPos);
@@ -863,6 +869,7 @@
 						this.loopArray.unshift(newLoop);
 						
 						this.UpdateBonusScore(Game.SCORE_LOOP);
+						this.levelData.loopScore += Game.SCORE_LOOP;
 					break;
 					case Control.CONTROL_LOOP_END:
 						// Get the first loop in the array
@@ -995,6 +1002,11 @@
 		public function GetLevelDetails():Level
 		{
 			return this.level;
+		}
+		
+		public function SetLevelControl(setLevelControl:int)
+		{
+			this.levelData.control = setLevelControl;
 		}
 		
 		//************//
