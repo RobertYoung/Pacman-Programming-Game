@@ -8,6 +8,9 @@
 	import com.greensock.loading.LoaderMax;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
+	import com.greensock.TimelineMax;
+	import com.greensock.TweenMax;
+	import com.greensock.easing.*;
 	
 	public class Header extends MovieClip {
 		
@@ -25,13 +28,17 @@
 		public var controlsRadioButtonTextual_mc:MovieClip;
 		public var controlsRadioButtonGraphical_mc:MovieClip;
 		public var controlsRadioButtonTextualGraphical_mc:MovieClip;
+		public var serverIcon_mc:MovieClip;
 		
 		private var controlTimer:Timer;
+		private var serverIconTimeline:TimelineMax;
 		
 		public function Header() {
 			play_mc.addEventListener(MouseEvent.MOUSE_DOWN, PlayMouseDown);		
 			reset_mc.addEventListener(MouseEvent.MOUSE_UP, ResetMouseUp);
 			play_mc.gotoAndStop(1);
+			
+			this.serverIconTimeline = new TimelineMax();
 			
 			/*
 			controlsRadioButtonTextual_mc.addEventListener(MouseEvent.MOUSE_UP, SwitchToTextualControls);
@@ -118,7 +125,13 @@
 				game = main.getChildByName(Game.SWF_GAME) as Game;
 				controls = LoaderMax.getContent(Game.SWF_CONTROLS).rawContent as Controls;
 				this.SetLevelDetails();
-				trace(controls);
+				
+				if (game.serverConnected)
+				{
+					this.SetWebServiceConnected();
+				}else{
+					this.SetWebServiceDisconnected();
+				}
 			}
 		}
 		
@@ -159,6 +172,32 @@
 		public function SetTotalHighScoreText(totalHighScore:int)
 		{
 			totalScore_txt.text = totalHighScore.toString();
+		}
+		
+		//*************//
+		// SERVER ICON //
+		//*************//
+		public function SetWebServiceConnected()
+		{
+			this.CreateWebServiceAnimation(true);
+		}
+		
+		public function SetWebServiceDisconnected()
+		{
+			this.CreateWebServiceAnimation(false);
+		}
+		
+		private function CreateWebServiceAnimation(connected:Boolean)
+		{
+			var colour:Number = 0x33ff00;
+			
+			if (!connected)
+				colour = 0xff0000;
+			
+			this.serverIconTimeline.append(new TweenMax(this.serverIcon_mc, 1, {glowFilter:{color:colour, alpha:1, blurX:30, blurY:30, strength:3}}));
+			this.serverIconTimeline.append(new TweenMax(this.serverIcon_mc, 1, {glowFilter:{color:colour, alpha:0, blurX:30, blurY:30, strength:3}}));
+			this.serverIconTimeline.repeat(-1);
+			this.serverIconTimeline.play();
 		}
 	}
 	

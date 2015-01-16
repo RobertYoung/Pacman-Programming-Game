@@ -84,6 +84,8 @@
 		private var loopArray:Array = new Array(); 
 		private var timer:Timer = new Timer(1000);
 		
+		public var serverConnected:Boolean = false;
+		
 		// Level data
 		var levelData:LevelData;
 		var totalScore:int;

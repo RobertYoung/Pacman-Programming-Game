@@ -30,6 +30,7 @@ package com.alducente.services {
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.events.IOErrorEvent;
 	
 	public class WSDL {
 		
@@ -51,6 +52,12 @@ package com.alducente.services {
 			var methodList:XMLList = getMethodList(bindingType);
 			__availableMethods = getAvailableMethods(methodList);
 			__parseComplete(__availableMethods);
+		}
+		
+		private function wsdlError(e:IOErrorEvent)
+		{
+			__rawWSDL = new XML("Connection Error: " + e.text);
+			trace(__rawWSDL);
 		}
 		
 		private function getPortType(rawWSDL:XML):String{
@@ -132,6 +139,7 @@ package com.alducente.services {
 			__parseComplete = complete;
 			var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, wsdlLoaded);
+			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, wsdlError);
 			urlLoader.load(new URLRequest(__wsdlPath))
 		}
 		
