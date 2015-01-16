@@ -81,6 +81,7 @@
 		private var monsterTimeline:TimelineMax = new TimelineMax();
 		private var monsterHole;
 		private var pacmanKeys:Number = 0;
+		private var pacmanKeysActual:Number = 0;
 		private var loopArray:Array = new Array(); 
 		private var timer:Timer = new Timer(1000);
 		
@@ -358,20 +359,14 @@
 			// MONSTERS //
 			//**********//
 			// BLINKY
-			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_BLINKY))
-				trace("GAME OVER");
-			
-			// CLYDE
-			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_CLYDE))
-				trace("GAME OVER");
-			
-			// INKY
-			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_INKY))
-				trace("GAME OVER");
-			
-			// PINKY
-			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_PINKY))
-				trace("GAME OVER");
+			if (currentGridPlaceholder.ElementExists(Grid.MONSTER_BLINKY) || currentGridPlaceholder.ElementExists(Grid.MONSTER_CLYDE) ||
+				currentGridPlaceholder.ElementExists(Grid.MONSTER_INKY) || currentGridPlaceholder.ElementExists(Grid.MONSTER_PINKY))
+			{
+				var monsterAlertView:AlertView = new AlertView("Ooopppppps", "Pacman has been killed by a monster", "Navigate around the monster", this.ResetAfterUserError);
+				this.addChild(monsterAlertView);
+				this.pacmanTimeline.stop();
+				return;
+			}
 			
 			//*********//
 			// REWARDS //
@@ -511,7 +506,6 @@
 		
 		private function LevelComplete()
 		{
-			trace("COMPLETE: Next Level...");
 			this.ResetAllAnimations();
 			
 			// Store level data
@@ -519,12 +513,6 @@
 			levelData.completed = true;
 			
 			this.SaveData();
-			
-			/*
-			if (game complete)
-				display popup 
-				return
-			*/
 
 			if (level.levelNumber == 6 && level.stageNumber == 3)
 			{
@@ -959,6 +947,12 @@
 			nextGridBlock = nextGridPlaceholder.GetGridBlockMovieClip();
 		}
 		
+		private function UpdateKeyOnHeader()
+		{
+			trace("Actual keys: " + this.pacmanKeysActual);
+			this.header.UpdateKey(this.pacmanKeysActual);
+		}
+		
 		//*********//
 		// ACTIONS //
 		//*********//
@@ -977,6 +971,8 @@
 		private function DecrementNumberOfKeys(key:MovieClip)
 		{
 			key["numberOfKeys_txt"].text -= 1;
+			this.pacmanKeysActual++;
+			this.UpdateKeyOnHeader();
 		}
 		
 		private function RemoveElement(movieClip:MovieClip)
@@ -986,6 +982,8 @@
 		
 		private function RemoveDoor(movieClip:MovieClip)
 		{
+			this.pacmanKeysActual--;
+			this.UpdateKeyOnHeader();
 			this.RemoveElement(movieClip);
 		}
 		

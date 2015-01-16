@@ -30,6 +30,7 @@
 		public var controlsRadioButtonGraphical_mc:MovieClip;
 		public var controlsRadioButtonTextualGraphical_mc:MovieClip;
 		public var serverIcon_mc:MovieClip;
+		public var numberOfKeys_txt:TextField;
 		
 		private var controlTimer:Timer;
 		private var serverIconTimeline:TimelineMax;
@@ -194,6 +195,14 @@
 			this.serverIconTimeline.append(new TweenMax(this.serverIcon_mc, 1, {glowFilter:{color:colour, alpha:0, blurX:30, blurY:30, strength:3}}));
 			this.serverIconTimeline.repeat(-1);
 			this.serverIconTimeline.play();
+		}
+		
+		//******//
+		// KEYS //
+		//******//
+		public function UpdateKey(newKey:int)
+		{
+			this.numberOfKeys_txt.text = newKey.toString();
 		}
 	}
 	
