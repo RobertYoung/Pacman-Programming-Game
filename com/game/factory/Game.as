@@ -40,6 +40,7 @@
 		public static const SWF_LOGO:String = "logo";
 		public static const SWF_BACK_BUTTON:String = "back_button";
 		public static const SWF_GAME:String = "game";
+		public static const SWF_HELP:String = "help";
 		public static const SWF_LEVEL_SELECTION:String = "level_selection";
 		public static const SWF_ACHIEVEMENTS:String = "achievements";
 		public static const SWF_HEADER:String = "header";

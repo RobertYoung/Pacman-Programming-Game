@@ -45,7 +45,7 @@
 		
 		private function GoToHelp(e:MouseEvent)
 		{
-			trace("Help Pressed");
+			this.main.GoToHelp();
 		}
 		
 		function OnMouseOver(e:MouseEvent)

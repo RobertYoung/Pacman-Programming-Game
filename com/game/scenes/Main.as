@@ -104,5 +104,25 @@
 			
 			achievements.Init();
 		}
+		
+		public function GoToHelp()
+		{
+			this.RemoveChildren();
+			
+			queue = new LoaderMax({ name:"mainQueue", onComplete: HelpComplete });
+			
+			queue.append(new SWFLoader(Game.SWF_HELP + ".swf", {name: Game.SWF_HELP, container:this}));
+			queue.append(new SWFLoader(Game.SWF_LOGO + ".swf", {name: Game.SWF_LOGO, container:this}));
+			queue.append(new SWFLoader(Game.SWF_BACK_BUTTON + ".swf", {name: Game.SWF_BACK_BUTTON, container:this}));	
+			
+			queue.load();
+		}
+		
+		private function HelpComplete(e:LoaderEvent)
+		{
+			var help:Help = LoaderMax.getContent(Game.SWF_HELP).rawContent as Help;
+			
+			help.Init();
+		}
 	}
 }
