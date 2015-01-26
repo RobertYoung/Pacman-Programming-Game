@@ -10,6 +10,9 @@
 		
 		public function BackButton() {
 			this.addEventListener(Event.ADDED_TO_STAGE, GetElements);
+			
+			back_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			back_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 		}
 		
 		private function GetElements(e:Event)
@@ -25,6 +28,16 @@
 		public function RemoveMouseUpEventListener(func:Function)
 		{
 			back_mc.removeEventListener(MouseEvent.MOUSE_UP, func);
+		}
+		
+		function OnMouseOver(e:MouseEvent)
+		{
+			this.alpha = 0.8;
+		}
+		
+		function OnMouseOut(e:MouseEvent)
+		{
+			this.alpha = 1;
 		}
 	}
 	

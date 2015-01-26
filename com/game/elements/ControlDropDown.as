@@ -28,8 +28,6 @@
 		public var ifSelect_mc:MovieClip;
 		
 		public function ControlDropDown() {
-			trace(stage);
-			
 			if(stage) init(null);
             else addEventListener(Event.ADDED_TO_STAGE, init)
 		}
@@ -43,7 +41,7 @@
 			this.gotoAndStop(1);
 			this.addEventListener(MouseEvent.MOUSE_UP, MouseUpDisplayDropDown);
 
-			controls = this.parent as Controls;			
+			controls = this.parent as Controls;	
         }
 		
 		//****************//
@@ -65,6 +63,16 @@
 			this.DisplayDropDown();
 		}
 		
+		function OnMouseOver(e:MouseEvent)
+		{
+			e.target.alpha = 0.8;
+		}
+		
+		function OnMouseOut(e:MouseEvent)
+		{
+			e.target.alpha = 1;
+		}
+		
 		//***********************//
 		// HIDE & SHOW DROP DOWN //
 		//***********************//
@@ -75,6 +83,15 @@
 			
 			this.controls.stage.addEventListener(MouseEvent.MOUSE_UP, MouseUpHideDropDown);
 			this.removeEventListener(MouseEvent.MOUSE_UP, MouseUpDisplayDropDown);
+			
+			movementSelect_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			movementSelect_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			ifSelect_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			ifSelect_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			loopSelect_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			loopSelect_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			actionsSelect_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			actionsSelect_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 		}
 		
 		private function HideDropDown()

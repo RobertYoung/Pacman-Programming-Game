@@ -8,6 +8,7 @@
 	import com.greensock.loading.LoaderMax;
 	import com.game.factory.PacmanSharedObjectHelper;
 	import com.game.elements.Stack;
+	import flash.events.MouseEvent;
 	
 	public class Controls extends MovieClip {
 		
@@ -31,6 +32,9 @@
 		public function Controls() {
 			if (this.currentSymbol == 0)
 				this.currentSymbol = PacmanSharedObjectHelper.getInstance().GetUserControlsSymbol();
+			
+			controlDropDown_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			controlDropDown_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 		}
 		
 		//******//
@@ -46,6 +50,19 @@
 
 			this.SwitchToMovement();
 			game.SetLevelControl(this.currentSymbol);
+		}
+		
+		//**************//
+		// MOUSE EVENTS //
+		//**************//
+		function OnMouseOver(e:MouseEvent)
+		{
+			controlDropDown_mc.alpha = 0.8;
+		}
+		
+		function OnMouseOut(e:MouseEvent)
+		{
+			controlDropDown_mc.alpha = 1;
 		}
 		
 		//*******************//

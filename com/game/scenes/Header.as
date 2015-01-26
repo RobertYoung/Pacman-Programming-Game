@@ -48,6 +48,11 @@
 			controlsRadioButtonGraphical_mc.addEventListener(MouseEvent.MOUSE_UP, StopControlTimer);
 			controlsRadioButtonTextualGraphical_mc.addEventListener(MouseEvent.MOUSE_DOWN, MouseDownControlTextualGraphical);
 			controlsRadioButtonTextualGraphical_mc.addEventListener(MouseEvent.MOUSE_UP, StopControlTimer);
+			
+			play_mc.addEventListener(MouseEvent.MOUSE_OVER, this.OnMouseOver);
+			play_mc.addEventListener(MouseEvent.MOUSE_OUT, this.OnMouseOut);
+			reset_mc.addEventListener(MouseEvent.MOUSE_OVER, this.OnMouseOver);
+			reset_mc.addEventListener(MouseEvent.MOUSE_OUT, this.OnMouseOut);
 		}
 		
 		//*****************//
@@ -111,6 +116,16 @@
 		function ResetMouseUp(e:MouseEvent)
 		{
 			game.ReloadLevel();
+		}
+		
+		function OnMouseOver(e:MouseEvent)
+		{
+			e.target.alpha = 0.8;
+		}
+		
+		function OnMouseOut(e:MouseEvent)
+		{
+			e.target.alpha = 1;
 		}
 		
 		public function Init()

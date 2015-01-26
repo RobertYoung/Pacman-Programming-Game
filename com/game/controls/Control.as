@@ -35,6 +35,8 @@
 		var actionPickUpKey:ActionPickUpKey;
 		var actionUseKey:ActionUseKey;
 		var popupTimer:Timer;				//*************//		// CONSTRUCTOR //		//*************//		public function Control() {			nX = this.x;			nY = this.y;						this.addEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromControlArea);			this.addEventListener(MouseEvent.MOUSE_UP, OnMouseUpFromControlArea);
+			this.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			this.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 			
 			this.gotoAndStop(1);		}				//**********************//		// MOUSE EVENT HANDLERS // 		//**********************//		function OnMouseDownFromControlArea(e:MouseEvent):void		{			this.startDrag();		}				function OnMouseUpFromControlArea(e:MouseEvent):void		{			this.stopDrag();						// Send movement back to control area if control			// is dropped on nothing			if (e.target.dropTarget == null)				MoveControlToControlArea();			else{				// Regular expression for the stack. E.g stack1, stack2				var pattern:RegExp = /stack\d/;				var stackPosition = e.target.dropTarget.parent;								// Check if the control is dropped on the coding area in a stack				// If it is, create new control				if (pattern.test(stackPosition.name))				{					AddControlToStack(e, stackPosition);				}else if (pattern.test(stackPosition.parent.name)){
 					AddControlToStack(e, stackPosition.parent);
@@ -57,6 +59,16 @@
 		function AddOnMouseDownFromStackAreaEvent(e:Event)
 		{
 			this.addEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromStackArea);
+		}
+		
+		function OnMouseOver(e:MouseEvent)
+		{
+			this.alpha = 0.8;
+		}
+		
+		function OnMouseOut(e:MouseEvent)
+		{
+			this.alpha = 1;
 		}
 		
 		//**********************//

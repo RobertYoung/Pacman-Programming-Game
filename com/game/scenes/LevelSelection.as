@@ -32,7 +32,6 @@
 
 		public function Init()
 		{
-			trace("init");
 			this.gotoAndStop(1);
 			
 			main = this.stage.getChildAt(0) as Main;
@@ -59,6 +58,14 @@
 			stage2_mc.addEventListener(MouseEvent.MOUSE_UP, OnClickLevel(2));
 			stage3_mc.addEventListener(MouseEvent.MOUSE_UP, OnClickLevel(3));
 			
+			stage1_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			stage2_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			stage3_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			
+			stage1_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			stage2_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			stage3_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			
 			backButton.AddMouseUpEventListener(OnClickBackButtonMenu);
 
 			if (this.userLocalData.GetStageCompletion(1) == true)
@@ -81,24 +88,6 @@
 				
 				stage3_mc.addChild(completeTick3);
 			}
-			
-			/*
-			var userStage:int = userLocalData.GetStage();
-			
-			if (userStage > 1){
-				var completeTick1:CompleteTick = new CompleteTick(70, 50);
-				
-				stage1_mc.addChild(completeTick1);
-			}if (userStage > 2){
-				var completeTick2:CompleteTick = new CompleteTick(70, 50);
-				
-				stage2_mc.addChild(completeTick2);
-			}if (userStage > 3){
-				var completeTick3:CompleteTick = new CompleteTick(70, 50);
-				
-				stage3_mc.addChild(completeTick3);
-			}
-			*/
 		}
 		
 		private function OnClickLevel(setStageNumber:int) {
@@ -132,6 +121,8 @@
 				
 				level.mouseChildren = false;
 				level.addEventListener(MouseEvent.MOUSE_UP, GoToLevel(i));
+				level.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+				level.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 				
 				var completeTick:CompleteTick = new CompleteTick(70, 50);
 				
@@ -164,6 +155,19 @@
 		{
 			gotoAndStop(1);
 			this.SetupStageSelection();
+		}
+		
+		//**************//
+		// MOUSE EVENTS //
+		//**************//
+		function OnMouseOver(e:MouseEvent)
+		{
+			e.target.alpha = 0.8;
+		}
+		
+		function OnMouseOut(e:MouseEvent)
+		{
+			e.target.alpha = 1;
 		}
 	}
 	
