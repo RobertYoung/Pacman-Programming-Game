@@ -15,6 +15,12 @@
 		private static const USER_CONTROLS_SYMBOL:String = "userControlsSymbol";
 		private static const WEB_SERVICE_CONNECT:String = "webServiceConnect";
 		private static const GAME_COMPLETION:String = "gameCompletion";
+		private static const ACHIEVEMENT_COMPLETE_1_MIN:String = "complete1Min";
+		private static const ACHIEVEMENT_COMPLETE_2_MIN:String = "complete2Min";
+		private static const ACHIEVEMENT_COMPLETE_3_MIN:String = "complete3Min";
+		private static const ACHIEVEMENT_COMPLETE_4_MIN:String = "complete4Min";
+		private static const ACHIEVEMENT_COMPLETE_5_MIN:String = "complete5Min";
+		private static const ACHIEVEMENT_COMPLETE_6_MIN:String = "complete6Min";
 		
 		public var userLocalData:SharedObject;
 		
@@ -63,7 +69,6 @@
 			userLocalData = SharedObject.getLocal(PacmanSharedObjectHelper.PACMAN_LOCAL_DATA);
 			//this.SetAllLevelsComplete();
 			userLocalData.flush();
-			
 		}
 		
 		public static function getInstance():PacmanSharedObjectHelper
@@ -189,6 +194,11 @@
 			return this.userLocalData.data[PacmanSharedObjectHelper.WEB_SERVICE_CONNECT];
 		}
 		
+		public function GetTimeAchievement(time:int):Boolean
+		{
+			return this.userLocalData.data["complete" + time + "Min"];
+		}
+		
 		//*****//
 		// SET //
 		//*****//
@@ -241,6 +251,11 @@
 		public function SetWebServiceConnect(connect:Boolean)
 		{
 			this.userLocalData.data[PacmanSharedObjectHelper.WEB_SERVICE_CONNECT] = connect;
+		}
+		
+		public function SetTimeAchievement(time:int):Boolean
+		{
+			return this.userLocalData.data["complete" + time + "Min"] = true;
 		}
 		
 		//***************//

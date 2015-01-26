@@ -41,6 +41,7 @@
 		public static const SWF_BACK_BUTTON:String = "back_button";
 		public static const SWF_GAME:String = "game";
 		public static const SWF_LEVEL_SELECTION:String = "level_selection";
+		public static const SWF_ACHIEVEMENTS:String = "achievements";
 		public static const SWF_HEADER:String = "header";
 		public static const SWF_PACMAN_STAGE:String = "pacman_stage";
 		public static const SWF_PACMAN_STAGE_CONTAINER:String = "pacman_stage_container";
@@ -514,6 +515,27 @@
 			
 			this.SaveData();
 
+			// Check for achievements
+			if (levelData.timeCompleted <= 60) {
+				// Less than 1 minute
+				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(1);
+			}else if (levelData.timeCompleted <= 120) {
+				// Less than 2 minutes
+				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(2);
+			}else if (levelData.timeCompleted <= 180) {
+				// Less than 3 minutes
+				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(3);
+			}else if (levelData.timeCompleted <= 240) {
+				// Less than 4 minutes
+				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(4);
+			}else if (levelData.timeCompleted <= 300) {
+				// Less than 5 minutes
+				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(5);
+			}else if (levelData.timeCompleted <= 360){
+				// Less than 6 minutes
+				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(6);
+			}
+			
 			if (level.levelNumber == 6 && level.stageNumber == 3)
 			{
 				level.levelNumber = 0;
@@ -536,6 +558,7 @@
 				
 				this.addChild(levelComplete);
 			}
+			
 			PacmanSharedObjectHelper.getInstance().SetStageAndLevel(level.stageNumber, level.levelNumber);
 		}
 		

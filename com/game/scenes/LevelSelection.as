@@ -137,7 +137,6 @@
 		{
 			return function (e:MouseEvent)
 			{
-				trace("Go to Stage (" + stageNumber + "), Level (" + levelNumber + ")");	
 				main.GoToLevel(stageNumber, levelNumber);
 			}
 		}
@@ -147,7 +146,6 @@
 		//********************//
 		private function OnClickBackButtonMenu(e:MouseEvent)
 		{
-			trace("main: " + main);
 			main.GoToMenu();
 		}
 		

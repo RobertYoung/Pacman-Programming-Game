@@ -1,13 +1,6 @@
 ﻿package com.game.scenes  {
 	
 	import flash.display.MovieClip;
-/*	import flash.display.Loader;
-	import flash.net.URLRequest;
-	import com.game.factory.Game;
-	
-	import flash.system.Security;
-	import flash.text.TextField;*/
-	
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.SWFLoader;
 	import com.greensock.events.LoaderEvent;
@@ -77,8 +70,6 @@
 			
 			if (this.stageNumber != 0)
 				levelSelection.GoToLevelSelection(this.stageNumber);
-			
-			trace("Level Number: " + this.stageNumber);
 		}
 		
 		public function GoToLevel(setStageNumber:int, setLevelNumber:int)
@@ -96,7 +87,22 @@
 		
 		public function GoToAchievements()
 		{
-			trace("GO TO ACHIEVEMENTS");
+			this.RemoveChildren();
+			
+			queue = new LoaderMax({ name:"mainQueue", onComplete: AchievementsComplete });
+			
+			queue.append(new SWFLoader(Game.SWF_ACHIEVEMENTS + ".swf", {name: Game.SWF_ACHIEVEMENTS, container:this}));
+			queue.append(new SWFLoader(Game.SWF_LOGO + ".swf", {name: Game.SWF_LOGO, container:this}));
+			queue.append(new SWFLoader(Game.SWF_BACK_BUTTON + ".swf", {name: Game.SWF_BACK_BUTTON, container:this}));	
+			
+			queue.load();
+		}
+		
+		private function AchievementsComplete(e:LoaderEvent)
+		{
+			var achievements:Achievements = LoaderMax.getContent(Game.SWF_ACHIEVEMENTS).rawContent as Achievements;
+			
+			achievements.Init();
 		}
 	}
 }
