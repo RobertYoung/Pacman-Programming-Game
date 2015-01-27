@@ -54,6 +54,8 @@
 			
 			next_mc.mouseChildren = false;
 			next_mc.addEventListener(MouseEvent.MOUSE_UP, NextLevel);
+			next_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			next_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 			
 			score_txt.text = this.score.toString();
 			highScore_txt.text = this.highScore.toString();
@@ -81,6 +83,16 @@
 			}else{
 				this.main.GoToLevel(currentStage, currentLevel);
 			}
+		}
+		
+		function OnMouseOver(e:MouseEvent)
+		{
+			e.target.alpha = 0.8;
+		}
+		
+		function OnMouseOut(e:MouseEvent)
+		{
+			e.target.alpha = 1;
 		}
 	}
 }

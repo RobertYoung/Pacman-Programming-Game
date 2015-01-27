@@ -203,6 +203,7 @@
 			pacmanTimeline = new TimelineMax();
 			monsterTimeline = new TimelineMax();
 			pacmanKeys = 0;
+			pacmanKeysActual = 0;
 			levelData.levelScore = 0;
 			levelData.bonusScore = 0;
 			loopArray = new Array();
@@ -234,7 +235,6 @@
 		public function Play() {
 			// Stop the timer
 			this.levelData.timeCompleted = this.timer.currentCount;
-			trace("timer: " + this.levelData.timeCompleted);
 			
 			// Reset the game state if they have pressed play already
 			this.ResetPlayState();

@@ -10,6 +10,7 @@
 	import com.game.scenes.PacmanStage;
 	import flash.events.MouseEvent
 	import com.game.factory.PacmanSharedObjectHelper;
+	import flash.text.TextField;
 	
 	public class Main extends MovieClip {
 		

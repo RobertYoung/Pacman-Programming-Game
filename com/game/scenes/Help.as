@@ -7,6 +7,7 @@
 	import fl.containers.ScrollPane;
 	import flash.events.Event;
 	import com.game.elements.HelpText;
+	import fl.containers.ScrollPane;
 	
 	public class Help extends MovieClip {
 		
@@ -28,7 +29,7 @@
 		public function AddedToStage(e:Event)
 		{
 			var helpText:HelpText = new HelpText();
-			
+
 			helpScrollPane.source = helpText;
 		}
 		

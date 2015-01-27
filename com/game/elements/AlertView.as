@@ -23,6 +23,8 @@
 			this.SetOnComplete(setOnComplete);
 			
 			ok_mc.addEventListener(MouseEvent.MOUSE_UP, CloseAlertView);
+			ok_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			ok_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 		}
 		
 		private function AddedToStageListener(e:Event)
@@ -65,6 +67,19 @@
 			
 			if (onComplete != null)
 				onComplete();
+		}
+		
+		//**************//
+		// MOUSE EVENTS //
+		//**************//
+		function OnMouseOver(e:MouseEvent)
+		{
+			e.target.alpha = 0.8;
+		}
+		
+		function OnMouseOut(e:MouseEvent)
+		{
+			e.target.alpha = 1;
 		}
 	}
 	
