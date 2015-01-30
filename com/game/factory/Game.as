@@ -36,6 +36,7 @@
 	public class Game extends MovieClip {
 		
 		public static const SWF_MAIN:String = "root1";
+		public static const SWF_LOGIN:String = "login";
 		public static const SWF_MENU:String = "menu";
 		public static const SWF_LOGO:String = "logo";
 		public static const SWF_BACK_BUTTON:String = "back_button";
@@ -514,7 +515,7 @@
 			levelData.pacmanSequence = this.pacmanSequence;
 			levelData.completed = true;
 			
-			this.SaveData();
+			this.SaveData(true);
 
 			// Check for achievements
 			if (levelData.timeCompleted <= 60) {
@@ -563,10 +564,10 @@
 			PacmanSharedObjectHelper.getInstance().SetStageAndLevel(level.stageNumber, level.levelNumber);
 		}
 		
-		private function SaveData()
+		private function SaveData(isCompleted:Boolean)
 		{
 			PacmanSharedObjectHelper.getInstance().SetLevelData(this.level.stageNumber, this.level.levelNumber, levelData);
-			this.SaveToDatabase();
+			this.SaveToDatabase(isCompleted);
 		}
 		
 		private function SaveIncompleteData()
@@ -575,12 +576,12 @@
 			levelData.completed = false;
 			
 			PacmanSharedObjectHelper.getInstance().SetIncompleteLevelData(this.level.stageNumber, this.level.levelNumber, levelData);
-			this.SaveToDatabase();
+			this.SaveToDatabase(false);
 		}
 		
-		private function SaveToDatabase()
+		private function SaveToDatabase(isCompleted:Boolean)
 		{
-			PacmanWebService.getInstance().SetLevelData(this.levelData);
+			PacmanWebService.getInstance().SetLevelData(this.levelData, isCompleted);
 		}
 		
 		private function CompileSequence()

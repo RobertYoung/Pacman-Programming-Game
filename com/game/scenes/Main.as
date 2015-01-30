@@ -19,7 +19,7 @@
 		var stageNumber:int;
 		
 		public function Main() {
-			this.GoToMenu();
+			this.GoToLogin();
 			this.SetupUserLocalData();
 		}
 		
@@ -124,6 +124,25 @@
 			var help:Help = LoaderMax.getContent(Game.SWF_HELP).rawContent as Help;
 			
 			help.Init();
+		}
+		
+		private function GoToLogin()
+		{
+			this.RemoveChildren();
+			
+			queue = new LoaderMax({ name:"mainQueue", onComplete: LoginComplete });
+			
+			queue.append(new SWFLoader(Game.SWF_LOGIN + ".swf", {name: Game.SWF_LOGIN, container:this}));
+			queue.append(new SWFLoader(Game.SWF_LOGO + ".swf", {name: Game.SWF_LOGO, container:this}));
+			
+			queue.load();
+		}
+		
+		private function LoginComplete(e:LoaderEvent)
+		{
+			var login:Login = LoaderMax.getContent(Game.SWF_LOGIN).rawContent as Login;
+			
+			login.Init();
 		}
 	}
 }
