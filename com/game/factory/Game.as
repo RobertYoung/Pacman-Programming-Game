@@ -103,8 +103,9 @@
 				LoadGame();
 			
 			this.levelData = PacmanSharedObjectHelper.getInstance().GetLevelData(level.stageNumber, level.levelNumber);
+			levelData.username = PacmanSharedObjectHelper.getInstance().GetUsername();
 			
-			this.addEventListener(Event.ADDED_TO_STAGE, Init);			
+			this.addEventListener(Event.ADDED_TO_STAGE, Init);		
 		}
 		
 		private function Init(e:Event)

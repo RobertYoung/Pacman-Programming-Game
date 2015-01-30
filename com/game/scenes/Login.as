@@ -5,6 +5,7 @@
 	import com.game.elements.AlertView;
 	import flash.text.TextField;
 	import com.game.factory.PacmanWebService;
+	import com.game.factory.PacmanSharedObjectHelper;
 	
 	public class Login extends MovieClip {
 		
@@ -67,7 +68,9 @@
 		
 		public function LoginSuccessfull()
 		{
+			PacmanSharedObjectHelper.getInstance().SetUsername(this.username_txt.text);
 			main.GoToMenu();
+			trace(PacmanSharedObjectHelper.getInstance().GetUsername());
 		}
 		
 		public function LoginFailure()

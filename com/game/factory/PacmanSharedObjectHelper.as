@@ -21,6 +21,7 @@
 		private static const ACHIEVEMENT_COMPLETE_4_MIN:String = "complete4Min";
 		private static const ACHIEVEMENT_COMPLETE_5_MIN:String = "complete5Min";
 		private static const ACHIEVEMENT_COMPLETE_6_MIN:String = "complete6Min";
+		private static const USERNAME:String = "username";
 		
 		public var userLocalData:SharedObject;
 		
@@ -98,6 +99,7 @@
 		
 		public function GetLevelData(stageNumber:int, levelNumber:int):LevelData
 		{
+			throw new Error("OLD METHOD: USE WEB SERVICE");
 			var savedLevelData = this.userLocalData.data["stage" + stageNumber + "level" + levelNumber];
 
 			if (savedLevelData == null)
@@ -120,6 +122,8 @@
 			levelData.loopScore = savedLevelData.loopScore;
 			levelData.completed = savedLevelData.completed;
 			levelData.timeCompleted = savedLevelData.timeCompleted;
+			levelData.username = savedLevelData.username;
+			levelData.control = savedLevelData.control;
 
 			this["stage" + stageNumber + "level" + levelNumber] = levelData;
 			
@@ -199,6 +203,11 @@
 			return this.userLocalData.data["complete" + time + "Min"];
 		}
 		
+		public function GetUsername():String
+		{
+			return this.userLocalData.data[PacmanSharedObjectHelper.USERNAME];
+		}
+		
 		//*****//
 		// SET //
 		//*****//
@@ -223,6 +232,7 @@
 			var levelData:LevelData = this["stage" + stageNumber + "level" + levelNumber] as LevelData;
 			
 			levelData = newLevelData;
+			//levelData.username = this.GetUsername();
 			
 			if (levelData.levelScore > levelData.highScore)
 				levelData.highScore = levelData.levelScore;
@@ -256,6 +266,11 @@
 		public function SetTimeAchievement(time:int):Boolean
 		{
 			return this.userLocalData.data["complete" + time + "Min"] = true;
+		}
+		
+		public function SetUsername(username:String)
+		{
+			this.userLocalData.data[PacmanSharedObjectHelper.USERNAME] = username;
 		}
 		
 		//***************//

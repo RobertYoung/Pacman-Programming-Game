@@ -2,7 +2,10 @@
 	import flash.utils.Timer;
 	
 	public class LevelData {
-	
+
+		// User details
+		public var username:String;
+		
 		// Level details
 		public var stageNumber:int;
 		public var levelNumber:int;
@@ -23,7 +26,7 @@
 		public var ifElseScore:int = 0;
 		public var loopScore:int = 0;
 		
-		public function LevelData(forStageNumber:int, forLevelNumber:int) {
+		public function LevelData(forStageNumber:int = 0, forLevelNumber:int = 0) {
 			this.stageNumber = forStageNumber;
 			this.levelNumber = forLevelNumber;
 		}
