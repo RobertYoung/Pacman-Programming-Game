@@ -84,6 +84,37 @@
 			}
 			*/
 			
+			this.GetLevelsData();
+			this.GetAchievementsData();
+		}
+		
+		private function GetAchievementsData()
+		{
+			var pacmanWebService:PacmanWebService = new PacmanWebService();
+			
+			pacmanWebService.GetTimeAchievements(this.SetAchievementsData);
+		}
+		
+		private function SetAchievementsData(achievements:Object)
+		{
+			var pacmanSharedObject:PacmanSharedObjectHelper = PacmanSharedObjectHelper.getInstance();
+			
+			if (achievements.TimeAchievement1Completed == true)
+				pacmanSharedObject.SetTimeAchievement(1);
+			if (achievements.TimeAchievement2Completed == true)
+				pacmanSharedObject.SetTimeAchievement(2);
+			if (achievements.TimeAchievement3Completed == true)
+				pacmanSharedObject.SetTimeAchievement(3);
+			if (achievements.TimeAchievement4Completed == true)
+				pacmanSharedObject.SetTimeAchievement(4);
+			if (achievements.TimeAchievement5Completed == true)
+				pacmanSharedObject.SetTimeAchievement(5);
+			if (achievements.TimeAchievement6Completed == true)
+				pacmanSharedObject.SetTimeAchievement(6);
+		}
+		
+		private function GetLevelsData()
+		{
 			var levelPoint:Point = levelsArray[arrayPoint];
 			
 			if (levelPoint != null)
@@ -110,7 +141,7 @@
 			
 			PacmanSharedObjectHelper.getInstance().SetLevelData(stageNum, levelNum, levelData);
 			
-			this.GetDataFromWebService();
+			this.GetLevelsData();
 		}
 		
 		public function GoToLevelSelection(e:MouseEvent = null, withStageNumber:int = 0)

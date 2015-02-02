@@ -212,35 +212,34 @@
 			}
 		}
 		
-		//****************//
-		// GET LEVEL DATA //
-		//****************//
-		/*
-		private var getLevelDataOnComplete:Function;
-		private var getLevelDataStageNumber:int;
-		private var getLevelDataLevelNumber:int;
+		//****************************//
+		// GET TIME ACHIEVEMENTS DATA //
+		//****************************//
+		private var getTimeAchievementsOnComplete:Function;
 		
-		public function GetLevelData2(withStageNumber:int, withLevelNumber:int, onComplete:Function = null)
+		public function GetTimeAchievements(onComplete:Function = null)
 		{
-			this.getLevelDataOnComplete = onComplete;
-			this.getLevelDataStageNumber = withStageNumber;
-			this.getLevelDataLevelNumber = withLevelNumber;
+			this.getTimeAchievementsOnComplete = onComplete;
 			
 			webService = new WebService();
-			webService.addEventListener(Event.CONNECT, GetStageCompleteConnection);
+			webService.addEventListener(Event.CONNECT, GetTimeAchievementsConnection);
 			webService.connect(PacmanWebService.WEB_SERVICE_URL);
 		}
 		
-		private function GetLevelDataConnection(e:Event)
+		private function GetTimeAchievementsConnection(e:Event)
 		{
-			webService.GetLevelData(GetLevelDataComplete, this.username, this.getLevelDataStageNumber, this.getLevelDataLevelNumber);
+			webService.GetTimeAchievements(GetTimeAchievementsComplete, this.username);
 		}
 		
-		private function GetLevelDataComplete(response:XML)
+		private function GetTimeAchievementsComplete(response:XML)
 		{
 			trace("Response: " + response);
 			trace(response.child("*").child("*").child("*"));
-		}*/
+			
+			var jsonObject:Object = JSON.parse(response.child("*").child("*").child("*"));
+			
+			this.getTimeAchievementsOnComplete(jsonObject);
+		}
 		
 		//************//
 		// USER LOGIN //
