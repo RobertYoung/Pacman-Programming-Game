@@ -17,7 +17,7 @@
 		var stageNumber:int = 0;
 		var backButton:BackButton;
 		var userLocalData:PacmanSharedObjectHelper;
-		var pacmanWebService:PacmanWebService;
+		//var pacmanWebService:PacmanWebService;
 		public var stage1_mc:MovieClip;
 		public var stage2_mc:MovieClip;
 		public var stage3_mc:MovieClip;
@@ -43,7 +43,7 @@
 				backButton = LoaderMax.getContent(Game.SWF_BACK_BUTTON).rawContent as BackButton;
 				
 				userLocalData = PacmanSharedObjectHelper.getInstance();
-				pacmanWebService = PacmanWebService.getInstance();
+				//pacmanWebService = PacmanWebService.getInstance();
 				
 				SetupStageSelection();
 			}

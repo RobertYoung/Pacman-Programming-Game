@@ -63,7 +63,9 @@
 				return;
 			}
 			
-			PacmanWebService.getInstance().UserLogin(this.username_txt.text, this.password_txt.text);
+			var pacmanWebService:PacmanWebService = new PacmanWebService();
+			
+			pacmanWebService.UserLogin(this.username_txt.text, this.password_txt.text);
 		}
 		
 		public function LoginSuccessfull()

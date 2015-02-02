@@ -14,18 +14,20 @@
 	import com.game.factory.PacmanWebService;
 	import com.game.factory.LevelData;
 	import flash.geom.Point;
+	import com.game.elements.LoadingView;
 	
 	public class Main extends MovieClip {
 		
 		var queue:LoaderMax;
 		var level:Level;
 		var stageNumber:int;
-		var pacmanService:PacmanWebService;
+		//var pacmanService:PacmanWebService;
+		var firstLoad:Boolean = true;
 		
 		public function Main() {
 			this.GoToLogin();
 			this.SetupUserLocalData();
-			this.pacmanService = PacmanWebService.getInstance();
+			//this.pacmanService = PacmanWebService.getInstance();
 		}
 		
 		private function SetupUserLocalData()
@@ -52,16 +54,24 @@
 			
 			queue.load();
 			
-			this.GetDataFromWebService();
+			if (firstLoad)
+			{
+				firstLoad = false;
+				this.addChild(loadingView);
+				this.GetDataFromWebService();
+				PacmanSharedObjectHelper.getInstance().SetWebServiceConnect(true);
+			}
 		}
 
 		private var levelsArray:Array = [ new Point(1,1), new Point(1,2), new Point(1,3), new Point(1,4), new Point(1,5), new Point(1,6),
 											new Point(2,1), new Point(2,2), new Point(2,3), new Point(2,4), new Point(2,5), new Point(2,6),
 											new Point(3,1), new Point(3,2), new Point(3,3), new Point(3,4), new Point(3,5), new Point(3,6) ];
-		private var levelPointer:int = 0;
+		private var arrayPoint:int = 0;
+		private var loadingView:LoadingView = new LoadingView();
 		
 		private function GetDataFromWebService()
 		{
+			/*
 			// Get all data from webservice and store to shared object
 			for (var stageNum = 1; stageNum <= 3; stageNum++)
 			{
@@ -72,27 +82,35 @@
 					pacmanWebService.GetLevelData(stageNum, levelNum, SaveLevelDataToSharedObject);
 				}
 			}
-			
-			/*
-			var levelPoint:Point = levelsArray[levelPointer];
-			var pacmanWebService:PacmanWebService = new PacmanWebService();
-			
-			pacmanWebService.GetLevelData(levelPoint.x, levelPoint.y, SaveLevelDataToSharedObject);
 			*/
 			
-			//PacmanSharedObjectHelper.getInstance().SetWebServiceConnect(true);
+			var levelPoint:Point = levelsArray[arrayPoint];
+			
+			if (levelPoint != null)
+			{
+				var pacmanWebService:PacmanWebService = new PacmanWebService();
+
+				pacmanWebService.GetLevelData(levelPoint.x, levelPoint.y, SaveLevelDataToSharedObject);
+			}else{
+				arrayPoint = 0;
+			}
 		}
 		
 		private function SaveLevelDataToSharedObject(levelData:LevelData)
 		{
+			arrayPoint++;
+			
+			if (arrayPoint == 18)
+			{
+				this.removeChild(loadingView);
+			}
+
 			var stageNum:int = levelData.stageNumber;
 			var levelNum:int = levelData.levelNumber;
 			
 			PacmanSharedObjectHelper.getInstance().SetLevelData(stageNum, levelNum, levelData);
 			
-			/*
-			levelPointer++;
-			GetDataFromWebService();*/
+			this.GetDataFromWebService();
 		}
 		
 		public function GoToLevelSelection(e:MouseEvent = null, withStageNumber:int = 0)

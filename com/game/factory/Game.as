@@ -521,25 +521,33 @@
 			
 			this.SaveData(true);
 
+			var pacmanWebService:PacmanWebService = new PacmanWebService();
+			
 			// Check for achievements
 			if (levelData.timeCompleted <= 60) {
 				// Less than 1 minute
 				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(1);
+				pacmanWebService.SetTimeAchievement(1);
 			}else if (levelData.timeCompleted <= 120) {
 				// Less than 2 minutes
 				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(2);
+				pacmanWebService.SetTimeAchievement(2);
 			}else if (levelData.timeCompleted <= 180) {
 				// Less than 3 minutes
 				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(3);
+				pacmanWebService.SetTimeAchievement(3);
 			}else if (levelData.timeCompleted <= 240) {
 				// Less than 4 minutes
 				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(4);
+				pacmanWebService.SetTimeAchievement(4);
 			}else if (levelData.timeCompleted <= 300) {
 				// Less than 5 minutes
 				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(5);
+				pacmanWebService.SetTimeAchievement(5);
 			}else if (levelData.timeCompleted <= 360){
 				// Less than 6 minutes
 				PacmanSharedObjectHelper.getInstance().SetTimeAchievement(6);
+				pacmanWebService.SetTimeAchievement(6);
 			}
 			
 			if (level.levelNumber == 6 && level.stageNumber == 3)
@@ -585,7 +593,9 @@
 		
 		private function SaveToDatabase(isCompleted:Boolean)
 		{
-			PacmanWebService.getInstance().SetLevelData(this.levelData, isCompleted);
+			var saveToDatabaseWebService:PacmanWebService = new PacmanWebService();
+			
+			saveToDatabaseWebService.SetLevelData(this.levelData, isCompleted);
 		}
 		
 		private function CompileSequence()

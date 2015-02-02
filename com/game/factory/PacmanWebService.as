@@ -33,8 +33,11 @@
 			if (!isOkayToCreate)
 				throw new Error(this + " is a Singleton. Access using getInstance()");
 			*/
+			
+			username = PacmanSharedObjectHelper.getInstance().GetUsername();
 		}
 
+		/*
 		public static function getInstance():PacmanWebService
 		{
 			if (!instance)
@@ -45,7 +48,7 @@
 			}
 			
 			return instance;
-		}
+		}*/
 		
 		// ***************//
 		// SET LEVEL DATA //
@@ -177,6 +180,37 @@
 			}
 		}
 		
+		//**********************//
+		// SET TIME ACHIEVEMENT //
+		//**********************//
+		private var setTimeAchievementOnComplete:Function;
+		private var timeAchievement:int;
+		
+		public function SetTimeAchievement(time:int, onComplete:Function = null)
+		{
+			this.setTimeAchievementOnComplete = onComplete;
+			this.timeAchievement = time;
+			
+			webService = new WebService();
+			webService.addEventListener(Event.CONNECT, SetTimeAchievementConnection);
+			webService.connect(PacmanWebService.WEB_SERVICE_URL);
+		}
+		
+		private function SetTimeAchievementConnection(e:Event)
+		{
+			webService.SetTimeAchievement(SetTimeAchievementComplete, username, timeAchievement);
+		}
+		
+		private function SetTimeAchievementComplete(response:XML)
+		{
+			trace("Response: " + response);
+			trace(response.child("*").child("*").child("*"));
+			
+			if (this.setTimeAchievementOnComplete != null)
+			{
+				this.setTimeAchievementOnComplete();
+			}
+		}
 		
 		//****************//
 		// GET LEVEL DATA //
