@@ -29,8 +29,10 @@
 		var webService:WebService = new WebService();
 		
 		public function PacmanWebService() {
+			/*
 			if (!isOkayToCreate)
 				throw new Error(this + " is a Singleton. Access using getInstance()");
+			*/
 		}
 
 		public static function getInstance():PacmanWebService
@@ -52,6 +54,7 @@
 		{
 			this.levelData = newLevelData;
 			this.setCompleted = isCompleted;
+			trace("USERNAME: " + this.username);
 
 			webService = new WebService();
 			webService.addEventListener(Event.CONNECT, SetLevelDataConnection);
@@ -85,6 +88,8 @@
 		//****************//
 		// GET LEVEL DATA //
 		//****************//
+		private var getLevelDataStageNumber;
+		
 		public function GetLevelData(withStageNumber:int, withLevelNumber:int, onComplete:Function)
 		{
 			username = PacmanSharedObjectHelper.getInstance().GetUsername();
@@ -99,6 +104,9 @@
 		
 		private function GetLevelDataConnection(e:Event)
 		{
+			trace("USERNAME: " + username);
+			trace("STAGE NUMBER: " + stageNumber);
+			trace("LEVEL NUMBER: " + levelNumber);
 			webService.GetLevelData(GetLevelDataComplete, username, stageNumber, levelNumber);
 		}
 		
@@ -106,16 +114,29 @@
 		{
 			trace("Response: " + response);
 			trace(response.child("*").child("*").child("*"));
+
+			var levelResponse = response.child("*").child("*").child("*").toString();
 			
-			var levelDataJSON = JSON.parse(response.child("*").child("*").child("*"));
-			levelData = new LevelData();
-			
-			for (var prop:String in levelDataJSON)
+			if (levelResponse != "Level data does not exist" || levelResponse != "User does not exist")
 			{
-				levelData[prop] = levelDataJSON[prop];
-			}
+				levelData = new LevelData();
+				
+				levelData.stageNumber = stageNumber;
+				levelData.levelNumber = levelNumber;
+				
+				try{
+					var levelDataJSON = JSON.parse(levelResponse);				
 			
-			this.getLevelDataCompleteFunction(levelData);
+					for (var prop:String in levelDataJSON)
+					{
+						levelData[prop] = levelDataJSON[prop];
+					}
+				
+					this.getLevelDataCompleteFunction(levelData);
+				}catch (e:Error) {
+					this.getLevelDataCompleteFunction(levelData);
+				}
+			}
 		}
 		
 		//**********************//
@@ -125,7 +146,6 @@
 		
 		public function GetStageCompletion(onComplete:Function = null)
 		{
-			// PUT IN WEB SERVICE
 			this.getStageCompletionOnComplete = onComplete;
 			
 			webService = new WebService();
@@ -156,6 +176,37 @@
 				getStageCompletionOnComplete(stagesCompletion);
 			}
 		}
+		
+		
+		//****************//
+		// GET LEVEL DATA //
+		//****************//
+		/*
+		private var getLevelDataOnComplete:Function;
+		private var getLevelDataStageNumber:int;
+		private var getLevelDataLevelNumber:int;
+		
+		public function GetLevelData2(withStageNumber:int, withLevelNumber:int, onComplete:Function = null)
+		{
+			this.getLevelDataOnComplete = onComplete;
+			this.getLevelDataStageNumber = withStageNumber;
+			this.getLevelDataLevelNumber = withLevelNumber;
+			
+			webService = new WebService();
+			webService.addEventListener(Event.CONNECT, GetStageCompleteConnection);
+			webService.connect(PacmanWebService.WEB_SERVICE_URL);
+		}
+		
+		private function GetLevelDataConnection(e:Event)
+		{
+			webService.GetLevelData(GetLevelDataComplete, this.username, this.getLevelDataStageNumber, this.getLevelDataLevelNumber);
+		}
+		
+		private function GetLevelDataComplete(response:XML)
+		{
+			trace("Response: " + response);
+			trace(response.child("*").child("*").child("*"));
+		}*/
 		
 		//************//
 		// USER LOGIN //

@@ -68,9 +68,9 @@
 		
 		public function LoginSuccessfull()
 		{
-			PacmanSharedObjectHelper.getInstance().SetUsername(this.username_txt.text);
+			var username:String = this.username_txt.text;
+			PacmanSharedObjectHelper.getInstance().SetUsername(username);
 			main.GoToMenu();
-			trace(PacmanSharedObjectHelper.getInstance().GetUsername());
 		}
 		
 		public function LoginFailure()

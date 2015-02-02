@@ -68,6 +68,7 @@
 				throw new Error(this + " is a Singleton. Access using getInstance()");
 			
 			userLocalData = SharedObject.getLocal(PacmanSharedObjectHelper.PACMAN_LOCAL_DATA);
+			userLocalData.clear();
 			//this.SetAllLevelsComplete();
 			userLocalData.flush();
 		}
@@ -99,7 +100,6 @@
 		
 		public function GetLevelData(stageNumber:int, levelNumber:int):LevelData
 		{
-			throw new Error("OLD METHOD: USE WEB SERVICE");
 			var savedLevelData = this.userLocalData.data["stage" + stageNumber + "level" + levelNumber];
 
 			if (savedLevelData == null)
@@ -162,6 +162,7 @@
 		
 		public function GetStageCompletion(stageNumber:int)
 		{
+			//throw new Error("OLD METHOD: USE WEB SERVICE");
 			var completed:Boolean = true;
 			
 			for (var levelNum = 1; levelNum <= 6; levelNum++)

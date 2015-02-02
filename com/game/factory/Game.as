@@ -515,6 +515,9 @@
 			// Store level data
 			levelData.pacmanSequence = this.pacmanSequence;
 			levelData.completed = true;
+			levelData.username = PacmanSharedObjectHelper.getInstance().GetUsername();
+			
+			trace("aasdsa: " + levelData.username);
 			
 			this.SaveData(true);
 
