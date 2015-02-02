@@ -8,6 +8,8 @@
 	import flash.text.TextField;
 	import com.game.elements.CompleteTick;
 	import com.game.factory.PacmanSharedObjectHelper;
+	import com.game.factory.PacmanWebService;
+	import com.game.objects.StagesCompletion;
 	
 	public class LevelSelection extends MovieClip {
 		
@@ -15,6 +17,7 @@
 		var stageNumber:int = 0;
 		var backButton:BackButton;
 		var userLocalData:PacmanSharedObjectHelper;
+		var pacmanWebService:PacmanWebService;
 		public var stage1_mc:MovieClip;
 		public var stage2_mc:MovieClip;
 		public var stage3_mc:MovieClip;
@@ -40,6 +43,7 @@
 				backButton = LoaderMax.getContent(Game.SWF_BACK_BUTTON).rawContent as BackButton;
 				
 				userLocalData = PacmanSharedObjectHelper.getInstance();
+				pacmanWebService = PacmanWebService.getInstance();
 				
 				SetupStageSelection();
 			}
@@ -68,21 +72,29 @@
 			
 			backButton.AddMouseUpEventListener(OnClickBackButtonMenu);
 
-			if (this.userLocalData.GetStageCompletion(1) == true)
+			pacmanWebService.GetStageCompletion(SetupTicks);
+		}
+		
+		private function SetupTicks(stageComplete:StagesCompletion)
+		{
+			trace(stageComplete);
+			
+			
+			if (stageComplete.Stage1 == true)
 			{
 				var completeTick1:CompleteTick = new CompleteTick(70, 50);
 				
 				stage1_mc.addChild(completeTick1);
 			}
 			
-			if (this.userLocalData.GetStageCompletion(2) == true)
+			if (stageComplete.Stage2 == true)
 			{
 				var completeTick2:CompleteTick = new CompleteTick(70, 50);
 				
 				stage2_mc.addChild(completeTick2);
 			}
 			
-			if (this.userLocalData.GetStageCompletion(3) == true)
+			if (stageComplete.Stage3 == true)
 			{
 				var completeTick3:CompleteTick = new CompleteTick(70, 50);
 				

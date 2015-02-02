@@ -6,6 +6,7 @@
 	import com.greensock.loading.LoaderMax;
 	import com.game.scenes.Main;
 	import com.game.scenes.Login;
+	import com.game.objects.StagesCompletion;
 	
 	public class PacmanWebService {
 
@@ -63,7 +64,7 @@
 		private function SetLevelDataConnection(e:Event)
 		{
 			var levelDataJSON:String = JSON.stringify(this.levelData);
-			
+			trace(levelDataJSON);
 			webService.SetLevelData(SetLevelDataComplete, levelDataJSON, setCompleted);
 		}
 		
@@ -120,9 +121,40 @@
 		//**********************//
 		// GET STAGE COMPLETION //
 		//**********************//
-		public function GetStageCompletion(withStageNumber:int)
+		private var getStageCompletionOnComplete:Function;
+		
+		public function GetStageCompletion(onComplete:Function = null)
 		{
 			// PUT IN WEB SERVICE
+			this.getStageCompletionOnComplete = onComplete;
+			
+			webService = new WebService();
+			webService.addEventListener(Event.CONNECT, GetStageCompleteConnection);
+			webService.connect(PacmanWebService.WEB_SERVICE_URL);
+		}
+		
+		private function GetStageCompleteConnection(e:Event)
+		{
+			webService.GetStageComplete(GetStageCompleteComplete, username);
+		}
+		
+		private function GetStageCompleteComplete(response:XML)
+		{
+			trace("Response: " + response);
+			trace(response.child("*").child("*").child("*"));
+			
+			if (this.getStageCompletionOnComplete != null)
+			{
+				var responseJSON = JSON.parse(response.child("*").child("*").child("*").toString());
+				var stagesCompletion:StagesCompletion = new StagesCompletion();
+
+				for (var prop:String in responseJSON)
+				{
+					stagesCompletion[prop] = responseJSON[prop];
+				}
+				
+				getStageCompletionOnComplete(stagesCompletion);
+			}
 		}
 		
 		//************//
