@@ -32,6 +32,7 @@
 	import com.game.scenes.Header;
 	import flash.utils.Timer;
 	import com.game.scenes.Controls;
+	import fl.transitions.Tween;
 	
 	public class Game extends MovieClip {
 		
@@ -81,12 +82,13 @@
 		private var nextPacmanPoint:Point;
 		private var nextGridPlaceholder:GridPlaceholder;
 		private var nextGridBlock:GridBlock;
-		private var monsterTimeline:TimelineMax = new TimelineMax();
+		private var monsterHoleTimeline:TimelineMax = new TimelineMax();
 		private var monsterHole;
 		private var pacmanKeys:Number = 0;
 		private var pacmanKeysActual:Number = 0;
 		private var loopArray:Array = new Array(); 
 		private var timer:Timer = new Timer(1000);
+		private var monsterIfElseRandomTimeline:TimelineMax = new TimelineMax();
 		
 		// Level data
 		var levelData:LevelData;
@@ -149,6 +151,11 @@
 			var controls:Controls = LoaderMax.getContent(Game.SWF_CONTROLS).rawContent as Controls;
 			
 			controls.Init();
+			
+			if (this.levelData.stageNumber == 2)
+			{
+				this.IfElseMonsterAnimation();
+			}
 		}
 		
 		private function BackButtonPressed(e:MouseEvent)
@@ -162,7 +169,7 @@
 		{
 			level.ImplementHoleWithMonster();
 			
-			var pacmanStage:PacmanStage = new PacmanStage(level);
+			pacmanStage = new PacmanStage(level);
 
 			pacmanStage.x = 280;
 			pacmanStage.y = 400;
@@ -200,10 +207,10 @@
 		public function ResetPlayState()
 		{
 			pacmanTimeline.clear();
-			monsterTimeline.clear();
+			monsterHoleTimeline.clear();
 			pacmanSequence = new Array();
 			pacmanTimeline = new TimelineMax();
-			monsterTimeline = new TimelineMax();
+			monsterHoleTimeline = new TimelineMax();
 			pacmanKeys = 0;
 			pacmanKeysActual = 0;
 			levelData.levelScore = 0;
@@ -813,8 +820,8 @@
 							
 							if (monsterHole != null)
 							{
-								this.monsterTimeline.add(new TweenLite(monsterHole, 2, { alpha: 1 }));
-								this.monsterTimeline.stop();
+								this.monsterHoleTimeline.add(new TweenLite(monsterHole, 2, { alpha: 1 }));
+								this.monsterHoleTimeline.stop();
 							}
 						}
 					break;
@@ -997,14 +1004,14 @@
 		//*********//
 		private function ShowMonster()
 		{
-			this.monsterTimeline.play();
+			this.monsterHoleTimeline.play();
 		}
 		
 		private function TurnFlashLightOff()
 		{
 			this.pacmanMC.gotoAndStop(1);
-			this.monsterTimeline.timeScale(4);
-			this.monsterTimeline.reverse();
+			this.monsterHoleTimeline.timeScale(4);
+			this.monsterHoleTimeline.reverse();
 		}
 		
 		private function DecrementNumberOfKeys(key:MovieClip)
@@ -1068,6 +1075,109 @@
 		{
 			this.levelData.control = setLevelControl;
 		}
+		
+		//************************************//
+		// IF - ELSE RANDOM MONSTER ANIMATION //
+		//************************************//
+		private function IfElseMonsterAnimation()
+		{
+			// Timeline
+			//var animation1:TimelineMax = this.monsterIfElseRandomTimeline;
+			var holeArray:Array = new Array();
+			
+			for (var row = 1; row <= 8; row++)
+			{
+				for (var col = 1; col <= 8; col++)
+				{
+					/*
+					if (pacmanMC.hitTestObject(pacmanStage["grid_row" + row + "_col" + col]))
+						pacmanPoint = new Point(row, col);
+					*/
+					
+					var gridPlaceholder:GridPlaceholder = pacmanStage["grid_row" + row + "_col" + col] as GridPlaceholder;
+					
+					if (gridPlaceholder.ElementExists(Grid.HOLE))
+					{
+						var gridHole:Hole = gridPlaceholder.getChildByName(Grid.HOLE) as Hole;
+						var point:Point = gridPlaceholder.localToGlobal(new Point(gridHole.x, gridHole.y));
+						holeArray.push(point);
+					}
+				}
+			}
+			
+			for (var holeQuestionMark = 0; holeQuestionMark < holeArray.length; holeQuestionMark++)
+			{
+				var questionMark:QuestionMark = new QuestionMark();
+				var questionMarkHolePoint:Point = holeArray[holeQuestionMark] as Point;
+				var questionMarkAnimation:TimelineMax = new TimelineMax();
+				
+				questionMark.x = questionMarkHolePoint.x;
+				questionMark.y = questionMarkHolePoint.y;
+				
+				this.addChild(questionMark);
+				
+				questionMarkAnimation.append(new TweenMax(questionMark, 5, { rotation:4000 }));
+				questionMarkAnimation.append(new TweenMax(questionMark, 1, { rotation:-2000, autoAlpha:0 }));
+				questionMarkAnimation.play();
+			}
+			
+			for (var hole = 0; hole < holeArray.length; hole++)
+			{
+				var animation:TimelineMax = new TimelineMax();
+				var monster:MovieClip = this.CreateRandomMonster();
+				var holePoint:Point = holeArray[hole] as Point;
+				
+				monster.x = holePoint.x;
+				monster.y = holePoint.y;
+				monster.scaleX = 100;
+				monster.scaleY = 100;
+				monster.alpha = 0;
+				
+				this.addChild(monster);
+
+				animation.append(new TweenMax(monster, 4, {scaleX:0, scaleY:0, autoAlpha:1, rotation:1000, ease:Bounce.easeOut }));
+				animation.play();
+			}
+		}
+		
+		private var monstersCreated:Array = new Array();
+		
+		private function CreateRandomMonster():MovieClip
+		{
+			var randomNum:Number = this.GenerateRandomNumber(1, 4);
+			var monsterCreated:Boolean = false;
+			
+			while (monsterCreated == false)
+			{
+				if (this.monstersCreated.indexOf(randomNum) == -1)
+				{
+					monsterCreated = true;
+					this.monstersCreated.push(randomNum);
+					
+					switch(randomNum)
+					{
+						case 1:
+							return new Blinky();							
+						case 2:
+							return new Clyde();
+						case 3:
+							return new Pinky();
+						case 4:
+							return new Inky();
+					}
+				}else{
+					randomNum = this.GenerateRandomNumber(1, 4);
+				}
+			}
+			
+			return null;
+		}
+		
+		private function GenerateRandomNumber(minVal:Number, maxVal:Number):Number
+		{
+			return (Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal);
+		}
+		
 		
 		//************//
 		// EXTENSIONS //

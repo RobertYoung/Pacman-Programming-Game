@@ -89,7 +89,7 @@
 		}
 		
 		private function GetAchievementsData()
-		{
+		{x
 			var pacmanWebService:PacmanWebService = new PacmanWebService();
 			
 			pacmanWebService.GetTimeAchievements(this.SetAchievementsData);
