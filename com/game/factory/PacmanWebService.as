@@ -7,6 +7,7 @@
 	import com.game.scenes.Main;
 	import com.game.scenes.Login;
 	import com.game.objects.StagesCompletion;
+	import flash.utils.*;
 	
 	public class PacmanWebService {
 

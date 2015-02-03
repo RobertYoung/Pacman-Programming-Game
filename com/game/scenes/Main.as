@@ -83,7 +83,7 @@
 			*/
 			
 			this.GetLevelsData();
-			this.GetAchievementsData();
+			//this.GetAchievementsData();
 		}
 		
 		private function GetAchievementsData()
@@ -109,6 +109,8 @@
 				pacmanSharedObject.SetTimeAchievement(5);
 			if (achievements.TimeAchievement6Completed == true)
 				pacmanSharedObject.SetTimeAchievement(6);
+			
+			this.removeChild(loadingView);
 		}
 		
 		private function GetLevelsData()
@@ -130,17 +132,19 @@
 			arrayPoint++;
 			trace(levelData);
 			trace(arrayPoint);
-			if (arrayPoint == 18)
-			{
-				this.removeChild(loadingView);
-			}
-
+			
 			var stageNum:int = levelData.stageNumber;
 			var levelNum:int = levelData.levelNumber;
 			
 			PacmanSharedObjectHelper.getInstance().SetLevelData(stageNum, levelNum, levelData);
 			
-			this.GetLevelsData();
+			if (arrayPoint == 18)
+			{
+				this.GetAchievementsData();
+				//this.removeChild(loadingView);
+			}else{
+				this.GetLevelsData();
+			}
 		}
 		
 		public function GoToLevelSelection(e:MouseEvent = null, withStageNumber:int = 0)
