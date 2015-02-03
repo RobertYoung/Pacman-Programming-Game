@@ -6,6 +6,7 @@
 	import flash.text.TextField;
 	import com.game.factory.PacmanWebService;
 	import com.game.factory.PacmanSharedObjectHelper;
+	import flash.events.KeyboardEvent;
 	
 	public class Login extends MovieClip {
 		
@@ -25,9 +26,25 @@
 			login_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 			login_mc.addEventListener(MouseEvent.MOUSE_UP, OnMouseUp);
 			
+			this.AddKeyEventListener();
+			
 			this.password_txt.displayAsPassword = true;
 			
 			main = this.stage.getChildAt(0) as Main;
+		}
+		
+		function OnKeyUp(e:KeyboardEvent)
+		{
+			if (e.keyCode == 13)
+			{
+				this.AttemptLogin();
+				this.removeEventListener(KeyboardEvent.KEY_UP, OnKeyUp);
+			}
+		}
+		
+		function AddKeyEventListener()
+		{
+			this.addEventListener(KeyboardEvent.KEY_UP, OnKeyUp);
 		}
 		
 		function OnMouseOver(e:MouseEvent)
@@ -41,6 +58,11 @@
 		}
 		
 		function OnMouseUp(e:MouseEvent)
+		{
+			this.AttemptLogin();
+		}
+		
+		private function AttemptLogin()
 		{
 			var title:String = "";
 			var description:String = "";
@@ -56,7 +78,7 @@
 			}
 			
 			if (title != "") {
-				var alertview:AlertView = new AlertView(title, description);
+				var alertview:AlertView = new AlertView(title, description, "", AddKeyEventListener);
 			
 				stage.addChild(alertview);
 				
@@ -65,19 +87,39 @@
 			
 			var pacmanWebService:PacmanWebService = new PacmanWebService();
 			
-			pacmanWebService.UserLogin(this.username_txt.text, this.password_txt.text);
+			pacmanWebService.UserLogin(this.username_txt.text, this.password_txt.text, LoginCallback);
+			this.login_mc.enabled = false;
 		}
 		
-		public function LoginSuccessfull()
+		private function LoginCallback(response:String)
+		{
+			if (response == "true")
+			{
+				this.LoginSuccessfull();
+			}else if (response == "false"){
+				this.LoginFailure();
+			}else{
+				this.LoginError(response);
+			}
+		}
+		
+		private function LoginSuccessfull()
 		{
 			var username:String = this.username_txt.text;
 			PacmanSharedObjectHelper.getInstance().SetUsername(username);
 			main.GoToMenu();
 		}
 		
-		public function LoginFailure()
+		private function LoginFailure()
 		{
 			var alertview:AlertView = new AlertView("Uknown User", "The user details you have entered appear to be incorrect, please try again");
+			
+			stage.addChild(alertview);
+		}
+		
+		private function LoginError(error:String)
+		{
+			var alertview:AlertView = new AlertView("Error", "There appears to be an error with the server, please try again later", error);
 			
 			stage.addChild(alertview);
 		}

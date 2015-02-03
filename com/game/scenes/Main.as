@@ -128,7 +128,8 @@
 		private function SaveLevelDataToSharedObject(levelData:LevelData)
 		{
 			arrayPoint++;
-			
+			trace(levelData);
+			trace(arrayPoint);
 			if (arrayPoint == 18)
 			{
 				this.removeChild(loadingView);

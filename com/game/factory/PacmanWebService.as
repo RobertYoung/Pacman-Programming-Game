@@ -14,7 +14,7 @@
 		private static var isOkayToCreate:Boolean = false;
 		private var levelData:LevelData;
 		private var headerSWF:Header;
-		private var loginSWF:Login;
+		//private var loginSWF:Login;
 		private var setCompleted:Boolean = false;
 		private var stageNumber:int;
 		private var levelNumber:int;
@@ -76,8 +76,8 @@
 		
 		private function SetLevelDataComplete(response:XML)
 		{
-			trace("Response: " + response);
-			trace(response.child("*").child("*").child("*"));
+			//trace("Response: " + response);
+			trace("WEB SERVICE - SET LEVEL DATA: " + response.child("*").child("*").child("*"));
 			
 			if (response.child("*").child("*").child("*") == "Saved") {
 				headerSWF.SetWebServiceConnected();
@@ -107,16 +107,13 @@
 		
 		private function GetLevelDataConnection(e:Event)
 		{
-			trace("USERNAME: " + username);
-			trace("STAGE NUMBER: " + stageNumber);
-			trace("LEVEL NUMBER: " + levelNumber);
 			webService.GetLevelData(GetLevelDataComplete, username, stageNumber, levelNumber);
 		}
 		
 		private function GetLevelDataComplete(response:XML)
 		{
-			trace("Response: " + response);
-			trace(response.child("*").child("*").child("*"));
+			//trace("Response: " + response);
+			trace("WEB SERVICE - GET LEVEL DATA: " + response.child("*").child("*").child("*"));
 
 			var levelResponse = response.child("*").child("*").child("*").toString();
 			
@@ -163,8 +160,8 @@
 		
 		private function GetStageCompleteComplete(response:XML)
 		{
-			trace("Response: " + response);
-			trace(response.child("*").child("*").child("*"));
+			//trace("Response: " + response);
+			trace("WEB SERVICE - GET STAGE COMPLETE: " + response.child("*").child("*").child("*"));
 			
 			if (this.getStageCompletionOnComplete != null)
 			{
@@ -203,8 +200,8 @@
 		
 		private function SetTimeAchievementComplete(response:XML)
 		{
-			trace("Response: " + response);
-			trace(response.child("*").child("*").child("*"));
+			//trace("Response: " + response);
+			trace("WEB SERVICE - SET TIME ACHIEVEMENT: " + response.child("*").child("*").child("*"));
 			
 			if (this.setTimeAchievementOnComplete != null)
 			{
@@ -233,8 +230,8 @@
 		
 		private function GetTimeAchievementsComplete(response:XML)
 		{
-			trace("Response: " + response);
-			trace(response.child("*").child("*").child("*"));
+			//trace("Response: " + response);
+			trace("WEB SERVICE - GET TIME ACHIEVEMENTS: " + response.child("*").child("*").child("*"));
 			
 			var jsonObject:Object = JSON.parse(response.child("*").child("*").child("*"));
 			
@@ -244,10 +241,13 @@
 		//************//
 		// USER LOGIN //
 		//************//
-		public function UserLogin(setUsername:String, setPassword:String)
+		private var userLoginOnComplete:Function;
+		
+		public function UserLogin(setUsername:String, setPassword:String, onComplete:Function = null)
 		{
 			this.username = setUsername;
 			this.password = setPassword;
+			this.userLoginOnComplete = onComplete;
 			
 			webService = new WebService();
 			webService.addEventListener(Event.CONNECT, UserLoginConnection);
@@ -261,17 +261,11 @@
 		
 		private function UserLoginComplete(response:XML)
 		{
-			trace("Response: " + response);
-			trace(response.child("*").child("*").child("*"));
+			//trace("Response: " + response);
+			trace("WEB SERVICE - USER LOGIN: " + response.child("*").child("*").child("*"));
 			
-			loginSWF = LoaderMax.getContent(Game.SWF_LOGIN).rawContent as Login;
-			
-			if (response.child("*").child("*").child("*") == "true")
-			{
-				this.loginSWF.LoginSuccessfull();
-			}else{
-				this.loginSWF.LoginFailure();
-			}
+			if (this.userLoginOnComplete != null)
+				this.userLoginOnComplete(response.child("*").child("*").child("*"));
 		}
 	}
 	
