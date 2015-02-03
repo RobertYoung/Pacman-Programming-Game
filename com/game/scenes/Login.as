@@ -14,6 +14,8 @@
 		public var username_txt:TextField;
 		public var password_txt:TextField;
 		private var main:Main;
+		private var username:String;
+		private var password:String;
 		
 		public function Login() {
 			
@@ -67,11 +69,14 @@
 			var title:String = "";
 			var description:String = "";
 			
-			if (this.username_txt.text == "")
+			this.username = this.username_txt.text.toLowerCase();
+			this.password = this.password_txt.text.toLowerCase();
+			
+			if (username == "")
 			{
 				title = "Error";
 				description = "Please enter your username";
-			}else if (this.password_txt.text == "")
+			}else if (password == "")
 			{
 				title = "Error";
 				description = "Please enter your password"
@@ -87,7 +92,7 @@
 			
 			var pacmanWebService:PacmanWebService = new PacmanWebService();
 			
-			pacmanWebService.UserLogin(this.username_txt.text, this.password_txt.text, LoginCallback);
+			pacmanWebService.UserLogin(username, password, LoginCallback);
 			this.login_mc.enabled = false;
 		}
 		
