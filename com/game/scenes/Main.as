@@ -21,13 +21,11 @@
 		var queue:LoaderMax;
 		var level:Level;
 		var stageNumber:int;
-		//var pacmanService:PacmanWebService;
 		var firstLoad:Boolean = true;
 		
 		public function Main() {
 			this.GoToLogin();
 			this.SetupUserLocalData();
-			//this.pacmanService = PacmanWebService.getInstance();
 		}
 		
 		private function SetupUserLocalData()
@@ -89,7 +87,7 @@
 		}
 		
 		private function GetAchievementsData()
-		{x
+		{
 			var pacmanWebService:PacmanWebService = new PacmanWebService();
 			
 			pacmanWebService.GetTimeAchievements(this.SetAchievementsData);

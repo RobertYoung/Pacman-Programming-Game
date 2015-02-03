@@ -33,6 +33,7 @@
 	import flash.utils.Timer;
 	import com.game.scenes.Controls;
 	import fl.transitions.Tween;
+	import com.greensock.events.TweenEvent;
 	
 	public class Game extends MovieClip {
 		
@@ -1082,18 +1083,12 @@
 		private function IfElseMonsterAnimation()
 		{
 			// Timeline
-			//var animation1:TimelineMax = this.monsterIfElseRandomTimeline;
 			var holeArray:Array = new Array();
 			
 			for (var row = 1; row <= 8; row++)
 			{
 				for (var col = 1; col <= 8; col++)
 				{
-					/*
-					if (pacmanMC.hitTestObject(pacmanStage["grid_row" + row + "_col" + col]))
-						pacmanPoint = new Point(row, col);
-					*/
-					
 					var gridPlaceholder:GridPlaceholder = pacmanStage["grid_row" + row + "_col" + col] as GridPlaceholder;
 					
 					if (gridPlaceholder.ElementExists(Grid.HOLE))
@@ -1135,7 +1130,7 @@
 				
 				this.addChild(monster);
 
-				animation.append(new TweenMax(monster, 4, {scaleX:0, scaleY:0, autoAlpha:1, rotation:1000, ease:Bounce.easeOut }));
+				animation.append(new TweenMax(monster, 4, {scaleX:0, scaleY:0, autoAlpha:1, rotation:1000, ease:Bounce.easeOut, onComplete:ResetIfElseMonsterAnimation }));
 				animation.play();
 			}
 		}
@@ -1171,6 +1166,12 @@
 			}
 			
 			return null;
+		}
+		
+		private function ResetIfElseMonsterAnimation()
+		{
+			if (this.monstersCreated.length > 0)
+				this.monstersCreated = new Array();
 		}
 		
 		private function GenerateRandomNumber(minVal:Number, maxVal:Number):Number
