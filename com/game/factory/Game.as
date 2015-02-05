@@ -140,8 +140,20 @@
 			header = LoaderMax.getContent(Game.SWF_HEADER).rawContent as Header;
 			
 			this.totalScore = PacmanSharedObjectHelper.getInstance().GetTotalScore();
+			
+			// Reset level data
 			this.levelData.levelScore = 0;
 			this.levelData.bonusScore = 0;
+			this.levelData.appleScore = 0;
+			this.levelData.cherryScore = 0;
+			this.levelData.ifElseScore = 0;
+			this.levelData.ifScore = 0;
+			this.levelData.control = 0;
+			this.levelData.completed = false;
+			this.levelData.loopScore = 0;
+			this.levelData.pacDotScore = 0;
+			this.levelData.strawberryScore = 0;
+			this.levelData.timeCompleted = 0;
 
 			header.SetHighScoreText(this.levelData.highScore);
 			header.SetScoreText(this.levelData.levelScore);
@@ -525,8 +537,6 @@
 			levelData.completed = true;
 			levelData.username = PacmanSharedObjectHelper.getInstance().GetUsername();
 			
-			trace("aasdsa: " + levelData.username);
-			
 			this.SaveData(true);
 
 			var pacmanWebService:PacmanWebService = new PacmanWebService();
@@ -797,9 +807,6 @@
 						}
 					break;
 					case Control.ACTION_FLASHLIGHT:
-						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { frame: 20, useFrames: true, ease:Linear.easeNone, onStart: this.ShowMonster }));
-						pacmanTimeline.addLabel(Game.LABEL_FLASHLIGHT_ON);
-						
 						// The next grid
 						// Gets the current grid placeholder of pacman
 						this.GetCurrentGridplaceholder();
@@ -812,6 +819,8 @@
 						// The next grid which Pacman will move too
 						this.GetNextGridPlaceholder();
 						
+						var showMonsterFunction:Function = null;
+					
 						// Checks if the placeholder has a hole
 						if (this.nextGridPlaceholder.ElementExists(Grid.HOLE))
 						{
@@ -823,8 +832,12 @@
 							{
 								this.monsterHoleTimeline.add(new TweenLite(monsterHole, 2, { alpha: 1 }));
 								this.monsterHoleTimeline.stop();
+								showMonsterFunction = this.ShowMonster;
 							}
 						}
+						
+						pacmanTimeline.add(new TweenLite(pacmanMC, 2, { frame: 20, useFrames: true, ease:Linear.easeNone, onStart: showMonsterFunction }));
+						pacmanTimeline.addLabel(Game.LABEL_FLASHLIGHT_ON);
 					break;
 					case Control.ACTION_PICK_UP_KEY:
 						// Gets the current grid placeholder of pacman
@@ -1011,7 +1024,7 @@
 		private function TurnFlashLightOff()
 		{
 			this.pacmanMC.gotoAndStop(1);
-			this.monsterHoleTimeline.timeScale(4);
+			this.monsterHoleTimeline.timeScale(20);
 			this.monsterHoleTimeline.reverse();
 		}
 		

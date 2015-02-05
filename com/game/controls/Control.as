@@ -103,6 +103,19 @@
 		
 		function AddControlToStack(e:MouseEvent, stackPosition:Stack)
 		{
+			// If a control already exists in stack, remove it
+			if (stackPosition.controlInStack != null)
+			{
+				for (var i = 0; i < stackPosition.parent.numChildren; i++)
+				{
+					if (stackPosition.parent.getChildAt(i).name == stackPosition.controlInStack)
+					{
+						stackPosition.parent.removeChildAt(i);
+						stackPosition.controlInStack = null;
+					}
+				}
+			}
+			
 			e.target.removeEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromControlArea);
 			e.target.removeEventListener(MouseEvent.MOUSE_UP, OnMouseUpFromControlArea);					
 			e.target.addEventListener(MouseEvent.MOUSE_DOWN, OnMouseDownFromStackArea);
