@@ -1018,14 +1018,16 @@
 		//*********//
 		private function ShowMonster()
 		{
+			this.monsterHoleTimeline.timeScale(1);
 			this.monsterHoleTimeline.play();
 		}
 		
 		private function TurnFlashLightOff()
 		{
-			this.pacmanMC.gotoAndStop(1);
-			this.monsterHoleTimeline.timeScale(20);
+			trace("Flashlight off");
+			this.monsterHoleTimeline.timeScale(30);
 			this.monsterHoleTimeline.reverse();
+			this.pacmanMC.gotoAndStop(1);
 		}
 		
 		private function DecrementNumberOfKeys(key:MovieClip)
