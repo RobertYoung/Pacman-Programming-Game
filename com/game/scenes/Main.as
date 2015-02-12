@@ -97,18 +97,21 @@
 		{
 			var pacmanSharedObject:PacmanSharedObjectHelper = PacmanSharedObjectHelper.getInstance();
 			
-			if (achievements.TimeAchievement1Completed == true)
-				pacmanSharedObject.SetTimeAchievement(1);
-			if (achievements.TimeAchievement2Completed == true)
-				pacmanSharedObject.SetTimeAchievement(2);
-			if (achievements.TimeAchievement3Completed == true)
-				pacmanSharedObject.SetTimeAchievement(3);
-			if (achievements.TimeAchievement4Completed == true)
-				pacmanSharedObject.SetTimeAchievement(4);
-			if (achievements.TimeAchievement5Completed == true)
-				pacmanSharedObject.SetTimeAchievement(5);
-			if (achievements.TimeAchievement6Completed == true)
-				pacmanSharedObject.SetTimeAchievement(6);
+			if (achievements != null)
+			{
+				if (achievements.TimeAchievement1Completed == true)
+					pacmanSharedObject.SetTimeAchievement(1);
+				if (achievements.TimeAchievement2Completed == true)
+					pacmanSharedObject.SetTimeAchievement(2);
+				if (achievements.TimeAchievement3Completed == true)
+					pacmanSharedObject.SetTimeAchievement(3);
+				if (achievements.TimeAchievement4Completed == true)
+					pacmanSharedObject.SetTimeAchievement(4);
+				if (achievements.TimeAchievement5Completed == true)
+					pacmanSharedObject.SetTimeAchievement(5);
+				if (achievements.TimeAchievement6Completed == true)
+					pacmanSharedObject.SetTimeAchievement(6);
+			}
 			
 			this.removeChild(loadingView);
 		}

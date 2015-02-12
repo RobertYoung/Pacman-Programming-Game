@@ -234,7 +234,14 @@
 			//trace("Response: " + response);
 			trace("WEB SERVICE - GET TIME ACHIEVEMENTS: " + response.child("*").child("*").child("*"));
 			
-			var jsonObject:Object = JSON.parse(response.child("*").child("*").child("*"));
+			var jsonObject:Object;
+			
+			try {
+				jsonObject = JSON.parse(response.child("*").child("*").child("*"));
+			}catch (e:Error)
+			{
+				
+			}
 			
 			this.getTimeAchievementsOnComplete(jsonObject);
 		}
