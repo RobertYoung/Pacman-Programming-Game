@@ -169,6 +169,54 @@
 			{
 				this.IfElseMonsterAnimation();
 			}
+			
+			// Logic to set controls
+			switch (PacmanSharedObjectHelper.getInstance().GetUserControls())
+			{
+				case 0:
+				case 1:
+					switch (this.levelData.stageNumber)
+					{
+						case 1:
+							controls.SwitchToGraphical();
+						break;
+						case 2:
+							controls.SwitchToTextualGraphical();
+						break;
+						case 3:
+							controls.SwitchToTextual();
+						break;
+					}
+				break;
+				case 2:
+					switch (this.levelData.stageNumber)
+					{
+						case 1:
+							controls.SwitchToTextualGraphical();
+						break;
+						case 2:
+							controls.SwitchToTextual();
+						break;
+						case 3:
+							controls.SwitchToGraphical();
+						break;
+					}
+				break;
+				case 3:
+					switch (this.levelData.stageNumber)
+					{
+						case 1:
+							controls.SwitchToTextual();
+						break;
+						case 2:
+							controls.SwitchToGraphical();
+						break;
+						case 3:
+							controls.SwitchToTextualGraphical();
+						break;
+					}
+				break;
+			}
 		}
 		
 		private function BackButtonPressed(e:MouseEvent)

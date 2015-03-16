@@ -7,6 +7,7 @@
 	import com.game.factory.PacmanWebService;
 	import com.game.factory.PacmanSharedObjectHelper;
 	import flash.events.KeyboardEvent;
+	import com.game.elements.PleaseWaitView;
 	
 	public class Login extends MovieClip {
 		
@@ -16,7 +17,8 @@
 		private var main:Main;
 		private var username:String;
 		private var password:String;
-		
+		private var pleaseWaitView:PleaseWaitView;
+
 		public function Login() {
 			
 		}
@@ -94,18 +96,28 @@
 			
 			pacmanWebService.UserLogin(username, password, LoginCallback);
 			this.login_mc.enabled = false;
+			
+			pleaseWaitView = new PleaseWaitView();
+			
+			this.main.addChild(pleaseWaitView);
 		}
 		
 		private function LoginCallback(response:String)
 		{
-			if (response == "true")
+			this.main.removeChild(pleaseWaitView);
+			
+			if (response == "" || response == "1" || response == "2" || response == "3")
 			{
+				PacmanSharedObjectHelper.getInstance().SetUserControls(int(response));
 				this.LoginSuccessfull();
+				return;
 			}else if (response == "false"){
 				this.LoginFailure();
 			}else{
 				this.LoginError(response);
 			}
+			
+			this.AddKeyEventListener();
 		}
 		
 		private function LoginSuccessfull()

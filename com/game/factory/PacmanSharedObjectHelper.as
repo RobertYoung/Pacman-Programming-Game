@@ -22,6 +22,7 @@
 		private static const ACHIEVEMENT_COMPLETE_5_MIN:String = "complete5Min";
 		private static const ACHIEVEMENT_COMPLETE_6_MIN:String = "complete6Min";
 		private static const USERNAME:String = "username";
+		private static const USERNAME_CONTROLS:String = "username_controls";
 		
 		public var userLocalData:SharedObject;
 		
@@ -209,6 +210,11 @@
 			return this.userLocalData.data[PacmanSharedObjectHelper.USERNAME];
 		}
 		
+		public function GetUserControls():int
+		{
+			return this.userLocalData.data[PacmanSharedObjectHelper.USERNAME_CONTROLS];
+		}
+		
 		//*****//
 		// SET //
 		//*****//
@@ -272,6 +278,11 @@
 		public function SetUsername(username:String)
 		{
 			this.userLocalData.data[PacmanSharedObjectHelper.USERNAME] = username;
+		}
+		
+		public function SetUserControls(controls:int)
+		{
+			this.userLocalData.data[PacmanSharedObjectHelper.USERNAME_CONTROLS] = controls;
 		}
 		
 		//***************//
