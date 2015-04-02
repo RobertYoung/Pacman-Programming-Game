@@ -660,6 +660,8 @@
 		private function SaveToDatabase(isCompleted:Boolean)
 		{
 			var saveToDatabaseWebService:PacmanWebService = new PacmanWebService();
+
+			this.levelData.username = this.main.usernameStored;
 			
 			saveToDatabaseWebService.SetLevelData(this.levelData, isCompleted);
 		}

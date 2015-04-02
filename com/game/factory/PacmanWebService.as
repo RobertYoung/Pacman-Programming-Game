@@ -58,7 +58,8 @@
 		{
 			this.levelData = newLevelData;
 			this.setCompleted = isCompleted;
-			trace("USERNAME: " + this.username);
+			trace("USERNAME: " + this.levelData.username);
+			this.levelData.username;
 
 			webService = new WebService();
 			webService.addEventListener(Event.CONNECT, SetLevelDataConnection);

@@ -109,6 +109,8 @@
 			if (response == "" || response == "1" || response == "2" || response == "3")
 			{
 				PacmanSharedObjectHelper.getInstance().SetUserControls(int(response));
+				PacmanSharedObjectHelper.getInstance().SetUsername(this.username);
+				this.main.usernameStored = this.username;
 				this.LoginSuccessfull();
 				return;
 			}else if (response == "false"){

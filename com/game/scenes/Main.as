@@ -22,6 +22,7 @@
 		var level:Level;
 		var stageNumber:int;
 		var firstLoad:Boolean = true;
+		public var usernameStored:String = "";
 		
 		public function Main() {
 			this.GoToLogin();
