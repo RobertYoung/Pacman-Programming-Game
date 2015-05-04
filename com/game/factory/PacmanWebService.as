@@ -25,7 +25,7 @@
 		private var username:String;
 		private var password:String;
 		
-		private static const WEB_SERVICE_URL:String = "http://cmpproj.cms.livjm.ac.uk/cmpryoun/services/pacmanservice/PacmanService.asmx?WSDL";
+		private static const WEB_SERVICE_URL:String = "http://www.iamrobertyoung.co.uk/services/pacmanservice/PacmanService.asmx?WSDL";
 		
 		var webService:WebService = new WebService();
 		
