@@ -25,7 +25,7 @@
 		private var username:String;
 		private var password:String;
 		
-		private static const WEB_SERVICE_URL:String = "http://www.iamrobertyoung.co.uk/services/pacmanservice/PacmanService.asmx?WSDL";
+		private static const WEB_SERVICE_URL:String = "http://iamrobertyoung.co.uk/services/pacmanservice/PacmanService.asmx?WSDL";
 		
 		var webService:WebService = new WebService();
 		
@@ -276,6 +276,35 @@
 			if (this.userLoginOnComplete != null)
 				this.userLoginOnComplete(response.child("*").child("*").child("*"));
 		}
+		
+		//*********//
+		// SIGN UP //
+		//*********//
+		private var signUpOnComplete:Function;
+		
+		public function UserSignup(setUsername:String, setPassword:String, onComplete:Function = null)
+		{
+			this.username = setUsername;
+			this.password = setPassword;
+			this.signUpOnComplete = onComplete;
+			
+			webService = new WebService();
+			webService.addEventListener(Event.CONNECT, UserSignupConnection);
+			webService.connect(PacmanWebService.WEB_SERVICE_URL);
+		}
+		
+		private function UserSignupConnection(e:Event)
+		{
+			webService.UserSignup(UserSignupComplete, username, password, true);
+		}
+		
+		private function UserSignupComplete(response:XML)
+		{
+			//trace("Response: " + response);
+			trace("WEB SERVICE - SIGN UP: " + response.child("*").child("*").child("*"));
+			
+			if (this.signUpOnComplete != null)
+				this.signUpOnComplete(response.child("*").child("*").child("*"));
+		}
 	}
-	
 }

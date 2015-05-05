@@ -8,10 +8,12 @@
 	import com.game.factory.PacmanSharedObjectHelper;
 	import flash.events.KeyboardEvent;
 	import com.game.elements.PleaseWaitView;
+	import com.game.elements.RegistrationForm;
 	
 	public class Login extends MovieClip {
 		
 		public var login_mc:MovieClip;
+		public var signup_mc:MovieClip;
 		public var username_txt:TextField;
 		public var password_txt:TextField;
 		private var main:Main;
@@ -29,6 +31,11 @@
 			login_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
 			login_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 			login_mc.addEventListener(MouseEvent.MOUSE_UP, OnMouseUp);
+			
+			signup_mc.mouseChildren = false;
+			signup_mc.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			signup_mc.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			signup_mc.addEventListener(MouseEvent.MOUSE_UP, OnMouseUpSignUp);
 			
 			this.AddKeyEventListener();
 			
@@ -65,8 +72,8 @@
 		{
 			this.AttemptLogin();
 		}
-		
-		private function AttemptLogin()
+
+		function ValidateFields():Boolean
 		{
 			var title:String = "";
 			var description:String = "";
@@ -89,8 +96,16 @@
 			
 				stage.addChild(alertview);
 				
-				return;
+				return false;
 			}
+			
+			return true;
+		}
+		
+		private function AttemptLogin()
+		{
+			if (!ValidateFields())
+				return;
 			
 			var pacmanWebService:PacmanWebService = new PacmanWebService();
 			
@@ -142,6 +157,45 @@
 			
 			stage.addChild(alertview);
 		}
-	}
+		
+		private function OnMouseUpSignUp(e:MouseEvent)
+		{
+			this.DisplayRegistrationForm();
+		}
+		
+		private function DisplayRegistrationForm()
+		{
+			var registrationForm:RegistrationForm = new RegistrationForm();
+			
+			this.main.addChild(registrationForm);
+		}
+		
+		private function AttemptSignup()
+		{
+			if (!ValidateFields())
+				return;
+			
+			var pacmanWebService:PacmanWebService = new PacmanWebService();
+			
+			pacmanWebService.UserSignup(username, password, SignupCallback);
 	
+			pleaseWaitView = new PleaseWaitView();
+			
+			this.main.addChild(pleaseWaitView);
+		}
+		
+		private function SignupCallback(response:String)
+		{
+			if (response == "")
+			{
+				// User registered
+			}else{
+				var alertview:AlertView = new AlertView("Signup Failed", response);
+			
+				stage.addChild(alertview);
+				
+				this.main.removeChild(pleaseWaitView);
+			}
+		}
+	}
 }
