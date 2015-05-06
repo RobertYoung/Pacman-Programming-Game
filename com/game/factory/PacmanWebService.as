@@ -24,6 +24,7 @@
 		// Login
 		private var username:String;
 		private var password:String;
+		private var gender:String;
 		
 		private static const WEB_SERVICE_URL:String = "http://iamrobertyoung.co.uk/services/pacmanservice/PacmanService.asmx?WSDL";
 		
@@ -282,10 +283,11 @@
 		//*********//
 		private var signUpOnComplete:Function;
 		
-		public function UserSignup(setUsername:String, setPassword:String, onComplete:Function = null)
+		public function UserSignup(setUsername:String, setPassword:String, setGender:String, onComplete:Function = null)
 		{
 			this.username = setUsername;
 			this.password = setPassword;
+			this.gender = setGender;
 			this.signUpOnComplete = onComplete;
 			
 			webService = new WebService();
@@ -295,7 +297,7 @@
 		
 		private function UserSignupConnection(e:Event)
 		{
-			webService.UserSignup(UserSignupComplete, username, password, true);
+			webService.UserSignup(UserSignupComplete, username, password, gender);
 		}
 		
 		private function UserSignupComplete(response:XML)

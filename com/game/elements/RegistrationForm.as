@@ -5,6 +5,7 @@
 	import flash.text.TextField;
 	import fl.controls.ComboBox;
 	import flash.events.MouseEvent;
+	import com.game.factory.PacmanWebService;
 	
 	public class RegistrationForm extends MovieClip {
 		
@@ -17,6 +18,8 @@
 		
 		private var username:String;
 		private var password:String;
+		
+		private var pleaseWaitView:PleaseWaitView;
 
 		public var iii:ComboBox;
 		
@@ -88,10 +91,41 @@
 			return true;
 		}
 		
-		function AttemptSignup(e:MouseEvent)
+		private function AttemptSignup(e:MouseEvent = null)
 		{
 			if (!ValidateFields())
 				return;
+			
+			var pacmanWebService:PacmanWebService = new PacmanWebService();
+
+			pacmanWebService.UserSignup(username, password, gender_combobox.selectedItem.data, SignupCallback);
+	
+			pleaseWaitView = new PleaseWaitView();
+			
+			this.stage.addChild(pleaseWaitView);
+		}
+		
+		var successAlertview:AlertView;
+		
+		private function SignupCallback(response:String)
+		{
+			this.stage.removeChild(pleaseWaitView);
+			
+			if (response == "")
+			{
+				successAlertview = new AlertView("Success", "You have successfully created an account, please log in", "", this.AccountCreated);
+			
+				stage.addChild(successAlertview);
+			}else{
+				var alertview:AlertView = new AlertView("Signup Failed", response);
+			
+				stage.addChild(alertview);
+			}
+		}
+		
+		private function AccountCreated(e:MouseEvent = null)
+		{
+			this.Close();
 		}
 	}
 }

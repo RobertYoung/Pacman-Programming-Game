@@ -169,33 +169,5 @@
 			
 			this.main.addChild(registrationForm);
 		}
-		
-		private function AttemptSignup()
-		{
-			if (!ValidateFields())
-				return;
-			
-			var pacmanWebService:PacmanWebService = new PacmanWebService();
-			
-			pacmanWebService.UserSignup(username, password, SignupCallback);
-	
-			pleaseWaitView = new PleaseWaitView();
-			
-			this.main.addChild(pleaseWaitView);
-		}
-		
-		private function SignupCallback(response:String)
-		{
-			if (response == "")
-			{
-				// User registered
-			}else{
-				var alertview:AlertView = new AlertView("Signup Failed", response);
-			
-				stage.addChild(alertview);
-				
-				this.main.removeChild(pleaseWaitView);
-			}
-		}
 	}
 }
