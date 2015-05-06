@@ -45,6 +45,8 @@
 			
 			this.gender_combobox.addItem({label:"Male", data:"M"}); 
 			this.gender_combobox.addItem({label:"Female", data: "F"}); 
+			
+			password_txt.displayAsPassword = true;
 		}
 		
 		function OnMouseOver(e:MouseEvent)
